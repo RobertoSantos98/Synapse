@@ -8,6 +8,19 @@ export default function Home() {
 
     const insets = useSafeAreaInsets();
 
+
+    const ofensivaDiaria = 5;
+    const cardsParaRevisarHoje = 24;
+    const tempoEstimado = 8;
+
+    const cardsRevisadosHoje = 10;
+    const metaDiariaCards = 30;
+
+    const porcentagemProgresso = Math.min(
+        Math.round((cardsRevisadosHoje / metaDiariaCards ) * 100),
+        100
+    )
+
     return (
         <View style={{ paddingTop: insets.top, flex: 1}}>
 
@@ -34,43 +47,43 @@ export default function Home() {
                     <View className='gap-1 items-center'>
                         <View className='flex-row gap-2 items-center'>
                             <AntDesign name='fire' color={"#10b981"} size={14} />
-                            <Text className='text-white text-2xl font-bold'>5 dias</Text>
+                            <Text className='text-white text-2xl font-bold'>{ofensivaDiaria} dias</Text>
                         </View>
-                        <Text className='text-slate-300'>Ofensivas Diária</Text>
+                        <Text className='text-slate-300'>Ofensiva Diária</Text>
                     </View>
 
                     <View className='w-[1px] h-2/3 bg-emerald-700 self-center' />
 
                     <View className='gap-1 items-center'>
-                        <Text className='text-white text-2xl font-bold'>24 Cards</Text>
+                        <Text className='text-white text-2xl font-bold'>{cardsParaRevisarHoje} Cards</Text>
                         <Text className='text-slate-300'>Para Revisar Hoje</Text>
                     </View>
 
                     <View className='w-[1px] h-2/3 bg-emerald-700 self-center' />
 
                     <View className='gap-1 items-center'>
-                        <Text className='text-white text-2xl font-bold'>~8 min</Text>
+                        <Text className='text-white text-2xl font-bold'>~{tempoEstimado} min</Text>
                         <Text className='text-slate-300'>Tempo Estimado</Text>
                     </View>
 
                 </View>
 
                 <View className='gap-2'>
-                    <Text className='text-white font-bold '>Estudo Diário: <Text className='text-slate-300 font-normal'>15/30 Cards Revisados</Text>
+                    <Text className='text-white font-bold '>Estudo Diário: <Text className='text-slate-300 font-normal'>{cardsRevisadosHoje}/{metaDiariaCards} Cards Revisados</Text>
                     </Text>
 
                     <View className='flex-row items-center gap-2'>
                         <View className='bg-emerald-950 h-2 flex-1 rounded-full'>
-                            <View className='bg-emerald-500 h-2 rounded-full' style={{ width: "60%" }}>
+                            <View className='bg-emerald-500 h-2 rounded-full' style={{ width: `${porcentagemProgresso}%` }}>
                                 <View className='absolute right-0 -top-1.5 itens-center bg-emerald-400 py-1 px-1.5 rounded-full'>
-                                    <Text className='text-white self-center text-xs'>60%</Text>
+                                    <Text className='text-white self-center text-xs'>{porcentagemProgresso}%</Text>
                                 </View>
                             </View>
                         </View>
                         <Text className='text-slate-300 text-xs'>30</Text>
                     </View>
 
-                    <Text className='font-bold text-sm text-center text-white'>Quase lá! Mais 15 cards e você carimba o passaporte de hoje.</Text>
+                    <Text className='font-bold text-sm text-center text-white'>Quase lá! Mais {cardsParaRevisarHoje} cards e você carimba o passaporte de hoje.</Text>
                 </View>
             </View>
 
