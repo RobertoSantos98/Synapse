@@ -1,91 +1,110 @@
 import { Ionicons, Octicons } from "@expo/vector-icons";
-import { Color, Tabs } from "expo-router";
-import { TouchableOpacity, View } from "react-native";
+import { Tabs } from "expo-router";
+import { BottomTabBarButtonProps } from "expo-router/build/react-navigation/bottom-tabs";
+import { TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-
 export default function Layout() {
+  const insets = useSafeAreaInsets();
 
-    const insets = useSafeAreaInsets();
+  return (
+    <Tabs
+      screenOptions={{
+        headerShown: false,
 
-
-    return (
-        <Tabs
-            screenOptions={{
-                headerShown: false,
-                tabBarStyle: {
-                    position: "absolute",
-                    overflow: "visible",
-                    height: 70,
-                    bottom: insets.bottom + 8,
-                    borderRadius: 35,
-                    backgroundColor: "#FFF",
-                    marginHorizontal: 16,
-                    borderTopWidth: 0,
-                    elevation: 8,      // Android
-                    shadowOpacity: 0.15, // iOS
-                    shadowRadius: 10,
-                    shadowOffset: {
-                        width: 0,
-                        height: 5,
-                    },
-                    
-                },
-                
-            }}
-
-        >
-
-            <Tabs.Screen name="Home"
-                options={{
-                    title: "Home",
-                    tabBarIcon: ({ color, size, focused }) => (
-                        <Octicons
-                            name={focused ? "home-fill" : "home"}
-                            size={size}
-                            color={color}
-                        />
-                    )
-                }}
+        tabBarActiveTintColor: "#10b981",
+        tabBarInactiveTintColor: "#64748b",
+        
+        tabBarStyle: {
+            height: 70,
+            backgroundColor: '#FFF',
+            paddingBottom: 8,
+            paddingTop: 8,
+            marginBottom: insets.bottom + 4,
+            marginHorizontal: 16,
+            borderRadius: 999
+        },
+        tabBarItemStyle: {
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+        tabBarLabelStyle: {
+          fontWeight: "600",
+          fontSize: 12,
+        },
+      }}
+    >
+      <Tabs.Screen
+        name="Home"
+        options={{
+          title: "Home",
+          tabBarIcon: ({ color, size, focused }) => (
+            <Octicons
+              name={focused ? "home-fill" : "home"}
+              size={size}
+              color={color}
             />
+          ),
+        }}
+      />
 
-            <Tabs.Screen
-                name="arena"
-                options={{
-                    tabBarButton: (props) => (
-                        <TouchableOpacity
-                            {...props}
-                            style={{
-                                top: -10,
-                                width: 80,
-                                height: 80,
-                                borderRadius: 999,
-                                backgroundColor: "#10b981",
-                                justifyContent: "center",
-                                alignSelf: "center",
-                                alignItems: 'center'
-                            }}
-                        >
-                            <Octicons name="book" size={30} color="#fff" />
-                        </TouchableOpacity>
-                    ),
-                }}
+      <Tabs.Screen
+        name="arena"
+        options={{
+          title: "Arena",
+          tabBarButton: BotaoPersonalizado
+        }}
+      />
+
+      <Tabs.Screen
+        name="perfil"
+        options={{
+          title: "Perfil",
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? "person" : "person-outline"}
+              size={size}
+              color={color}
             />
-
-            <Tabs.Screen name="perfil"
-                options={{
-                    title: "Perfil",
-                    tabBarIcon: ({ focused, color, size }) => (
-                        <Octicons
-                            name={focused ? "person-fill" : "person"}
-                            size={size}
-                            color={color}
-                        />
-
-                    )
-                }}
-            />
-
-        </Tabs>
-    )
+          ),
+        }}
+      />
+    </Tabs>
+  );
 }
+
+const BotaoPersonalizado = ({
+  onPress,
+  onLongPress,
+  accessibilityState,
+  accessibilityLabel,
+  testID,
+  style,
+}: BottomTabBarButtonProps) => {
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      onLongPress={onLongPress ?? undefined}
+      accessibilityState={accessibilityState}
+      accessibilityLabel={accessibilityLabel}
+      testID={testID}
+      activeOpacity={0.8}
+      style={[
+        style,
+        {
+          width: 70,
+          height: 70,
+          borderRadius: 999,
+          backgroundColor: "#10b981",
+          justifyContent: "center",
+          alignItems: "center",
+          top: -15,
+          borderWidth: 2,
+          borderColor: "#FFF"
+        },
+      ]}
+    >
+      <Ionicons name="book" size={28} color="#FFF" />
+    </TouchableOpacity>
+  );
+};

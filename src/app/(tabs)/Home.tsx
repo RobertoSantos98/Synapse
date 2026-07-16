@@ -1,4 +1,6 @@
 import BackGroundLightHome from '@/src/Assets/backGround-lightHome';
+import CardShortHome, { cardShortHomeProps } from '@/src/components/cardShortHome';
+import ContinuarEstudando from '@/src/components/sectionHome/continuarEstudando';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -20,6 +22,14 @@ export default function Home() {
         Math.round((cardsRevisadosHoje / metaDiariaCards ) * 100),
         100
     )
+
+    const continuarEstudando: cardShortHomeProps[] = [
+        {id: 1, img: "https://img.magnific.com/vetores-gratis/ilustracao-de-escola-de-ingles-desenhada-a-mao_23-2149491453.jpg",title: "Inglês", detalhes: "Estudo da escola", nivel: "Intermediário", concluido: "40%"},
+        {id: 2, img: "https://img.magnific.com/vetores-gratis/ilustracao-de-escola-de-ingles-desenhada-a-mao_23-2149491453.jpg",title: "Inglês", detalhes: "Estudo da escola 2", nivel: "Fácil", concluido: "20%"},
+        {id: 3, img: "https://img.magnific.com/vetores-gratis/ilustracao-de-escola-de-ingles-desenhada-a-mao_23-2149491453.jpg",title: "Inglês", detalhes: "Estudo da escola 3" , nivel: "Médio", concluido: "80%"},
+        // {id: 2, img: "",title: "", detalhes: "", nivel: ""},
+        // {id: 3, img: "",title: "", detalhes: "", nivel: ""},
+    ]
 
     return (
         <View style={{ paddingTop: insets.top, flex: 1}}>
@@ -86,6 +96,10 @@ export default function Home() {
                     <Text className='font-bold text-sm text-center text-white'>Quase lá! Mais {cardsParaRevisarHoje} cards e você carimba o passaporte de hoje.</Text>
                 </View>
             </View>
+
+            <ContinuarEstudando continuarEstudando={continuarEstudando}/>
+
+
 
         </View>
     );
