@@ -20,7 +20,7 @@ export default function ContinuarEstudando({continuarEstudando}:continuarEstudan
                 horizontal
                 showsHorizontalScrollIndicator={false} 
                 contentContainerStyle={{
-                    paddingLeft: 16
+                    paddingHorizontal: 16
                 }}
                 />
             </View>
