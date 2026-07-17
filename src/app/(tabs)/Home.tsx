@@ -3,7 +3,7 @@ import CardShortHome, { cardShortHomeProps } from '@/src/components/cardShortHom
 import ContinuarEstudando from '@/src/components/sectionHome/continuarEstudando';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function Home() {
@@ -32,7 +32,7 @@ export default function Home() {
     ]
 
     return (
-        <View style={{ paddingTop: insets.top, flex: 1}}>
+        <ScrollView style={{ paddingTop: insets.top}}>
 
             <BackGroundLightHome/>
 
@@ -101,6 +101,6 @@ export default function Home() {
 
 
 
-        </View>
+        </ScrollView>
     );
 }
