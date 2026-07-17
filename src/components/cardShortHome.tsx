@@ -15,7 +15,7 @@ const widthTela = Dimensions.get('window').width;
 
 export default function CardShortHome({ id, img, title, detalhes, nivel, concluido }: cardShortHomeProps) {
     return (
-        <TouchableOpacity style={{width: widthTela - 120}} className='bg-white rounded-2xl overflow-hidden border border-slate-200 my-2 mr-2' activeOpacity={0.7} >
+        <TouchableOpacity style={{width: widthTela - 120, boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)', }} className='bg-white rounded-2xl overflow-hidden border border-slate-200 my-2 mr-2' activeOpacity={0.7} >
 
             <View className='flex-row '>
                 <Image source={{ uri: img }} className='w-28 h-28' />

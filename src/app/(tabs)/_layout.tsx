@@ -1,7 +1,7 @@
 import { Ionicons, Octicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { BottomTabBarButtonProps } from "expo-router/build/react-navigation/bottom-tabs";
-import { TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Layout() {
@@ -16,6 +16,7 @@ export default function Layout() {
         tabBarInactiveTintColor: "#64748b",
         
         tabBarStyle: {
+            position: 'absolute',
             height: 70,
             backgroundColor: '#FFF',
             paddingBottom: 8,
@@ -92,19 +93,21 @@ const BotaoPersonalizado = ({
       style={[
         style,
         {
-          width: 70,
-          height: 70,
+          width: 100,
+          height: 100,
           borderRadius: 999,
           backgroundColor: "#10b981",
           justifyContent: "center",
           alignItems: "center",
-          top: -15,
-          borderWidth: 2,
-          borderColor: "#FFF"
+          bottom: -8,
+          borderWidth: 4,
+          borderColor: "#FFF",
+          position: 'absolute'
         },
       ]}
     >
       <Ionicons name="book" size={28} color="#FFF" />
+      <Text className="text-white">Estudar</Text>
     </TouchableOpacity>
   );
 };

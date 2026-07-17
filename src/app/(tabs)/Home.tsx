@@ -1,8 +1,11 @@
 import BackGroundLightHome from '@/src/Assets/backGround-lightHome';
+import BackgroundHome from '@/src/Assets/backgroundHome';
 import CardShortHome, { cardShortHomeProps } from '@/src/components/cardShortHome';
 import ContinuarEstudando from '@/src/components/sectionHome/continuarEstudando';
+import MinhaBiblioteca from '@/src/components/sectionHome/minhaBiblioteca';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -31,10 +34,17 @@ export default function Home() {
         // {id: 3, img: "",title: "", detalhes: "", nivel: ""},
     ]
 
-    return (
-        <ScrollView style={{ paddingTop: insets.top}}>
+    const [ contentHeight, setContentHeight ] = useState(0);
 
+    return (
+        <View style={{flex: 1}}>
+
+
+        <ScrollView>
             <BackGroundLightHome/>
+
+            <View style={{ paddingTop: insets.top }}/>
+
 
             <View className='flex-row justify-between items-center m-4 px-2 py-4 bg-slate-100/90 rounded-xl border border-slate-200/60'>
                 <View>
@@ -49,7 +59,7 @@ export default function Home() {
 
 
             <View className='mx-6 my-2 rounded-xl gap-4 overflow-hidden p-4 relative shadow-emerald'>
-                <LinearGradient colors={["#022c22", "#065f46"]}
+                <LinearGradient colors={["#065f46","#022c22", ]}
                     style={StyleSheet.absoluteFill}
                     start={{ x: 1, y: 0 }} end={{ x: 1, y: 1 }} />
 
@@ -99,8 +109,14 @@ export default function Home() {
 
             <ContinuarEstudando continuarEstudando={continuarEstudando}/>
 
+            <MinhaBiblioteca/>
+
 
 
         </ScrollView>
+
+                    
+        </View>
+
     );
 }
