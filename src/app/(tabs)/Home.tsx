@@ -27,11 +27,12 @@ export default function Home() {
     )
 
     const continuarEstudando: cardShortHomeProps[] = [
-        { id: 1, img: "https://img.magnific.com/vetores-gratis/ilustracao-de-escola-de-ingles-desenhada-a-mao_23-2149491453.jpg", title: "Inglês", detalhes: "Estudo da escola", nivel: "Intermediário", concluido: "40%" },
-        { id: 2, img: "https://img.magnific.com/vetores-gratis/ilustracao-de-escola-de-ingles-desenhada-a-mao_23-2149491453.jpg", title: "Inglês", detalhes: "Estudo da escola 2", nivel: "Fácil", concluido: "20%" },
-        { id: 3, img: "https://img.magnific.com/vetores-gratis/ilustracao-de-escola-de-ingles-desenhada-a-mao_23-2149491453.jpg", title: "Inglês", detalhes: "Estudo da escola 3", nivel: "Médio", concluido: "80%" },
-        // {id: 2, img: "",title: "", detalhes: "", nivel: ""},
-        // {id: 3, img: "",title: "", detalhes: "", nivel: ""},
+        { id: 1, themeId: 'math', title: "Matemática", detalhes: "Estudo da escola", nivel: "Intermediário", concluido: "40%" },
+        { id: 2, themeId: 'languages', title: "Inglês", detalhes: "Estudo da escola 2", nivel: "Fácil", concluido: "20%" },
+        { id: 3, themeId: 'languages', title: "Inglês", detalhes: "Estudo da escola 3", nivel: "Médio", concluido: "80%" },
+        { id: 4, themeId: 'tech', title: "Informática", detalhes: "Estudo da faculdade", nivel: "Médio", concluido: "60%" },
+        { id: 5, themeId: 'science', title: "Ciências", detalhes: "Estudo para erudição pessoal", nivel: "Difícil", concluido: "10%" },
+
     ]
 
     const [contentHeight, setContentHeight] = useState(0);

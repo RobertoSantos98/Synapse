@@ -3,6 +3,7 @@ import TitleHome from '../titleHome';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import CardCover from '../cardCover';
 
 const widthScreen = Dimensions.get('window').width;
 
@@ -10,12 +11,12 @@ const tamanhoCard = (widthScreen - 72) / 3;
 
 export default function MinhaBiblioteca() {
     const biblioteca = [
-        { id: 1, img: "https://blog.singularityubrazil.com/wp-content/uploads/2021/05/iStock-1224500457.jpg", title: "Informática" },
-        { id: 2, img: "https://thumbs.dreamstime.com/b/letras-brancas-quadradas-pontos-e-estrelas-molham-com-pilha-de-livros-composi%C3%A7%C3%A3o-qu%C3%ADmica-vidros-volta-ao-estudo-escolar-%C3%A0-240222649.jpg", title: "Linguagem" },
-        { id: 3, img: "https://s4.static.brasilescola.uol.com.br/enem/2022/10/ciencias-da-natureza.jpg", title: "Ciências Humanas" },
-        { id: 4, img: "https://thumbs.dreamstime.com/b/letras-brancas-quadradas-pontos-e-estrelas-molham-com-pilha-de-livros-composi%C3%A7%C3%A3o-qu%C3%ADmica-vidros-volta-ao-estudo-escolar-%C3%A0-240222649.jpg", title: "Linguagem" },
-        { id: 5, img: "https://s4.static.brasilescola.uol.com.br/enem/2022/10/ciencias-da-natureza.jpg", title: "Ciências Humanas" },
-        { id: 6, img: "https://blog.singularityubrazil.com/wp-content/uploads/2021/05/iStock-1224500457.jpg", title: "Informática" },
+        { id: 1, themeId: 'tech', title: "Informática" },
+        { id: 2, themeId: "languages", title: "Linguagem" },
+        { id: 3, themeId: "science", title: "Ciências Humanas" },
+        { id: 4, themeId: "languages", title: "Linguagem" },
+        { id: 5, themeId: "science", title: "Ciências Humanas" },
+        { id: 6, themeId: 'tech', title: "Informática" },
     ];
 
     return (
@@ -25,7 +26,7 @@ export default function MinhaBiblioteca() {
             <View className='px-6 py-2 flex-row justify-between flex-wrap gap-y-4'>
                 
                 {biblioteca.slice(0, 5).map((item) => (
-                    <RenderItemsCardBiblioteca key={item.id} id={item.id} img={item.img} title={item.title} />
+                    <RenderItemsCardBiblioteca key={item.id} id={item.id}themeId={item.themeId} title={item.title} />
                 ))}
 
                 <TouchableOpacity 
@@ -48,24 +49,23 @@ export default function MinhaBiblioteca() {
 type RenderItemsCardBibliotecaProps = {
     id: number,
     title: string,
-    img: string,
+    themeId: string,
 }
 
-const RenderItemsCardBiblioteca = ({ id, title, img }: RenderItemsCardBibliotecaProps) => {
+const RenderItemsCardBiblioteca = ({ id, title, themeId }: RenderItemsCardBibliotecaProps) => {
     return (
         <TouchableOpacity 
             style={{ width: tamanhoCard, height: tamanhoCard + 28 }} 
-            // rounded-2xl combina com o botão adicionar, border-slate-200 suaviza a borda no Light Theme
             className='rounded-2xl overflow-hidden justify-end border border-slate-200 bg-slate-200 active:opacity-80' 
             activeOpacity={0.9}
         >
-            <Image source={{ uri: img }} style={[StyleSheet.absoluteFill, { objectFit: 'cover' }]} />
+            <View className='absolute inset-0'>
+                <CardCover themeId={themeId} iconSize={40} />
+            </View>
             
-            {/* O gradiente agora vai de transparente até um preto forte (0.8) na base */}
-            <LinearGradient colors={['transparent', "rgba(0,0,0,0.8)"]} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['transparent', "rgba(0,0,0,0.2)"]} style={StyleSheet.absoluteFill} />
 
-            {/* Texto flutuando sobre o gradiente sem tarja cinza. 
-                numberOfLines={1} evita que títulos longos quebrem o layout */}
+            
             <View className='px-2 py-2 w-full'>
                 <Text 
                     className='text-white text-xs font-bold text-center shadow-sm' 

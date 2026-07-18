@@ -16,7 +16,7 @@ export default function ContinuarEstudando({continuarEstudando}:continuarEstudan
                 <FlatList
                 data={continuarEstudando}
                 keyExtractor={(item) => item.id.toString()}
-                renderItem={({item}) => <CardShortHome id={item.id} img={item.img} title={item.title} detalhes={item.detalhes} nivel={item.nivel} concluido={item.concluido} />}
+                renderItem={({item}) => <CardShortHome id={item.id} themeId={item.themeId} title={item.title} detalhes={item.detalhes} nivel={item.nivel} concluido={item.concluido} />}
                 horizontal
                 showsHorizontalScrollIndicator={false} 
                 contentContainerStyle={{
