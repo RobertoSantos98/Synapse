@@ -1,6 +1,5 @@
 import BackGroundLightHome from '@/src/Assets/backGround-lightHome';
-import BackgroundHome from '@/src/Assets/backgroundHome';
-import CardShortHome, { cardShortHomeProps } from '@/src/components/cardShortHome';
+import { cardShortHomeProps } from '@/src/components/cardShortHome';
 import ContinuarEstudando from '@/src/components/sectionHome/continuarEstudando';
 import DashBoard from '@/src/components/sectionHome/dashboard';
 import MinhaBiblioteca from '@/src/components/sectionHome/minhaBiblioteca';
@@ -13,7 +12,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 export default function Home() {
 
     const insets = useSafeAreaInsets();
-
 
     const ofensivaDiaria = 5;
     const cardsParaRevisarHoje = 24;
@@ -28,11 +26,11 @@ export default function Home() {
     )
 
     const continuarEstudando: cardShortHomeProps[] = [
-        { id: 1, themeId: 'math', title: "Matemática", detalhes: "Estudo da escola", nivel: "Intermediário", concluido: "40%" },
-        { id: 2, themeId: 'languages', title: "Inglês", detalhes: "Estudo da escola 2", nivel: "Fácil", concluido: "20%" },
-        { id: 3, themeId: 'languages', title: "Inglês", detalhes: "Estudo da escola 3", nivel: "Médio", concluido: "80%" },
-        { id: 4, themeId: 'tech', title: "Informática", detalhes: "Estudo da faculdade", nivel: "Médio", concluido: "60%" },
-        { id: 5, themeId: 'science', title: "Ciências", detalhes: "Estudo para erudição pessoal", nivel: "Difícil", concluido: "10%" },
+        { id: 1, themeId: 'math', title: "Matemática", detalhes: "Estudo da escola", nivel: "medio", concluido: "40" },
+        { id: 2, themeId: 'languages', title: "Inglês", detalhes: "Estudo da escola 2", nivel: "facil", concluido: "20" },
+        { id: 3, themeId: 'languages', title: "Inglês", detalhes: "Estudo da escola 3", nivel: "medio", concluido: "80" },
+        { id: 4, themeId: 'tech', title: "Informática", detalhes: "Estudo da faculdade", nivel: "medio", concluido: "60" },
+        { id: 5, themeId: 'science', title: "Ciências", detalhes: "Estudo para erudição pessoal", nivel: "dificil", concluido: "10" },
 
     ]
 
@@ -75,7 +73,9 @@ export default function Home() {
                     <View className='flex-row justify-center gap-2'>
                         <View className='gap-1 items-center'>
                             <View className='flex-row gap-2 items-center'>
-                                <AntDesign name='fire' color={"#10b981"} size={14} />
+                                <View className='bg-orange-500/20 blur-xl rounded-full h-5 justify-end'>
+                                    <AntDesign name='fire' color={"#f59e0b"} size={14} className='' />
+                                </View>
                                 <Text className='text-white text-2xl font-bold'>{ofensivaDiaria} dias</Text>
                             </View>
                             <Text className='text-slate-300'>Ofensiva Diária</Text>
@@ -98,7 +98,7 @@ export default function Home() {
                     </View>
 
                     <View className='gap-2'>
-                        <Text className='text-white font-bold '>Estudo Diário: <Text className='text-slate-300 font-normal'>{cardsRevisadosHoje}/{metaDiariaCards} Cards Revisados</Text>
+                        <Text className='text-white font-bold '>Estudo Diário: <Text className='text-slate-300 font-normal'>{cardsRevisadosHoje}/{metaDiariaCards} Cartas Dominadas</Text>
                         </Text>
 
                         <View className='flex-row items-center gap-2'>
