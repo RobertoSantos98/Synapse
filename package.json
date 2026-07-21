@@ -12,11 +12,14 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo-google-fonts/bebas-neue": "^0.4.1",
+    "@expo-google-fonts/jaro": "^0.4.2",
+    "@expo-google-fonts/poppins": "^0.4.1",
     "@expo/log-box": "^56.0.12",
     "@expo/vector-icons": "^15.0.2",
     "expo": "^57.0.4",
     "expo-constants": "~57.0.3",
-    "expo-font": "~57.0.0",
+    "expo-font": "~57.0.1",
     "expo-linear-gradient": "~57.0.0",
     "expo-linking": "~57.0.2",
     "expo-router": "~57.0.4",

@@ -13,7 +13,13 @@ module.exports = {
         
         // Dica: Se quiser ela um pouco mais suave com transparência (40% de opacidade):
         'emerald-soft': '0px 10px 20px rgba(16, 185, 129, 0.4)',
-      }
+      },
+      fontFamily: {
+        poppinsBlack: ['PoppinsBlack'],
+        poppinsBold: ['PoppinsBold'],
+        bebas: ['BebasNeue'],
+        jaro: ['Jaro'], // O nome aqui dentro deve ser idêntico ao do useFonts
+      },
     },
   },
   plugins: [],

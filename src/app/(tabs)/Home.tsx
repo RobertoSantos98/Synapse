@@ -49,10 +49,10 @@ export default function Home() {
                 {/* CABEÇALHO CLARO */}
                 <View className='flex-row justify-between items-center px-6 pt-6 pb-2'>
                     <View>
-                        <Text className='text-3xl font-extrabold text-slate-900 tracking-tight'>
-                            Olá, <Text className='text-emerald-500'>Raphael!</Text>
+                        <Text className='text-5xl text-slate-900 tracking-wider'>
+                            Olá, <Text className='text-emerald-500 font-jaro'>Raphael!</Text>
                         </Text>
-                        <Text className='text-sm text-slate-500 font-medium mt-1'>
+                        <Text className='text-sm text-slate-500 tracking-widest font-medium mt-1'>
                             Pronto para estudar hoje?
                         </Text>
                     </View>
