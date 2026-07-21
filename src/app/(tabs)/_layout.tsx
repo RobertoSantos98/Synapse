@@ -13,10 +13,8 @@ export default function Layout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-
         tabBarActiveTintColor: "#10b981",
         tabBarInactiveTintColor: "#64748b",
-
         tabBarStyle: {
           position: 'absolute',
           height: 70,
@@ -84,8 +82,10 @@ const BotaoPersonalizado = ({
   testID,
   style,
 }: BottomTabBarButtonProps) => {
+  
   return (
-    <View className="bg-black items-center justify-center overflow-hidden h-[100px] w-[100px] rounded-full border-2 border-white bottom-4" >
+
+    <View className="items-center justify-center overflow-hidden h-[100px] w-[100px] rounded-full border-2 border-white bottom-4" >
 
       <LinearGradient colors={["#10b981", "#047857"]} style={[StyleSheet.absoluteFill]} />
 

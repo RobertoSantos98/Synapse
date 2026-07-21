@@ -9,7 +9,7 @@ export interface cardShortHomeProps {
     title: string,
     detalhes: string,
     nivel: "facil" | "medio" | "dificil",
-    concluido: string
+    concluido: number
 }
 
 const widthTela = Dimensions.get('window').width;
@@ -39,7 +39,7 @@ export default function CardShortHome({ id, themeId, title, detalhes, nivel, con
                         <View className='self-end flex-row px-2 py-1 rounded-md gap-2'>
                             {
                                 Array.from({ length: estrelas }).map((_, index) => (
-                                    <Fontisto name='star' size={16} color={"#eab308"} className='text-shadow' />
+                                    <Fontisto name='star' size={14} color={"#eab308"} className='text-shadow' />
                                 ))
                             }
                         </View>

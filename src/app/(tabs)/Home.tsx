@@ -26,11 +26,11 @@ export default function Home() {
     )
 
     const continuarEstudando: cardShortHomeProps[] = [
-        { id: 1, themeId: 'math', title: "Matemática", detalhes: "Estudo da escola", nivel: "medio", concluido: "40" },
-        { id: 2, themeId: 'languages', title: "Inglês", detalhes: "Estudo da escola 2", nivel: "facil", concluido: "20" },
-        { id: 3, themeId: 'languages', title: "Inglês", detalhes: "Estudo da escola 3", nivel: "medio", concluido: "80" },
-        { id: 4, themeId: 'tech', title: "Informática", detalhes: "Estudo da faculdade", nivel: "medio", concluido: "60" },
-        { id: 5, themeId: 'science', title: "Ciências", detalhes: "Estudo para erudição pessoal", nivel: "dificil", concluido: "10" },
+        { id: 1, themeId: 'math', title: "Matemática", detalhes: "Estudo da escola", nivel: "medio", concluido: 40 },
+        { id: 2, themeId: 'languages', title: "Inglês", detalhes: "Estudo da escola 2", nivel: "facil", concluido: 20 },
+        { id: 3, themeId: 'languages', title: "Inglês", detalhes: "Estudo da escola 3", nivel: "medio", concluido: 80 },
+        { id: 4, themeId: 'tech', title: "Informática", detalhes: "Estudo da faculdade", nivel: "medio", concluido: 60 },
+        { id: 5, themeId: 'science', title: "Ciências", detalhes: "Estudo para erudição pessoal", nivel: "dificil", concluido: 10 },
 
     ]
 
