@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import CardCover from '../cardCover';
+import { router } from 'expo-router';
 
 const widthScreen = Dimensions.get('window').width;
 
@@ -21,7 +22,7 @@ export default function MinhaBiblioteca() {
 
     return (
         <View className='mb-8'>
-            <TitleHome title='Minha Biblioteca' label='Ver Tudo' onPressLabel={() => { }} />
+            <TitleHome title='Minha Biblioteca' label='Ver Tudo' onPressLabel={() => router.push('/(tabs)/(telas)/minhaBiblioteca')} />
 
             <View className='px-6 py-2 flex-row justify-between flex-wrap gap-y-4'>
                 

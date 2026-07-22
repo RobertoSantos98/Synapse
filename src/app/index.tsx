@@ -50,7 +50,7 @@ export default function SignIn() {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View className="flex-1 bg-slate-900">
+      <View className="flex-1 bg-primary-900">
         
         <ScrollView 
           contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} // Tirei o padding para a curva colar nas bordas
@@ -61,13 +61,13 @@ export default function SignIn() {
           <Animated.View style={{ flex: 1, justifyContent: 'center', transform: [{ translateY: slideUp }] }}>
             
             {/* 1. O FUNDO CURVO (Absolute para não empurrar nada para baixo) */}
-            <View className='bg-slate-950 w-[900px] h-[450px] absolute -top-56 self-center rounded-b-full shadow-lg' />
+            {/* <View className='bg-primary-950 w-[900px] h-[450px] absolute -top-56 self-center rounded-b-full shadow-lg' /> */}
 
             {/* 2. LOGO E TEXTOS (No fluxo normal, centralizados) */}
             <View className='items-center mb-10 mt-12'>
               <LogoSynapse className={"w-32 h-32"} />
-              <Text className='uppercase text-white text-2xl font-extrabold mt-4'>Synapse</Text>
-              <Text className='text-emerald-500 text-lg font-semibold mt-1'>Sua Arena de Estudo</Text>
+              <Text className='uppercase text-white text-3xl font-extrabold mt-4'>Synapse</Text>
+              <Text className='text-primary-400 text-lg font-semibold mt-1'>Sua Arena de Estudo</Text>
             </View>
 
             {/* 3. FORMULÁRIO DE LOGIN (Com margem lateral para não colar na tela) */}
@@ -92,12 +92,12 @@ export default function SignIn() {
                   isPassword={true} 
                 />
                 <TouchableOpacity className='self-end'>
-                  <Text className='text-emerald-500 text-sm font-bold mt-2 pr-2'>Esqueceu a Senha?</Text>
+                  <Text className='text-primary-500 text-sm font-bold mt-2 pr-2'>Esqueceu a Senha?</Text>
                 </TouchableOpacity>
               </View>
 
-              <View className='w-full rounded-xl overflow-hidden shadow-lg shadow-emerald-500/30'>
-                <LinearGradient colors={["#10b981", "#047857"]} className='w-full' start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
+              <View className='w-full rounded-xl overflow-hidden shadow-lg shadow-primary-500/30'>
+                <LinearGradient colors={["#4338ca", "#312e81"]}  className='w-full' start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
                   <TouchableOpacity onPress={() => router.replace('/(tabs)/Home')} className='flex-row w-full gap-2 items-center justify-center py-4' activeOpacity={0.7}>
                     <Text className='text-white font-extrabold text-xl tracking-wider'>Entrar</Text>
                     <MaterialCommunityIcons name='arrow-right-thick' size={20} color={"#FFF"} />
@@ -137,7 +137,7 @@ export const TextInputSignIn = ({ icon, isPassword = false, ...rest }: TextInput
   const [hidePassword, setHidePassword] = useState(isPassword);
 
   return (
-    <View className='flex-row bg-slate-900 px-4 border border-slate-700 items-center w-full rounded-xl focus:border-emerald-500'>
+    <View className='flex-row bg-slate-900 px-4 border border-slate-700 items-center w-full rounded-xl focus:border-primary-500'>
       <MaterialCommunityIcons name={icon} size={24} color={"#64748b"} />
       
       <TextInput 

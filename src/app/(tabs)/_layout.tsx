@@ -70,6 +70,9 @@ export default function Layout() {
           ),
         }}
       />
+
+        <Tabs.Screen name="(telas)" options={{ href: null}} />
+
     </Tabs>
   );
 }
@@ -99,8 +102,8 @@ const BotaoPersonalizado = ({
         style={[
           style,
           {
-            width: 90,
-            height: 90,
+            width: 85,
+            height: 85,
             borderRadius: 999,
             backgroundColor: "#6366f1",
             justifyContent: "center",
