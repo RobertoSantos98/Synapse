@@ -20,6 +20,21 @@ module.exports = {
         bebas: ['BebasNeue'],
         jaro: ['Jaro'], // O nome aqui dentro deve ser idêntico ao do useFonts
       },
+      colors: {
+        primary: {
+          50: '#eef2ff',  // Fundo super claro (para substituir o emerald-50)
+          100: '#e0e7ff', // Fundo de Badges/Tags (para substituir o emerald-100)
+          200: '#c7d2fe', // Bordas e divisórias claras
+          300: '#a5b4fc', // Ícones mais suaves
+          400: '#818cf8', // Destaques intermediários
+          500: '#6366f1', // A COR PRINCIPAL (Botão central, Avatar, Ícones em destaque)
+          600: '#4f46e5', // Efeito "active" ao clicar nos botões
+          700: '#4338ca', // Textos fortes e ícones pequenos em fundos claros
+          800: '#3730a3', // Sombras ou textos muito escuros
+          900: '#312e81', // Pode ser usado no fundo do seu Card de Lig
+          950: "#1e1b4b"
+        }
+      }
     },
   },
   plugins: [],

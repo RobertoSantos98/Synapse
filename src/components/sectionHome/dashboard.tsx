@@ -58,7 +58,7 @@ const RenderItemsDashBoard = ({ dia, cardsEstudados, maior }: RenderDashboardPro
             </Text>
 
             <View className='w-3 h-24 bg-slate-100 rounded-full justify-end overflow-hidden'>
-                <View style={{ height: `${porcentagemProgresso}%` }} className='bg-emerald-500 w-full rounded-full' />
+                <View style={{ height: `${porcentagemProgresso}%` }} className='bg-primary-500 w-full rounded-full' />
             </View>
             <Text className='text-slate-500 font-bold text-sm uppercase'>{dia}</Text>
         </View>

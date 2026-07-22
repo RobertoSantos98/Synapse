@@ -50,7 +50,7 @@ export default function Home() {
                 <View className='flex-row justify-between items-center px-6 pt-6 pb-2'>
                     <View>
                         <Text className='text-5xl text-slate-900 tracking-wider'>
-                            Olá, <Text className='text-emerald-500 font-jaro'>Raphael!</Text>
+                            Olá, <Text className='text-primary-500 font-jaro'>Raphael!</Text>
                         </Text>
                         <Text className='text-sm text-slate-500 tracking-widest font-medium mt-1'>
                             Pronto para estudar hoje?
@@ -65,9 +65,10 @@ export default function Home() {
 
 
 
-                <View className='mx-6 my-2 rounded-xl gap-4 overflow-hidden p-4 relative shadow-emerald'>
-                    <LinearGradient colors={["#065f46", "#022c22",]}
-                        style={StyleSheet.absoluteFill}
+                <View className='mx-6 my-2 rounded-xl gap-4 overflow-hidden p-4 relative shadow-primary'>
+                    <LinearGradient 
+                        colors={["#4338ca", "#312e81"]} 
+                        style={[StyleSheet.absoluteFill]}
                         start={{ x: 1, y: 0 }} end={{ x: 1, y: 1 }} />
 
                     <View className='flex-row justify-center gap-2'>
@@ -81,14 +82,14 @@ export default function Home() {
                             <Text className='text-slate-300'>Ofensiva Diária</Text>
                         </View>
 
-                        <View className='w-[1px] h-2/3 bg-emerald-700 self-center' />
+                        <View className='w-[1px] h-2/3 bg-primary-700 self-center' />
 
                         <View className='gap-1 items-center'>
                             <Text className='text-white text-2xl font-bold'>{cardsParaRevisarHoje} Cards</Text>
                             <Text className='text-slate-300'>Para Revisar Hoje</Text>
                         </View>
 
-                        <View className='w-[1px] h-2/3 bg-emerald-700 self-center' />
+                        <View className='w-[1px] h-2/3 bg-primary-700 self-center' />
 
                         <View className='gap-1 items-center'>
                             <Text className='text-white text-2xl font-bold'>~{tempoEstimado} min</Text>
@@ -102,9 +103,9 @@ export default function Home() {
                         </Text>
 
                         <View className='flex-row items-center gap-2'>
-                            <View className='bg-emerald-950 h-2 flex-1 rounded-full'>
-                                <View className='bg-emerald-500 h-2 rounded-full' style={{ width: `${porcentagemProgresso}%` }}>
-                                    <View className='absolute right-0 -top-1.5 itens-center bg-emerald-400 py-1 px-1.5 rounded-full'>
+                            <View className='bg-primary-950 h-2 flex-1 rounded-full'>
+                                <View className='bg-primary-500 h-2 rounded-full' style={{ width: `${porcentagemProgresso}%` }}>
+                                    <View className='absolute right-0 -top-1.5 itens-center bg-primary-400 py-1 px-1.5 rounded-full'>
                                         <Text className='text-white self-center text-xs'>{porcentagemProgresso}%</Text>
                                     </View>
                                 </View>
@@ -120,7 +121,7 @@ export default function Home() {
 
                 <MinhaBiblioteca />
 
-                <DashBoard/>
+                <DashBoard />
 
 
 

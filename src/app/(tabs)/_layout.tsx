@@ -1,4 +1,4 @@
-import { Ionicons, Octicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons, Octicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Tabs } from "expo-router";
 import { BottomTabBarButtonProps } from "expo-router/build/react-navigation/bottom-tabs";
@@ -13,8 +13,8 @@ export default function Layout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#10b981",
-        tabBarInactiveTintColor: "#64748b",
+        tabBarActiveTintColor: "#6366f1",
+        tabBarInactiveTintColor: "#312e81",
         tabBarStyle: {
           position: 'absolute',
           height: 70,
@@ -87,7 +87,7 @@ const BotaoPersonalizado = ({
 
     <View className="items-center justify-center overflow-hidden h-[100px] w-[100px] rounded-full border-2 border-white bottom-4" >
 
-      <LinearGradient colors={["#10b981", "#047857"]} style={[StyleSheet.absoluteFill]} />
+      <LinearGradient colors={["#6366f1", "#312e81"]} style={[StyleSheet.absoluteFill]} />
 
       <TouchableOpacity
         onPress={onPress}
@@ -102,15 +102,15 @@ const BotaoPersonalizado = ({
             width: 90,
             height: 90,
             borderRadius: 999,
-            backgroundColor: "#10b981",
+            backgroundColor: "#6366f1",
             justifyContent: "center",
             alignItems: "center",
             position: 'absolute',
           },
         ]}
       >
-        <Ionicons name="book" size={28} color="#FFF" />
-        <Text className="text-white">Estudar</Text>
+        <MaterialCommunityIcons name="sword-cross" size={28} color="#FFF" />
+        <Text className="text-white font-bold">Arena</Text>
       </TouchableOpacity>
     // </View>
   );

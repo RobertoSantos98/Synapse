@@ -31,13 +31,13 @@ export default function MinhaBiblioteca() {
 
                 <TouchableOpacity 
                     style={{ width: tamanhoCard, height: tamanhoCard + 28 }} 
-                    className='bg-slate-50 border-2 border-dashed border-emerald-300 rounded-2xl items-center justify-center active:bg-emerald-50' 
+                    className='bg-slate-50 border-2 border-dashed border-primary-300 rounded-2xl items-center justify-center active:bg-primary-50' 
                     activeOpacity={0.7}
                 >
-                    <View className="bg-emerald-100 p-2 rounded-full mb-2">
-                        <MaterialCommunityIcons name='plus-thick' size={20} color={"#059669"} />
+                    <View className="bg-primary-100 p-2 rounded-full mb-2">
+                        <MaterialCommunityIcons name='plus-thick' size={20} color={"#4338ca"} />
                     </View>
-                    <Text className="text-emerald-700 text-xs font-bold">Novo</Text>
+                    <Text className="text-primary-700 text-xs font-bold">Novo</Text>
                 </TouchableOpacity>
 
 
@@ -60,15 +60,15 @@ const RenderItemsCardBiblioteca = ({ id, title, themeId }: RenderItemsCardBiblio
             activeOpacity={0.9}
         >
             <View className='absolute inset-0'>
-                <CardCover themeId={themeId} iconSize={40} />
+                <CardCover themeId={themeId} />
             </View>
             
-            <LinearGradient colors={['transparent', "rgba(0,0,0,0.2)"]} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['transparent', "rgba(0,0,0,0.1)"]} style={StyleSheet.absoluteFill} />
 
             
             <View className='px-2 py-2 w-full'>
                 <Text 
-                    className='text-white text-xs font-bold text-center shadow-sm' 
+                    className='text-primary-900 text-xs font-bold text-center' 
                     numberOfLines={1}
                 >
                     {title}

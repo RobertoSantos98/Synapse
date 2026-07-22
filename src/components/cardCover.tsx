@@ -1,36 +1,26 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
-import { PREDEFINED_THEMES } from '../Assets/Themes/themeOption';
+import { THEME_ICONS } from '../../themes-config'; // Importe o dicionário
 
 interface CardCoverProps {
     themeId: string;
-    iconSize?: number; 
 }
 
-export default function CardCover({ themeId, iconSize = 32 }: CardCoverProps) {
-    const theme = PREDEFINED_THEMES.find(t => t.id === themeId) || PREDEFINED_THEMES[0];
+export default function CardCover({ themeId }: CardCoverProps) {
+    // Busca o ícone pela chave. Se a chave não existir, usa o ícone 'default'
+    const iconName = THEME_ICONS[themeId] || THEME_ICONS['default'];
 
     return (
-        // O fundo fica transparente aqui, o gradiente faz o trabalho.
-        <View className="flex-1 w-full h-full items-center justify-center">
+        // Usando o seu tema Indigo do Tailwind: Fundo primário clarinho e borda suave
+        <View className="flex-1 w-full h-full bg-primary-50 items-center justify-center border border-primary-200/10">
             
-            {/* Gradiente sutil em tons pastéis */}
-            <LinearGradient 
-                colors={theme.colors} 
-                style={StyleSheet.absoluteFill}
-                start={{ x: 0.1, y: 0.1 }} 
-                end={{ x: 0.9, y: 0.9 }} 
-            />
-            
-            {/* Ícone com a cor forte do tema */}
             <MaterialCommunityIcons 
-                name={theme.icon} 
-                size={iconSize} 
-                color={theme.iconColor} 
+                name={iconName} 
+                size={48} 
+                // A cor principal do seu app (Ex: o Hexadecimal do primary-500)
+                color="#6366f1" 
             />
-
             
         </View>
     );

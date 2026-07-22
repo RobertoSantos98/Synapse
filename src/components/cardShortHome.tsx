@@ -26,7 +26,7 @@ export default function CardShortHome({ id, themeId, title, detalhes, nivel, con
 
             <View className='flex-row '>
                 <View className='w-28 h-28 bg-slate-100'>
-                    <CardCover themeId={themeId} iconSize={28} />
+                    <CardCover themeId={themeId} />
                 </View>
                 <View className='p-4 justify-between flex-1 '>
                     <View>
@@ -48,7 +48,7 @@ export default function CardShortHome({ id, themeId, title, detalhes, nivel, con
             </View>
 
             <View className='bg-slate-300 w-full h-[4px] '>
-                <View className='bg-emerald-500 h-[4px]' style={{ width: `${concluido}%` }} />
+                <View className='bg-orange-500 h-[4px]' style={{ width: `${concluido}%` }} />
             </View>
 
         </TouchableOpacity>
