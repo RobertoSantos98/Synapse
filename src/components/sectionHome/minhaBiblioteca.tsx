@@ -22,7 +22,7 @@ export default function MinhaBiblioteca() {
 
     return (
         <View className='mb-8'>
-            <TitleHome title='Minha Biblioteca' label='Ver Tudo' onPressLabel={() => router.push('/(tabs)/(telas)/minhaBiblioteca')} />
+            <TitleHome title='Minha Biblioteca' label='Ver Tudo' onPressLabel={() => router.push('/(telas)/minhaBiblioteca')} />
 
             <View className='px-6 py-2 flex-row justify-between flex-wrap gap-y-4'>
                 
