@@ -9,8 +9,8 @@ interface TitleHomeProps {
 
 export default function TitleHome({ title, label, onPressLabel }: TitleHomeProps) {
     return (
-        <View className='px-6 pt-4 pb-3 flex-row justify-between items-end'>
-            <Text className='font-poppinsBold text-xl text-slate-800 tracking-wider'>{title}</Text>
+        <View className='px-6 pt-3 pb-2 flex-row justify-between items-end'>
+            <Text className='font-poppinsBold text-lg text-slate-800 tracking-wide'>{title}</Text>
             
             <TouchableOpacity 
                 className='flex-row gap-1 items-center active:opacity-50'

@@ -8,7 +8,7 @@ import { router } from 'expo-router';
 
 const widthScreen = Dimensions.get('window').width;
 
-const tamanhoCard = (widthScreen - 72) / 3;
+const tamanhoCard = (widthScreen - 58) / 3;
 
 export default function MinhaBiblioteca() {
     const biblioteca = [
@@ -21,17 +21,17 @@ export default function MinhaBiblioteca() {
     ];
 
     return (
-        <View className='mb-8'>
+        <View className='mb-4 '>
             <TitleHome title='Minha Biblioteca' label='Ver Tudo' onPressLabel={() => router.push('/(telas)/minhaBiblioteca')} />
 
-            <View className='px-6 py-2 flex-row justify-between flex-wrap gap-y-4'>
+            <View className='px-3 mx-3 rounded-2xl py-3 flex-row justify-between flex-wrap gap-y-4 bg-white shadow-lg'>
                 
                 {biblioteca.slice(0, 5).map((item) => (
                     <RenderItemsCardBiblioteca key={item.id} id={item.id}themeId={item.themeId} title={item.title} />
                 ))}
 
                 <TouchableOpacity 
-                    style={{ width: tamanhoCard, height: tamanhoCard + 28 }} 
+                    style={{ width: tamanhoCard, height: tamanhoCard + 42 }} 
                     className='bg-slate-50 border-2 border-dashed border-primary-300 rounded-2xl items-center justify-center active:bg-primary-50' 
                     activeOpacity={0.7}
                 >
@@ -56,7 +56,7 @@ type RenderItemsCardBibliotecaProps = {
 const RenderItemsCardBiblioteca = ({ id, title, themeId }: RenderItemsCardBibliotecaProps) => {
     return (
         <TouchableOpacity 
-            style={{ width: tamanhoCard, height: tamanhoCard + 28 }} 
+            style={{ width: tamanhoCard, height: tamanhoCard + 42 }} 
             className='rounded-2xl overflow-hidden justify-end border border-slate-200 bg-slate-200 active:opacity-80' 
             activeOpacity={0.9}
         >
@@ -64,7 +64,7 @@ const RenderItemsCardBiblioteca = ({ id, title, themeId }: RenderItemsCardBiblio
                 <CardCover themeId={themeId} />
             </View>
             
-            <LinearGradient colors={['transparent', "rgba(0,0,0,0.1)"]} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['transparent', 'transparent', "rgba(0,0,0,0.1)"]} style={StyleSheet.absoluteFill} />
 
             
             <View className='px-2 py-2 w-full'>

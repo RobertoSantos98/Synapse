@@ -34,8 +34,6 @@ export default function Home() {
 
     ]
 
-    const [contentHeight, setContentHeight] = useState(0);
-
     return (
         <View style={{ flex: 1 }}>
 
@@ -45,9 +43,7 @@ export default function Home() {
 
                 <View style={{ paddingTop: insets.top }} />
 
-
-                {/* CABEÇALHO CLARO */}
-                <View className='flex-row justify-between items-center px-6 pt-6 pb-2'>
+                <View className='flex-row justify-between items-center px-6 py-6 '>
                     <View>
                         <Text className='text-5xl text-slate-900 tracking-wider'>
                             Olá, <Text className='text-primary-500 font-jaro'>Raphael!</Text>
@@ -57,8 +53,7 @@ export default function Home() {
                         </Text>
                     </View>
 
-                    {/* Botão sutil e flutuante */}
-                    <TouchableOpacity className='rounded-full bg-white shadow-sm p-3 border border-slate-200 active:bg-slate-50'>
+                    <TouchableOpacity activeOpacity={0.9} className='rounded-full bg-white shadow-lg p-4 border border-slate-200 active:bg-slate-200'>
                         <Ionicons name='settings-sharp' size={22} color={"#64748b"} />
                     </TouchableOpacity>
                 </View>
@@ -67,7 +62,7 @@ export default function Home() {
 
                 <View className='mx-6 my-2 rounded-xl gap-4 overflow-hidden p-4 relative shadow-primary'>
                     <LinearGradient 
-                        colors={["#4338ca", "#312e81"]} 
+                        colors={["#4338ca", "#4338ca", "#312e81"]} 
                         style={[StyleSheet.absoluteFill]}
                         start={{ x: 1, y: 0 }} end={{ x: 1, y: 1 }} />
 
@@ -103,7 +98,7 @@ export default function Home() {
                         </Text>
 
                         <View className='flex-row items-center gap-2'>
-                            <View className='bg-primary-950 h-2 flex-1 rounded-full'>
+                            <View className='bg-primary-900 h-2 flex-1 rounded-full'>
                                 <View className='bg-primary-500 h-2 rounded-full' style={{ width: `${porcentagemProgresso}%` }}>
                                     <View className='absolute right-0 -top-1.5 itens-center bg-primary-400 py-1 px-1.5 rounded-full'>
                                         <Text className='text-white self-center text-xs'>{porcentagemProgresso}%</Text>

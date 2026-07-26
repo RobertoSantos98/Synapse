@@ -152,7 +152,7 @@ const RenderItemsCardBiblioteca = ({ id, title, themeId }: RenderItemsCardBiblio
         <CardCover themeId={themeId} />
       </View>
 
-      <LinearGradient colors={['transparent', "rgba(0,0,0,0.1)"]} style={StyleSheet.absoluteFill} />
+      <LinearGradient colors={['transparent', 'transparent', "rgba(0,0,0,0.1)"]} style={StyleSheet.absoluteFill} />
 
 
       <View className='px-2 py-2 w-full'>
@@ -171,7 +171,7 @@ const RenderItemsCardCurtidos = ({ title, themeId }: RenderItemsCardBibliotecaPr
   return (
     <TouchableOpacity className='bg-primary-100 flex-row rounded-xl overflow-hidden border border-primary-200 shadow-lg' style={{ height: tamanhoCard - 50}}>
 
-      <LinearGradient colors={['transparent', "rgba(0,0,0,0.1)"]} style={StyleSheet.absoluteFill} />
+      <LinearGradient colors={['transparent', 'transparent', "rgba(0,0,0,0.1)"]} style={StyleSheet.absoluteFill} />
 
       <View style={{ width: tamanhoCard - 50}}>
         <CardCover themeId={themeId} />
