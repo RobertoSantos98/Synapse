@@ -2,6 +2,7 @@ import BackGroundLightHome from '@/src/Assets/backGround-lightHome';
 import { cardShortHomeProps } from '@/src/components/cardShortHome';
 import ContinuarEstudando from '@/src/components/sectionHome/continuarEstudando';
 import DashBoard from '@/src/components/sectionHome/dashboard';
+import DecksAmigos from '@/src/components/sectionHome/decksAmigos';
 import MinhaBiblioteca from '@/src/components/sectionHome/minhaBiblioteca';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -117,6 +118,8 @@ export default function Home() {
                 <MinhaBiblioteca />
 
                 <DashBoard />
+
+                <DecksAmigos/>
 
 
 

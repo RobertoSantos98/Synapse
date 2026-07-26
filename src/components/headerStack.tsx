@@ -1,10 +1,7 @@
-import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-
-    // Está sem fundo, seguindo o background que a tela que incorporar esse componente terá.
 
 
     type HeaderStackProps = {

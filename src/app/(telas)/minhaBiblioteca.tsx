@@ -144,21 +144,18 @@ type RenderItemsCardBibliotecaProps = {
 const RenderItemsCardBiblioteca = ({ id, title, themeId }: RenderItemsCardBibliotecaProps) => {
   return (
     <TouchableOpacity
-      style={{ width: tamanhoCard, height: tamanhoCard +  70}}
-      className='rounded-2xl overflow-hidden justify-end border border-slate-200 bg-slate-200 active:opacity-80'
-      activeOpacity={0.9}
+      style={{ width: tamanhoCard, height: tamanhoCard + 42 }}
+      className='rounded-2xl overflow-hidden flex-col border border-slate-200 bg-white active:bg-slate-50 shadow-sm'
+      activeOpacity={0.7}
     >
-      <View className='absolute inset-0'>
+      <View className='flex-1 w-full'>
         <CardCover themeId={themeId} />
       </View>
 
-      <LinearGradient colors={['transparent', 'transparent', "rgba(0,0,0,0.1)"]} style={StyleSheet.absoluteFill} />
-
-
-      <View className='px-2 py-2 w-full'>
+      <View className='h-12 px-2 justify-center items-center border-t border-slate-100 bg-white'>
         <Text
-          className='text-primary-900 font-poppinsBold text-center'
-          numberOfLines={1}
+          className='text-slate-700 font-poppinsBold text-xs text-center'
+          numberOfLines={2}
         >
           {title}
         </Text>
@@ -169,23 +166,26 @@ const RenderItemsCardBiblioteca = ({ id, title, themeId }: RenderItemsCardBiblio
 
 const RenderItemsCardCurtidos = ({ title, themeId }: RenderItemsCardBibliotecaProps) => {
   return (
-    <TouchableOpacity className='bg-primary-100 flex-row rounded-xl overflow-hidden border border-primary-200 shadow-lg' style={{ height: tamanhoCard - 50}}>
-
-      <LinearGradient colors={['transparent', 'transparent', "rgba(0,0,0,0.1)"]} style={StyleSheet.absoluteFill} />
-
-      <View style={{ width: tamanhoCard - 50}}>
+    <TouchableOpacity 
+      style={{ height: 100 }}
+      className='bg-white flex-row rounded-2xl overflow-hidden border border-slate-200 shadow-sm mb-1 active:bg-slate-50'
+      activeOpacity={0.7}
+    >
+      <View className='w-28 h-full border-r border-slate-100'>
         <CardCover themeId={themeId} />
       </View>
 
-      <View className='p-4 relative flex-1 justify-between'>
-        <Text numberOfLines={1} className='text-primary-900 font-poppinsBold text-lg'>{title}</Text>
+      <View className='p-4 relative flex-1 justify-center'>
+        <Text numberOfLines={2} className='text-slate-800 font-poppinsBold text-sm w-5/6'>
+          {title}
+        </Text>
 
-        <TouchableOpacity className='bg-primary-50 p-2 rounded-full self-start absolute right-4 top-4 '>
-          <MaterialCommunityIcons name='heart' size={16} color={"#ff0000"} />
+        <TouchableOpacity 
+          className='absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full active:bg-rose-50'
+        >
+          <MaterialCommunityIcons name='heart' size={24} color={"#f43f5e"} />
         </TouchableOpacity>
-
       </View>
-
     </TouchableOpacity>
   )
 }

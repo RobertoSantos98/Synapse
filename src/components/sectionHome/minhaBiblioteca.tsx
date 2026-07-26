@@ -48,33 +48,32 @@ export default function MinhaBiblioteca() {
 }
 
 type RenderItemsCardBibliotecaProps = {
-    id: number,
-    title: string,
-    themeId: string,
+    id: number;
+    title: string;
+    themeId: string;
 }
 
 const RenderItemsCardBiblioteca = ({ id, title, themeId }: RenderItemsCardBibliotecaProps) => {
     return (
         <TouchableOpacity 
             style={{ width: tamanhoCard, height: tamanhoCard + 42 }} 
-            className='rounded-2xl overflow-hidden justify-end border border-slate-200 bg-slate-200 active:opacity-80' 
-            activeOpacity={0.9}
+            className='rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm active:bg-slate-50 flex-col' 
+            activeOpacity={0.7}
         >
-            <View className='absolute inset-0'>
+            {/* PARTE SUPERIOR: Apenas a Capa com o Ícone (ocupa o espaço principal) */}
+            <View className='flex-1 w-full'>
                 <CardCover themeId={themeId} />
             </View>
             
-            <LinearGradient colors={['transparent', 'transparent', "rgba(0,0,0,0.1)"]} style={StyleSheet.absoluteFill} />
-
-            
-            <View className='px-2 py-2 w-full'>
+            {/* PARTE INFERIOR: Base sólida branca para o texto não brigar com o ícone */}
+            <View className='h-10 px-1 justify-center items-center border-t border-slate-100 bg-white'>
                 <Text 
-                    className='text-primary-900 text-xs font-bold text-center' 
+                    className='text-slate-700 text-[11px] font-bold text-center' 
                     numberOfLines={1}
                 >
                     {title}
                 </Text>
             </View>
         </TouchableOpacity>
-    )
+    );
 }

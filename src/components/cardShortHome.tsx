@@ -1,65 +1,82 @@
-import { Image, Text, TouchableOpacity, Dimensions, View, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, Dimensions, View } from 'react-native';
 import CardCover from './cardCover';
-import { Fontisto, Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
-
+import { Fontisto, MaterialIcons } from '@expo/vector-icons';
 
 export interface cardShortHomeProps {
-    id: number,
-    themeId: string,
-    title: string,
-    detalhes: string,
-    nivel: "facil" | "medio" | "dificil",
-    concluido: number
+    id: number;
+    themeId: string;
+    title: string;
+    detalhes: string;
+    nivel: "facil" | "medio" | "dificil";
+    concluido: number;
 }
 
 const widthTela = Dimensions.get('window').width;
 
-
-export default function CardShortHome({ id, themeId, title, detalhes, nivel, concluido }: cardShortHomeProps) {
-
-
+export default function CardShortHome({ themeId, title, detalhes, nivel, concluido }: cardShortHomeProps) {
+    
+    // Mapeamento numérico da dificuldade
     const estrelas: number = nivel === "facil" ? 1 : nivel === 'medio' ? 2 : 3;
 
-
     return (
-        <TouchableOpacity style={{ width: widthTela - 60, boxShadow: '0px 2px 2px rgba(0, 0, 0, 0.1)', }} className='bg-white rounded-2xl overflow-hidden border border-slate-200 my-2 mr-2' activeOpacity={0.7} >
-
-
-
-            <View className='flex-row '>
-                <View className='w-32 h-full border-r border-primary-200'>
+        <TouchableOpacity 
+            style={{ width: widthTela - 60 }} 
+            // Removida a sombra inline (boxShadow) e substituída por shadow-sm do Tailwind
+            className='bg-white rounded-2xl overflow-hidden border border-slate-200 my-2 mr-4 shadow-sm active:bg-slate-50' 
+            activeOpacity={0.7} 
+        >
+            <View className='flex-row'>
+                
+                {/* CAPA DA MATÉRIA (Largura fixa para não esmagar o texto) */}
+                <View className='w-28 h-full border-r border-slate-100'>
                     <CardCover themeId={themeId} />
-                    <LinearGradient colors={["rgba(0,0,0,0.1)", "transparent",'transparent', ]} style={StyleSheet.absoluteFill} />
                 </View>
 
-                <View className='py-2 px-4 gap-1 flex-1 '>
+                {/* CONTEÚDO */}
+                <View className='py-3 px-4 flex-1 justify-between'>
+                    
                     <View>
-                        <Text className='text-lg font-poppinsBold tracking-wide text-slate-800' numberOfLines={1}>{title}</Text>
-                        <Text className='text-xs text-slate-500 mt-0.5' numberOfLines={2}>{detalhes}</Text>
+                        <Text className='text-base font-poppinsBold text-slate-800 leading-tight' numberOfLines={1}>
+                            {title}
+                        </Text>
+                        <Text className='text-xs text-slate-500 mt-1' numberOfLines={2}>
+                            {detalhes}
+                        </Text>
                     </View>
 
-                    <View className='self-start rounded-lg flex-row items-center'>
-                        <View className='self-end flex-row py-1 rounded-md gap-2'>
-                            {
-                                Array.from({ length: estrelas }).map((_, index) => (
-                                    <Fontisto name='star' size={12} color={"#eab308"} className='text-shadow' />
-                                ))
-                            }
+                    <View className='flex-row items-end justify-between mt-3'>
+                        
+                        {/* ESTRELAS COM CONTEXTO (Sempre renderiza 3, pintando as ativas) */}
+                        <View className='flex-row gap-1 pb-1'>
+                            {Array.from({ length: 3 }).map((_, index) => (
+                                <Fontisto 
+                                    key={index} 
+                                    name='fire' 
+                                    size={12} 
+                                    // Pinta de laranja se estiver dentro do nível, senão, cinza claro
+                                    color={index < estrelas ? "#f59e0b" : "#e2e8f0"} 
+                                />
+                            ))}
                         </View>
-                    </View>
 
-                    <View className='items-end'>
-                        <TouchableOpacity className='rounded-full pl-4 pr-2 py-2 bg-primary-500 flex-row gap-1 items-center'>
-                            <Text className='text-white font-bold text-sm'>Estudar</Text>
-                            <MaterialIcons name='keyboard-arrow-right' size={16} color={"#fff"} />
-                        </TouchableOpacity>
+                        {/* FALSO BOTÃO (Apenas visual) - Usa o primary-50 para combinar com o Indigo */}
+                        <View className='rounded-full pl-3 pr-1.5 py-1.5 bg-primary-50 flex-row gap-0.5 items-center border border-primary-100'>
+                            <Text className='text-primary-600 font-bold text-[11px] uppercase tracking-wide'>
+                                Estudar
+                            </Text>
+                            <MaterialIcons name='keyboard-arrow-right' size={16} color={"#4f46e5"} />
+                        </View>
+
                     </View>
                 </View>
             </View>
 
-            <View className='bg-slate-300 w-full h-[4px] '>
-                <View className='bg-orange-500 h-[4px]' style={{ width: `${concluido}%` }} />
+            {/* BARRA DE PROGRESSO POLIDA */}
+            <View className='bg-slate-100 w-full h-1.5'>
+                <View 
+                    className='bg-orange-500 h-full rounded-r-full' 
+                    style={{ width: `${concluido}%` }} 
+                />
             </View>
 
         </TouchableOpacity>
