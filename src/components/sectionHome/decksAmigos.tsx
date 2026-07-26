@@ -26,7 +26,7 @@ export default function DecksAmigos() {
             <View>
                 <FlatList
                     data={deckAmigos}
-                    renderItem={({ item }) => <RenderDeckAmigos amigo={item.amigo} themeId={item.themeId} title={item.title} detalhes={item.detalhes} nivel={item.detalhes} />}
+                    renderItem={({ item }) => <RenderDeckAmigos amigo={item.amigo} themeId={item.themeId} title={item.title} detalhes={item.detalhes} nivel={item.nivel} />}
                     keyExtractor={(item) => item.id.toString()}
                     horizontal
                     showsHorizontalScrollIndicator={false}
@@ -45,12 +45,12 @@ type renderDeckAmigosProps = {
     themeId: string,
     title: string,
     detalhes: string,
-    nivel: string,
+    nivel: "facil" | "medio" | "dificil",
 }
 
 const RenderDeckAmigos = ({ amigo, themeId, title, detalhes, nivel }: renderDeckAmigosProps) => {
 
-    const nivelfogo: number = nivel === 'facil' ? 1 : nivel === 'medio' ? 2: 3;
+    const nivelfogo: number = nivel === "facil" ? 1 : nivel === 'medio' ? 2 : 3;
 
     return (
         <TouchableOpacity className='bg-white rounded-2xl p-1 flex-row' style={{ width: tamanhoCard }}>
@@ -80,6 +80,7 @@ const RenderDeckAmigos = ({ amigo, themeId, title, detalhes, nivel }: renderDeck
                         <View className='flex-row gap-1'>
                             {Array.from({length: 3}).map((_, index)=> (
                                 <Fontisto
+                                    key={index}
                                     name='fire'
                                     size={12}
                                     color={index < nivelfogo ? "#f59e0b" : "#e2e8f0"}
