@@ -105,8 +105,8 @@ export default function MinhaBiblioteca() {
               />
             </View>
 
-            <TouchableOpacity onPress={() => router.push("/(telas)/criarDeck")} className='p-2 bg-slate-200 rounded-full border border-slate-300'>
-              <MaterialCommunityIcons name='plus' size={24} color={"#4f46e5"} />
+            <TouchableOpacity onPress={() => router.push("/(telas)/criarDeck")} className='p-2 px-4 bg-primary-100 rounded-2xl border border-primary-500'>
+              <MaterialCommunityIcons name='plus-thick' size={24} color={"#4f46e5"} />
             </TouchableOpacity>
           </View>
 
