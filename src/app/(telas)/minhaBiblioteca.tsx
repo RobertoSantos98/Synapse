@@ -2,6 +2,7 @@ import CardCover from '@/src/components/cardCover';
 import HeaderStack from '@/src/components/headerStack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { Dimensions, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -104,7 +105,7 @@ export default function MinhaBiblioteca() {
               />
             </View>
 
-            <TouchableOpacity className='p-2 bg-slate-200 rounded-full border border-slate-300'>
+            <TouchableOpacity onPress={() => router.push("/(telas)/criarDeck")} className='p-2 bg-slate-200 rounded-full border border-slate-300'>
               <MaterialCommunityIcons name='plus' size={24} color={"#4f46e5"} />
             </TouchableOpacity>
           </View>
