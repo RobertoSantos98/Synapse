@@ -3,20 +3,19 @@ import HeaderStack from '@/src/components/headerStack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import { useState } from 'react';
-import { Dimensions, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, Dimensions, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { BaralhoService, deckProps } from '../../Services/BaralhoService';
 
 
 const width = Dimensions.get('window').width
 const tamanhoCard = (width - 52) / 2;
 
 
-
 export default function MinhaBiblioteca() {
+  const [ isLoading, setIsLoading ] = useState(true)
 
-
-  const [menuAdicionar, setMenuAdicionar] = useState(true)
-
+  const [menuAdicionar, setMenuAdicionar] = useState(true);
   const [menuMostrarDeck, setMenuMostrarDeck] = useState<"MeuDeck" | "Curtidos">("MeuDeck");
 
   const filter = [
@@ -31,20 +30,33 @@ export default function MinhaBiblioteca() {
     "Todos" | "Informática" | "Linguagem" | "Ciêcias Humanas" | "Matemática"
   >("Todos");
 
-  const biblioteca = [
-    { id: 1, themeId: 'tech', title: "Informática" },
-    { id: 2, themeId: "languages", title: "Linguagem" },
-    { id: 3, themeId: "science", title: "Ciências Humanas" },
-    { id: 4, themeId: "languages", title: "Linguagem" },
-    { id: 5, themeId: "science", title: "Ciências Humanas" },
-    { id: 6, themeId: 'tech', title: "Informática" },
-    { id: 7, themeId: 'tech', title: "Informática" },
-    { id: 10, themeId: "languages", title: "Linguagem" },
-    { id: 9, themeId: "science", title: "Ciências Humanas" },
-    { id: 11, themeId: "science", title: "Ciências Humanas" },
-    { id: 8, themeId: "languages", title: "Linguagem" },
-    { id: 12, themeId: 'tech', title: "Informática" },
-  ];
+  const [ biblioteca, setBiblioteca ] = useState<deckProps[]>();
+  //   { id: 6, themeId: 'tech', title: "Informática" },
+  //   { id: 7, themeId: 'tech', title: "Informática" },
+  //   { id: 10, themeId: "languages", title: "Linguagem" },
+  //   { id: 9, themeId: "science", title: "Ciências Humanas" },
+  //   { id: 11, themeId: "science", title: "Ciências Humanas" },
+  //   { id: 8, themeId: "languages", title: "Linguagem" },
+  //   { id: 12, themeId: 'tech', title: "Informática" },
+  // ];
+  const handleBiblioteca = async () => {
+    setIsLoading(true);
+      
+    try{
+      const data = await BaralhoService.GetDeck();
+      setBiblioteca(data);
+
+      } catch(error) {
+        Alert.alert("Ops!", "Algo saiu errado.");
+        console.log("Erro: ", error)
+      } finally{
+        setIsLoading(false);
+      }
+  }
+
+  useEffect(() => {
+      handleBiblioteca();
+    }, [])
 
 
   return (
@@ -112,7 +124,13 @@ export default function MinhaBiblioteca() {
 
           {menuMostrarDeck === "MeuDeck" ?
             <View className='flex-row flex-wrap gap-2'>
-              {biblioteca.map((item) => (
+              { isLoading ? 
+              <View className='gap-8 flex-1 item-center justify-center'>
+                <ActivityIndicator size={46} />
+                <Text className='text-2xl font-poppinsBlack'>Carregando...</Text>
+              </View>
+              :
+              biblioteca.map((item) => (
                 <RenderItemsCardBiblioteca key={item.id} id={item.id} title={item.title} themeId={item.themeId} />
               ))}
             </View>
@@ -137,7 +155,7 @@ export default function MinhaBiblioteca() {
 
 
 type RenderItemsCardBibliotecaProps = {
-  id: number,
+  id: string,
   title: string,
   themeId: string,
 }
@@ -145,6 +163,7 @@ type RenderItemsCardBibliotecaProps = {
 const RenderItemsCardBiblioteca = ({ id, title, themeId }: RenderItemsCardBibliotecaProps) => {
   return (
     <TouchableOpacity
+      onPress={() => router.push(`/(telas)/biblioteca/${id}`)}
       style={{ width: tamanhoCard, height: tamanhoCard + 42 }}
       className='rounded-2xl overflow-hidden flex-col border border-slate-200 bg-white active:bg-slate-50 shadow-sm'
       activeOpacity={0.7}

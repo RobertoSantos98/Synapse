@@ -1,10 +1,11 @@
 import CardCover from '@/src/components/cardCover';
 import HeaderStack from '@/src/components/headerStack';
-import { getTheme, Theme, THEMES } from '@/themes-config';
+import { Theme, THEMES } from '@/themes-config';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useState } from 'react';
-import { ActivityIndicator, ActivityIndicatorBase, Alert, Dimensions, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, Dimensions, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { BaralhoService } from '../Services/BaralhoService';
+import { router } from 'expo-router';
 
 const tamanhoCard = (Dimensions.get('window').width - 72) / 2;
 
@@ -32,10 +33,10 @@ export default function CriarDeck() {
 
         try{
             const payLoad = {
+                themeId: themeSelected?.id || 'default',
                 title: titleDeck,
                 details: descricaoDeck,
                 level: nivelSelected,
-                themeId: themeSelected?.id || 'default'
             }
 
 
@@ -44,7 +45,9 @@ export default function CriarDeck() {
             Alert.alert("Seu Baralho foi criado!")
             setTitleDeck(""),
             setDescricaoDeck(""),
-            setThemeSelected(undefined)
+            setThemeSelected(undefined),
+
+            router.back();
 
         } catch {
             Alert.alert("Erro", "Não foi possível conectar com o servior.")
@@ -90,6 +93,7 @@ export default function CriarDeck() {
                             <View className='flex-row justify-between'>
                                 {nivel.map((n) => (
                                     <TouchableOpacity 
+                                        key={n.id}
                                         onPress={() => setNivelSelected(n.id as "facil" | "medio" | "dificil")}
                                         style={{
                                             width: tamanhoCard / 2, 
@@ -113,8 +117,6 @@ export default function CriarDeck() {
                                     <MaterialIcons name='keyboard-arrow-down' size={18} color={"#334155"} />
                                 </View>
                             </TouchableOpacity>
-
-
                         </View>
 
                         <TouchableOpacity onPress={handleCriarBaralho} className='bg-primary-500 py-4 rounded-xl mt-4'>

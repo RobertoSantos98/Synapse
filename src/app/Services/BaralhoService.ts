@@ -1,13 +1,48 @@
 import { apiService as api } from './api';
+import { CardProps } from './CardService';
 
 export interface CriarBaralhoDTO {
+    themeId: string | 'default'
     title: string,
     details: string,
     level: string,
-    themeId: string | 'default'
 }
 
+export interface deckProps {
+  id: string,
+  themeId: string,
+  title: string,
+  details: string,
+  level: string,
+  totalCards: number,
+  cards? : CardProps[]
+}
+
+
 export class BaralhoService {
+
+    static async GetDeck() : Promise<deckProps[]>{
+        try {
+            const response = await api.get<deckProps[]>("/Deck");
+
+            return response.data;
+
+        } catch (error: any) {
+            console.log("Erro na camada de Serviço: ", error.message);
+            throw error;
+        }
+    }
+
+    static async GetDeckById(id: string) : Promise<deckProps>{
+        try {
+            const response = api.get(`/Deck/${id}`);
+            return (await response).data;
+
+        } catch (error: any) {
+            console.log("Erro: ", error.message);
+            throw error;
+        }
+    }
 
 
     static async Post(dados: CriarBaralhoDTO){
