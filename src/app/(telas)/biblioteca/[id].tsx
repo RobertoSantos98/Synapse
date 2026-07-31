@@ -1,12 +1,13 @@
 import CardCover from '@/src/components/cardCover';
 import { ExpoRoot, router, useLocalSearchParams } from 'expo-router';
 import { use, useEffect, useState } from 'react';
-import { Dimensions, FlatList, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, Dimensions, FlatList, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { BaralhoService, deckProps } from '../../Services/BaralhoService';
 import { Fontisto, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CardProps, CardService } from '../../Services/CardService';
 import BackGroundLightHome from '@/src/Assets/backGround-lightHome';
+import DetailCard from '@/src/components/DetailsCard';
 
 
 const tamanhoCard = (Dimensions.get('window').width / 3);
@@ -33,7 +34,7 @@ export default function Detalhes() {
         handleLoadDeck();
     }, [])
 
-    const [isLoadingCreateCard, setIsLoadingCreateCard ] = useState(false);
+    const [isLoadingCreateCard, setIsLoadingCreateCard] = useState(false);
 
 
     const [frenteCard, setFrenteCard] = useState("");
@@ -43,10 +44,10 @@ export default function Detalhes() {
 
     const handleCard = async () => {
         setIsLoadingCreateCard(true);
-        
-        try{
 
-            const data : CardProps = {
+        try {
+
+            const data: CardProps = {
                 deckId: deck?.id,
                 question: frenteCard,
                 answer: versoCard,
@@ -54,11 +55,16 @@ export default function Detalhes() {
             }
 
             const response = await CardService.PostCard(data);
+            Alert.alert("Sucesso!", "Card Criado com sucesso");
+            setFrenteCard("");
+            setVersoCard("");
+            setWrongAnswer("");
+            setStep(1);
 
-        } catch(error: any) {
+        } catch (error: any) {
             console.log("Erro: ", error.message);
 
-        } finally{
+        } finally {
 
             setIsLoadingCreateCard(false);
 
@@ -113,7 +119,7 @@ export default function Detalhes() {
                         </View>
                     </View>
 
-                    <View className=''>
+                    <View className='py-4'>
 
                         <View className='px-6 py-4 flex-row justify-between'>
                             <Text className='text-white text-2xl font-bold'>Cartas do Baralho</Text>
@@ -137,7 +143,7 @@ export default function Detalhes() {
                             />
 
                         ) : (
-                            <View className='bg-white rounded-xl justify-center' style={{ width: tamanhoCard, height: tamanhoCard + 40 }}>
+                            <View className='bg-white rounded-xl justify-center mx-6' style={{ width: tamanhoCard, height: tamanhoCard + 40 }}>
                                 <Text className='font-bold text-center'>Você ainda não adicionou nenhuma carta</Text>
                             </View>
                         )}
@@ -242,7 +248,7 @@ export default function Detalhes() {
 
                             <View className='flex-row gap-2'>
                                 <TouchableOpacity
-                                    onPress={() => step != 1 ? setStep(step - 1) : setStep(1) }
+                                    onPress={() => step != 1 ? setStep(step - 1) : setStep(1)}
                                     className='py-4 w-1/6 bg-white items-center justify-center rounded-xl border border-slate-200' style={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>
                                     <MaterialCommunityIcons name='arrow-left' size={18} />
                                 </TouchableOpacity>
@@ -252,7 +258,9 @@ export default function Detalhes() {
                                     className='flex-1 bg-primary-500 py-4 rounded-xl items-center border border-primary-600'
                                     style={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)' }}
                                 >
-                                    <Text className='text-2xl font-bold text-white'>{step != 3 ? "Virar" : "Criar"}</Text>
+                                    <Text className='text-2xl font-bold text-white'>{isLoadingCreateCard ?
+                                        <ActivityIndicator size={28} color={"#fff"} /> :
+                                        step != 3 ? "Virar" : "Criar"}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -268,8 +276,20 @@ export default function Detalhes() {
 
 
 const RenderItemCardMeuDeck = ({ id, question, answer, wrongAnswer }: CardProps) => {
+
+    const card : CardProps = {
+        id: id,
+        question: question,
+        answer: answer,
+        wrongAnswer: wrongAnswer
+    }
+
     return (
-        <TouchableOpacity className='p-2 bg-white rounded-2xl items-center justify-center' style={{ width: tamanhoCard, height: tamanhoCard + 40 }}>
+        <TouchableOpacity
+            className='p-2 bg-white rounded-2xl items-center justify-center'
+            style={{ width: tamanhoCard, height: tamanhoCard + 40, boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.5)' }}
+            onPress={() => <DetailCard {...card} />}
+        >
             <Text className='text-center text-xs tracking-wider leading-normal font-poppinsBold'>{question}</Text>
         </TouchableOpacity>
     )
