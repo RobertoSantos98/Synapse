@@ -15,6 +15,7 @@ import LogoSynapse from '../Assets/logo-component';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
+import CircuitBackground from '../Assets/circuitBackGround';
 
 export default function SignIn() {
   const slideUp = useRef(new Animated.Value(0)).current;
@@ -51,6 +52,8 @@ export default function SignIn() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View className="flex-1 bg-primary-900">
+
+        <CircuitBackground/>
         
         <ScrollView 
           contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} // Tirei o padding para a curva colar nas bordas
@@ -60,21 +63,21 @@ export default function SignIn() {
         >
           <Animated.View style={{ flex: 1, justifyContent: 'center', transform: [{ translateY: slideUp }] }}>
             
-            {/* 1. O FUNDO CURVO (Absolute para não empurrar nada para baixo) */}
-            {/* <View className='bg-primary-950 w-[900px] h-[450px] absolute -top-56 self-center rounded-b-full shadow-lg' /> */}
-
-            {/* 2. LOGO E TEXTOS (No fluxo normal, centralizados) */}
-            <View className='items-center mb-10 mt-12'>
+            <View className='items-center py-6 mb-8 mt-12'>
               <LogoSynapse className={"w-32 h-32"} />
               <Text className='uppercase text-white text-3xl font-extrabold mt-4'>Synapse</Text>
               <Text className='text-primary-400 text-lg font-semibold mt-1'>Sua Arena de Estudo</Text>
             </View>
 
             {/* 3. FORMULÁRIO DE LOGIN (Com margem lateral para não colar na tela) */}
-            <View className='items-center bg-slate-800 py-6 px-4 gap-6 rounded-3xl shadow-xl mx-4'>
+            <View className='items-center flex-1 bg-slate-800 px-6 gap-6 rounded-t-3xl shadow-xl'>
+
+              <View className='py-4'>
+                <View className='h-1 w-16 rounded-full bg-slate-700'/>
+              </View>
               
-              <View className='self-start px-2'>
-                <Text className='text-slate-200 text-2xl font-extrabold'>Bem-Vindo de volta</Text>
+              <View className='self-start px-2 gap-1'>
+                <Text className='text-slate-200 text-2xl font-extrabold'>Bem-Vindo de Volta!</Text>
                 <Text className='text-slate-400 text-sm mt-1'>Entre com seu usuário e senha</Text>
               </View>
 
@@ -100,7 +103,7 @@ export default function SignIn() {
                 <LinearGradient colors={["#4338ca", "#312e81"]}  className='w-full' start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
                   <TouchableOpacity onPress={() => router.replace('/(tabs)/Home')} className='flex-row w-full gap-2 items-center justify-center py-4' activeOpacity={0.7}>
                     <Text className='text-white font-extrabold text-xl tracking-wider'>Entrar</Text>
-                    <MaterialCommunityIcons name='arrow-right-thick' size={20} color={"#FFF"} />
+                    <MaterialCommunityIcons name='arrow-right' size={16} color={"#FFF"} />
                   </TouchableOpacity>
                 </LinearGradient>
               </View>
@@ -115,6 +118,13 @@ export default function SignIn() {
                 <MaterialCommunityIcons name='google' size={22} color={"#334155"} />
                 <Text className='font-bold text-slate-800 text-lg'>Google</Text>
               </TouchableOpacity>
+
+              <View className='flex-row py-2'>
+                <Text className='text-slate-400 text-md'>Não tem uma conta? </Text>
+                <TouchableOpacity>
+                  <Text className='text-primary-500 text-md'>Crie uma Grátis</Text>
+                </TouchableOpacity>
+              </View>
 
             </View>
 

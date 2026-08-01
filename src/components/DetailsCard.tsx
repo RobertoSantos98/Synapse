@@ -5,13 +5,13 @@ import { useLocalSearchParams } from 'expo-router';
 export default function DetailCard({card}: {card: CardProps}) {
 
  return (
-   <View className='flex-1 absolute'>
+   <Modal className='flex-1 absolute'>
 
         <TouchableOpacity className='h-24' />
 
-        <Modal className='flex-1 bg-white'>
+        <View className='flex-1 bg-white'>
             <Text>Teste</Text>
-        </Modal>
-   </View>
+        </View>
+   </Modal>
   );
 }
