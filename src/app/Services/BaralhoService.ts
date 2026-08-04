@@ -1,4 +1,4 @@
-import { apiService as api } from './api';
+import  api  from './api';
 import { CardProps } from './CardService';
 
 export interface CriarBaralhoDTO {
@@ -19,7 +19,7 @@ export interface deckProps {
 }
 
 
-export class BaralhoService {
+class BaralhoService {
 
     static async GetDeck() : Promise<deckProps[]>{
         try {
@@ -62,3 +62,5 @@ export class BaralhoService {
         }
     }
 }
+
+export default BaralhoService;

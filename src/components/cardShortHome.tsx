@@ -11,30 +11,30 @@ export interface cardShortHomeProps {
     concluido: number;
 }
 
-const widthTela = Dimensions.get('window').width;
+const tamanhoCard = (Dimensions.get('window').width - 60);
 
 export default function CardShortHome({ themeId, title, detalhes, nivel, concluido }: cardShortHomeProps) {
-    
+
     // Mapeamento numérico da dificuldade
     const estrelas: number = nivel === "facil" ? 1 : nivel === 'medio' ? 2 : 3;
 
     return (
-        <TouchableOpacity 
-            style={{ width: widthTela - 60 }} 
+        <TouchableOpacity
+            style={{ width: tamanhoCard }}
             // Removida a sombra inline (boxShadow) e substituída por shadow-sm do Tailwind
-            className='bg-white rounded-2xl overflow-hidden border border-slate-200 my-2 mr-4 shadow-sm active:bg-slate-50' 
-            activeOpacity={0.7} 
+            className='bg-white rounded-2xl overflow-hidden border border-slate-200 my-2 mr-4 shadow-sm active:bg-slate-50'
+            activeOpacity={0.7}
         >
-            <View className='flex-row'>
-                
+            <View className='flex-row m-1'>
+
                 {/* CAPA DA MATÉRIA (Largura fixa para não esmagar o texto) */}
-                <View className='w-28 h-full border-r border-slate-100'>
+                <View className='rounded-xl overflow-hidden' style={{height: tamanhoCard / 3, width: tamanhoCard / 3}}>
                     <CardCover themeId={themeId} />
                 </View>
 
                 {/* CONTEÚDO */}
                 <View className='py-3 px-4 flex-1 justify-between'>
-                    
+
                     <View>
                         <Text className='text-base font-poppinsBold text-slate-800 leading-tight' numberOfLines={1}>
                             {title}
@@ -45,18 +45,22 @@ export default function CardShortHome({ themeId, title, detalhes, nivel, conclui
                     </View>
 
                     <View className='flex-row items-end justify-between mt-3'>
-                        
+
                         {/* ESTRELAS COM CONTEXTO (Sempre renderiza 3, pintando as ativas) */}
-                        <View className='flex-row gap-1 pb-1'>
-                            {Array.from({ length: 3 }).map((_, index) => (
-                                <Fontisto 
-                                    key={index} 
-                                    name='fire' 
-                                    size={12} 
-                                    // Pinta de laranja se estiver dentro do nível, senão, cinza claro
-                                    color={index < estrelas ? "#f59e0b" : "#e2e8f0"} 
-                                />
-                            ))}
+                        <View className=' gap-1 border border-slate-200 rounded-xl py-2 px-4'>
+
+                            <Text className='text-xs font-bold text-slate-500'>Nível:</Text>
+                            <View className='flex-row gap-1 '>
+                                {Array.from({ length: 3 }).map((_, index) => (
+                                    <Fontisto
+                                        key={index}
+                                        name='fire'
+                                        size={12}
+                                        // Pinta de laranja se estiver dentro do nível, senão, cinza claro
+                                        color={index < estrelas ? "#f59e0b" : "#e2e8f0"}
+                                    />
+                                ))}
+                            </View>
                         </View>
 
                         {/* FALSO BOTÃO (Apenas visual) - Usa o primary-50 para combinar com o Indigo */}
@@ -72,10 +76,10 @@ export default function CardShortHome({ themeId, title, detalhes, nivel, conclui
             </View>
 
             {/* BARRA DE PROGRESSO POLIDA */}
-            <View className='bg-slate-100 w-full h-1.5'>
-                <View 
-                    className='bg-orange-500 h-full rounded-r-full' 
-                    style={{ width: `${concluido}%` }} 
+            <View className='bg-slate-100 w-full h-1'>
+                <View
+                    className='bg-orange-500 h-full rounded-r-full'
+                    style={{ width: `${concluido}%` }}
                 />
             </View>
 

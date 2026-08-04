@@ -10,8 +10,7 @@
     ],
     "web": {
       "bundler": "metro",
-      "output": "static",
-      "favicon": "./src/Assets/logo-synapse.svg"
+      "output": "static"
     },
     "plugins": [
       "expo-router",
@@ -24,14 +23,14 @@
       ],
       "expo-font",
       "expo-status-bar",
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,
       "tsconfigPaths": true
     },
     "orientation": "portrait",
-    "icon": "./src/Assets/logo-synapse.svg",
     "userInterfaceStyle": "light",
     "assetBundlePatterns": [
       "**/*"

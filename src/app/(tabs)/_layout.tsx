@@ -70,9 +70,6 @@ export default function Layout() {
           ),
         }}
       />
-
-        <Tabs.Screen name="(telas)" options={{ href: null}} />
-
     </Tabs>
   );
 }
@@ -115,6 +112,6 @@ const BotaoPersonalizado = ({
         <MaterialCommunityIcons name="sword-cross" size={28} color="#FFF" />
         <Text className="text-white font-bold">Arena</Text>
       </TouchableOpacity>
-    // </View>
+    </View>
   );
 };
