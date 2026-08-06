@@ -2,10 +2,10 @@ import CardCover from '@/src/components/cardCover';
 import { ExpoRoot, router, useLocalSearchParams } from 'expo-router';
 import { use, useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Dimensions, FlatList, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { BaralhoService, deckProps } from '../../Services/BaralhoService';
+import { BaralhoService, deckProps } from '../../../Services/BaralhoService';
 import { Fontisto, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { CardProps, CardService } from '../../Services/CardService';
+import { CardProps, CardService } from '../../../Services/CardService';
 import BackGroundLightHome from '@/src/Assets/backGround-lightHome';
 import DetailCard from '@/src/components/DetailsCard';
 

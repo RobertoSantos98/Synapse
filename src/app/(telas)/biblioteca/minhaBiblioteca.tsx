@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Dimensions, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { BaralhoService, deckProps } from '../../Services/BaralhoService';
+import { BaralhoService, deckProps } from '../../../Services/BaralhoService';
 
 
 const width = Dimensions.get('window').width

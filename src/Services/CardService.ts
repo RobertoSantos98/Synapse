@@ -8,7 +8,7 @@ export interface CardProps {
     wrongAnswer: string
 }
 
-export class CardService{
+class CardService{
 
     static async GetCard(){
 
@@ -29,3 +29,5 @@ export class CardService{
 
     }
 }
+
+export default CardService;

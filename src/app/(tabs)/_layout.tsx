@@ -71,8 +71,6 @@ export default function Layout() {
         }}
       />
 
-        <Tabs.Screen name="(telas)" options={{ href: null}} />
-
     </Tabs>
   );
 }
@@ -85,7 +83,7 @@ const BotaoPersonalizado = ({
   testID,
   style,
 }: BottomTabBarButtonProps) => {
-  
+
   return (
 
     <View className="items-center justify-center overflow-hidden h-[100px] w-[100px] rounded-full border-2 border-white bottom-4" >
@@ -115,6 +113,6 @@ const BotaoPersonalizado = ({
         <MaterialCommunityIcons name="sword-cross" size={28} color="#FFF" />
         <Text className="text-white font-bold">Arena</Text>
       </TouchableOpacity>
-    // </View>
+    </View>
   );
 };

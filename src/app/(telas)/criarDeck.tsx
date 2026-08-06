@@ -4,7 +4,7 @@ import { Theme, THEMES } from '@/themes-config';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { ActivityIndicator, Alert, Dimensions, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { BaralhoService } from '../Services/BaralhoService';
+import { BaralhoService } from '../../Services/BaralhoService';
 import { router } from 'expo-router';
 
 const tamanhoCard = (Dimensions.get('window').width - 72) / 2;

@@ -1,5 +1,5 @@
 import { Modal, Text, TouchableOpacity, View } from 'react-native';
-import { CardProps } from '../app/Services/CardService';
+import { CardProps } from '../Services/CardService';
 import { useLocalSearchParams } from 'expo-router';
 
 export default function DetailCard({card}: {card: CardProps}) {
