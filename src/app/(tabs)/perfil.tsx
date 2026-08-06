@@ -1,10 +1,12 @@
 import BackGroundLightHome from '@/src/Assets/backGround-lightHome';
 import BackgroundHome from '@/src/Assets/backgroundHome';
+import { useAuth } from '@/src/context/AuthContext';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import UserService, { UserProps } from '../Services/UserService';
 
 type acessoMenuProps = {
   id: number,
@@ -15,9 +17,36 @@ type acessoMenuProps = {
 
 export default function Perfil() {
 
-  const insets = useSafeAreaInsets()
+  const { signOut, userToken } = useAuth();
+  const insets = useSafeAreaInsets();
+  const [ isLoading, setIsLoading ] = useState(true);
 
-  const widthCardsPerfil = ((Dimensions.get('window').width - 64) / 2);
+  
+  const widthCardsPerfil = ((Dimensions.get('window').width - 56) / 2);
+  
+  const [ user, setUser ] = useState<UserProps>();
+  
+  useEffect(()=> {
+    if(!userToken) return;
+
+    const handleUser = async () => {
+      setIsLoading(true)
+
+      try {
+        const result = await UserService.GetUserById(userToken.id);
+        console.log(result);
+        setUser(result);
+        
+      } catch (error: any) {
+        console.log("Erro na pagina: ", error.message)
+      } finally {
+        setIsLoading(false);
+      }
+      
+    }
+
+    handleUser();
+  },[]);
 
   const acessoMenu: acessoMenuProps[] = [
     { id: 1, title: "Lista de Amigos", icon: "account-multiple-outline", onPressButton: () => { } },
@@ -55,8 +84,8 @@ export default function Perfil() {
           <View className='py-2 gap-2'>
             <View className='gap-1'>
               <View className='flex-row items-end gap-2'>
-                <Text className='text-5xl tracking-tighter text-slate-900 font-jaro gap-2' style={{ textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowOffset: { width: 0, height: 0 }, textShadowRadius: 4 }}>Raphael Santos</Text>
-                <Text className='text-2xl font-poppinsBold text-slate-300'>#1519</Text>
+                <Text className='text-5xl tracking-tighter text-slate-900 font-jaro gap-2' style={{ textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowOffset: { width: 0, height: 0 }, textShadowRadius: 4 }}>{userToken?.nome}</Text>
+                <Text className='text-2xl font-poppinsBold text-slate-300'>#{isLoading? user?.usuario : "Carregando..."}</Text>
               </View>
             </View>
 
@@ -117,7 +146,11 @@ export default function Perfil() {
             </TouchableOpacity>
           ))}
 
-          <TouchableOpacity className='bg-red-50 border border-rose-200 rounded-2xl p-4 active:bg-rose-100 justify-between' activeOpacity={0.7} style={{ width: widthCardsPerfil, height: widthCardsPerfil - 30 }}>
+          <TouchableOpacity 
+            className='bg-red-50 border border-rose-200 rounded-2xl p-4 active:bg-rose-100 justify-between' 
+            activeOpacity={0.7} style={{ width: widthCardsPerfil, height: widthCardsPerfil - 30 }}
+            onPress={signOut}
+            >
             <View className='bg-white p-2.5 rounded-full border border-rose-100 self-start'>
               <MaterialCommunityIcons name='logout' size={24} color={"#e11d48"} />
             </View>

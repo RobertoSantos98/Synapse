@@ -21,7 +21,7 @@ import { router } from 'expo-router';
 import CircuitBackground from '../Assets/circuitBackGround';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import UserService from './Services/UserService';
-import { useAuth } from '../context/AuthContext';
+import { useAuth, UserTokenProp } from '../context/AuthContext';
 
 
 export default function SignIn() {
@@ -83,7 +83,7 @@ export default function SignIn() {
       await signIn(userToken)
 
     } catch (error: any) {
-      Alert.alert("Error", "Algo de errado: ", error.message)
+      Alert.alert("Error: ", error.message)
 
     } finally {
       setIsLoading(false);
