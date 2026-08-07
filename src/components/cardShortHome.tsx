@@ -20,15 +20,15 @@ export default function CardShortHome({ themeId, title, detalhes, nivel, conclui
 
     return (
         <TouchableOpacity 
-            style={{ width: widthTela - 60 }} 
+            style={{ width: widthTela - 60, boxShadow: "1px 2px 4px rgba(0, 0, 0, 0.2)" }} 
             // Removida a sombra inline (boxShadow) e substituída por shadow-sm do Tailwind
-            className='bg-white rounded-2xl overflow-hidden border border-slate-200 my-2 mr-4 shadow-sm active:bg-slate-50' 
+            className='bg-white relative rounded-2xl overflow-hidden border border-slate-200 my-2 mr-2 p-1 active:bg-slate-50' 
             activeOpacity={0.7} 
         >
             <View className='flex-row'>
                 
                 {/* CAPA DA MATÉRIA (Largura fixa para não esmagar o texto) */}
-                <View className='w-28 h-full border-r border-slate-100'>
+                <View className='w-32 h-32 rounded-xl overflow-hidden border-r border-slate-100'>
                     <CardCover themeId={themeId} />
                 </View>
 
@@ -44,19 +44,21 @@ export default function CardShortHome({ themeId, title, detalhes, nivel, conclui
                         </Text>
                     </View>
 
-                    <View className='flex-row items-end justify-between mt-3'>
-                        
-                        {/* ESTRELAS COM CONTEXTO (Sempre renderiza 3, pintando as ativas) */}
-                        <View className='flex-row gap-1 pb-1'>
-                            {Array.from({ length: 3 }).map((_, index) => (
-                                <Fontisto 
-                                    key={index} 
-                                    name='fire' 
-                                    size={12} 
-                                    // Pinta de laranja se estiver dentro do nível, senão, cinza claro
-                                    color={index < estrelas ? "#f59e0b" : "#e2e8f0"} 
-                                />
-                            ))}
+                    <View className='flex-row items-end justify-between mt-3 gap-4'>
+                        <View className='border border-primary-100 py-1.5 flex-1 px-2 rounded-lg gap-1'>
+                            <Text className='text-xs'>Nível:</Text>
+                            {/* ESTRELAS COM CONTEXTO (Sempre renderiza 3, pintando as ativas) */}
+                            <View className='flex-row gap-1 pb-1'>
+                                {Array.from({ length: 3 }).map((_, index) => (
+                                    <Fontisto 
+                                        key={index} 
+                                        name='fire' 
+                                        size={12} 
+                                        // Pinta de laranja se estiver dentro do nível, senão, cinza claro
+                                        color={index < estrelas ? "#f59e0b" : "#e2e8f0"} 
+                                    />
+                                ))}
+                            </View>
                         </View>
 
                         {/* FALSO BOTÃO (Apenas visual) - Usa o primary-50 para combinar com o Indigo */}
@@ -72,7 +74,7 @@ export default function CardShortHome({ themeId, title, detalhes, nivel, conclui
             </View>
 
             {/* BARRA DE PROGRESSO POLIDA */}
-            <View className='bg-slate-100 w-full h-1.5'>
+            <View className='bg-slate-100 w-full h-1 absolute bottom-0'>
                 <View 
                     className='bg-orange-500 h-full rounded-r-full' 
                     style={{ width: `${concluido}%` }} 
