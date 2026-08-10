@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Dimensions, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { BaralhoService, deckProps } from '../../../Services/BaralhoService';
+import  BaralhoService, { deckProps } from '../../../Services/BaralhoService';
 
 
 const width = Dimensions.get('window').width
@@ -127,7 +127,7 @@ export default function MinhaBiblioteca() {
               { isLoading ? 
               <View className='gap-8 flex-1 item-center justify-center'>
                 <ActivityIndicator size={46} />
-                <Text className='text-2xl font-poppinsBlack'>Carregando...</Text>
+                <Text className='text-2xl text-center font-poppinsBlack'>Carregando...</Text>
               </View>
               :
               biblioteca.map((item) => (

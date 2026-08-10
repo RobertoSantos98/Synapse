@@ -8,9 +8,8 @@ export default function Layout(){
         <Stack screenOptions={{
             headerShown: false
         }}>
-            <Stack.Screen name="minhaBiblioteca" options={{
-
-            }} />
+            <Stack.Screen name="biblioteca/minhaBiblioteca" options={{}} />
+            <Stack.Screen name="Arena/Solo" />
 
             
         </Stack>
