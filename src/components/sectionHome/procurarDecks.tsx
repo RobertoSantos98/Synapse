@@ -4,6 +4,7 @@ import { Fontisto, MaterialIcons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import BaralhoService, { deckProps } from '@/src/Services/BaralhoService';
 import CardCover from '../cardCover';
+import { router } from 'expo-router';
 
 const tamanhoCard = Dimensions.get('window').width - 80;
 
@@ -46,22 +47,22 @@ export default function ProcurarDecks() {
 
                 <TouchableOpacity
                     className='flex-row gap-1 items-center active:opacity-50 bg-white rounded-full px-3 py-1'
-
+                    onPress={() => router.push('/(telas)/bibliotecaComunidade/bibliotecaComunidade')}
                 >
                     <Text className='text-primary-600 font-bebas tracking-wider text-lg'>Ver Tudo</Text>
                     <MaterialIcons name='arrow-forward-ios' color={"#4f46e5"} size={12} />
                 </TouchableOpacity>
             </View>
 
-
             <FlatList
                 data={decksComunidade}
-                keyExtractor={(i) => i.id.toString()}
+                keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => <RenderItemComunidadeDecks id={item.id} title={item.title} themeId={item.themeId} details={item.details} level={item.level} totalCards={item.totalCards} />}
                 contentContainerStyle={{
                     paddingLeft: 16,
                     paddingVertical: 8
                 }}
+                horizontal
             />
         </View>
     );
@@ -85,11 +86,11 @@ const RenderItemComunidadeDecks = (deck: deckProps) => {
             </View>
 
             <View className='flex-row mb-2 mx-2'>
-                <View className='flex-row gap-2 border border-slate-300 bg-primary-50 rounded-full py-1.5 px-2 items-center'>
+                <View className='flex-row gap-2 border border-slate-200 bg-primary-50 rounded-full py-1.5 px-2 items-center'>
                     <Text className='text-xs font-bold text-slate-600 tracking-wide'>Nível</Text>
                     <View className='flex-row gap-1'>
                         {Array.from({ length: 3 }).map((_, index) => (
-                            <Fontisto name='fire' size={12} color={index <= nivel ? "#f59e0b" : "#fff"} />
+                            <Fontisto name='fire' size={12} color={index <= nivel ? "#f59e0b" : "#c7d2fe"} />
                         ))}
                     </View>
                 </View>
