@@ -1,6 +1,6 @@
 import CardCover from '@/src/components/cardCover';
 import HeaderStack from '@/src/components/headerStack';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Fontisto, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
@@ -16,7 +16,7 @@ export default function MinhaBiblioteca() {
   const [ isLoading, setIsLoading ] = useState(true)
 
   const [menuAdicionar, setMenuAdicionar] = useState(true);
-  const [menuMostrarDeck, setMenuMostrarDeck] = useState<"MeuDeck" | "Curtidos">("MeuDeck");
+  const [menuMostrarDeck, setMenuMostrarDeck] = useState<"MeuDeck" | "Baixados">("MeuDeck");
 
   const filter = [
     { id: 1, title: "Todos", filterselected: () => { } },
@@ -79,12 +79,12 @@ export default function MinhaBiblioteca() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            className={`py-3 items-center rounded-xl flex-1 ${menuMostrarDeck === "Curtidos" ? "bg-indigo-400" : "bg-indigo-600"
+            className={`py-3 items-center rounded-xl flex-1 ${menuMostrarDeck === "Baixados" ? "bg-indigo-400" : "bg-indigo-600"
               }`}
-            onPress={() => setMenuMostrarDeck("Curtidos")}
+            onPress={() => setMenuMostrarDeck("Baixados")}
             activeOpacity={0.8}
           >
-            <Text className='text-white text-lg font-bold'>Decks Curtidos</Text>
+            <Text className='text-white text-lg font-bold'>Decks Baixados</Text>
           </TouchableOpacity>
         </View>
 
@@ -137,7 +137,7 @@ export default function MinhaBiblioteca() {
             :
             <View className='gap-2'>
               {biblioteca.map((item) => (
-                <RenderItemsCardCurtidos key={item.id} id={item.id} title={item.title} themeId={item.themeId} />
+                <RenderItemsCardBaixados key={item.id} id={item.id} title={item.title} themeId={item.themeId} details={item.details} level={item.level} totalCards={item.totalCards} />
               ))}
             </View>
 
@@ -156,8 +156,11 @@ export default function MinhaBiblioteca() {
 
 type RenderItemsCardBibliotecaProps = {
   id: string,
-  title: string,
   themeId: string,
+  title: string,
+  details: string,
+  level: string,
+  totalCards: number | 0,
 }
 
 const RenderItemsCardBiblioteca = ({ id, title, themeId }: RenderItemsCardBibliotecaProps) => {
@@ -184,28 +187,47 @@ const RenderItemsCardBiblioteca = ({ id, title, themeId }: RenderItemsCardBiblio
   )
 }
 
-const RenderItemsCardCurtidos = ({ title, themeId }: RenderItemsCardBibliotecaProps) => {
+const RenderItemsCardBaixados = ({ title, themeId, details, totalCards, level }: RenderItemsCardBibliotecaProps) => {
+  
+  const nivel : number = level === "facil" ? 1 : level === "medio" ? 2 : 3;
+  
   return (
     <TouchableOpacity 
       style={{ height: 100 }}
-      className='bg-white flex-row rounded-2xl overflow-hidden border border-slate-200 shadow-sm mb-1 active:bg-slate-50'
+      className='bg-white flex-row rounded-2xl overflow-hidden border border-slate-300 shadow-sm mb-1 active:bg-slate-50'
       activeOpacity={0.7}
     >
       <View className='w-28 h-full border-r border-slate-100'>
         <CardCover themeId={themeId} />
       </View>
 
-      <View className='p-4 relative flex-1 justify-center'>
-        <Text numberOfLines={2} className='text-slate-800 font-poppinsBold text-sm w-5/6'>
-          {title}
-        </Text>
+      <View className='p-4 gap-2 relative flex-1 justify-center'>
+        <View>
+          <Text numberOfLines={2} className='text-slate-800 font-poppinsBold text-base w-5/6'>
+            {title}
+          </Text>
+          <Text className='text-xs'>{details}</Text>
+        </View>
 
-        <TouchableOpacity 
-          className='absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full active:bg-rose-50'
-        >
-          <MaterialCommunityIcons name='heart' size={24} color={"#f43f5e"} />
-        </TouchableOpacity>
+        <View className='border border-slate-100 rounded-lg p-2'>
+          <View className='flex-row justify-between'>
+            <Text className='text-xs text-slate-400'>Total de Cartas: </Text>
+            <Text className='text-xs text-slate-800 font-bold'>{totalCards}</Text>
+          </View>
+
+          <View className='flex-row justify-between'>
+            <Text className='text-xs text-slate-400'>Nível: </Text>
+            <View className='flex-row gap-1'>
+              {Array.from({length: 3}).map((_, index) => (
+                <Fontisto name='fire' size={12} color={index <= nivel ? "#f59e0b" : "#e2e8f0"} />
+              ))}
+            </View>
+          </View>
+        </View>
+
+
       </View>
+        
     </TouchableOpacity>
   )
 }

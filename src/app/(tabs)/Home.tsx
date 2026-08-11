@@ -4,6 +4,7 @@ import ContinuarEstudando from '@/src/components/sectionHome/continuarEstudando'
 import DashBoard from '@/src/components/sectionHome/dashboard';
 import DecksAmigos from '@/src/components/sectionHome/decksAmigos';
 import MinhaBiblioteca from '@/src/components/sectionHome/minhaBiblioteca';
+import ProcurarDecks from '@/src/components/sectionHome/procurarDecks';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
@@ -116,6 +117,8 @@ export default function Home() {
                 <ContinuarEstudando continuarEstudando={continuarEstudando} />
 
                 <MinhaBiblioteca />
+
+                <ProcurarDecks/>
 
                 <DashBoard />
 

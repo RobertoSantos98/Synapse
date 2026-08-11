@@ -82,7 +82,7 @@ export default function Detalhes() {
                             <MaterialIcons name='arrow-back-ios-new' size={24} color={"#6366f1"} />
                         </TouchableOpacity>
                         <TouchableOpacity className='bg-white p-4 rounded-full border border-slate-200'>
-                            <Ionicons name='heart' size={24} color={"#6366f1"} />
+                            <MaterialCommunityIcons name='download-box' size={24} color={"#6366f1"} />
                         </TouchableOpacity>
                     </View>
                     <CardCover themeId={deck ? deck.themeId : "default"} />
@@ -122,7 +122,10 @@ export default function Detalhes() {
                     <View className='py-4'>
 
                         <View className='px-6 py-4 flex-row justify-between'>
-                            <Text className='text-white text-2xl font-bold'>Cartas do Baralho</Text>
+                            <View className='flex-row gap-2 items-center'>
+                                <Text className='text-primary-200 text-2xl font-bold'>Cartas do Baralho: </Text>
+                                <Text className='text-xl font-bold text-white'>{deck?.totalCards}</Text>
+                            </View>
                             <TouchableOpacity className='flex-row bg-white p-2 items-center gap-2 rounded-lg' onPress={() => setModalVisible(true)}>
                                 <MaterialCommunityIcons name='cards-outline' size={16} color={"#6366f1"} />
                                 <Text className='text-primary-500 text-md font-bold'>Criar Carta</Text>
@@ -137,7 +140,8 @@ export default function Detalhes() {
                                 horizontal
                                 contentContainerStyle={{
                                     gap: 4,
-                                    paddingHorizontal: 16
+                                    paddingHorizontal: 16,
+                                    paddingVertical: 8
                                 }}
                                 showsHorizontalScrollIndicator={false}
                             />

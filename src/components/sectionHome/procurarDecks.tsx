@@ -1,0 +1,99 @@
+import { Alert, Dimensions, FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import TitleHome from '../titleHome';
+import { Fontisto, MaterialIcons } from '@expo/vector-icons';
+import { useEffect, useState } from 'react';
+import BaralhoService, { deckProps } from '@/src/Services/BaralhoService';
+import CardCover from '../cardCover';
+
+const tamanhoCard = Dimensions.get('window').width - 80;
+
+export default function ProcurarDecks() {
+
+    const [decksComunidade, setDecksComunidade] = useState<deckProps[]>();
+
+    const handleBiblioteca = async () => {
+
+        try {
+            const data = await BaralhoService.GetDeck();
+            setDecksComunidade(data);
+
+        } catch (error) {
+            Alert.alert("Ops!", "Algo saiu errado.");
+            console.log("Erro: ", error)
+        } finally {
+
+        }
+    }
+
+    useEffect(() => {
+        handleBiblioteca();
+    }, [])
+
+    return (
+        <View className='bg-primary-500 py-4'>
+            <View className='flex-row border border-primary-200 mx-4 rounded-full'>
+                <TextInput
+                    placeholder='Buscar'
+                    className='bg-slate-100 rounded-l-full px-4 py-2 justify-between flex-1'
+                />
+                <TouchableOpacity className='bg-slate-100 border-l border-primary-400 rounded-r-full py-2 px-4'>
+                    <MaterialIcons name='search' size={22} color={"#6366f1"} />
+                </TouchableOpacity>
+            </View>
+
+            <View className='px-6 py-3 flex-row justify-between items-end'>
+                <Text className='font-poppinsBold text-lg text-slate-100 tracking-wide'>Decks Da Comunidade</Text>
+
+                <TouchableOpacity
+                    className='flex-row gap-1 items-center active:opacity-50 bg-white rounded-full px-3 py-1'
+
+                >
+                    <Text className='text-primary-600 font-bebas tracking-wider text-lg'>Ver Tudo</Text>
+                    <MaterialIcons name='arrow-forward-ios' color={"#4f46e5"} size={12} />
+                </TouchableOpacity>
+            </View>
+
+
+            <FlatList
+                data={decksComunidade}
+                keyExtractor={(i) => i.id.toString()}
+                renderItem={({ item }) => <RenderItemComunidadeDecks id={item.id} title={item.title} themeId={item.themeId} details={item.details} level={item.level} totalCards={item.totalCards} />}
+                contentContainerStyle={{
+                    paddingLeft: 16,
+                    paddingVertical: 8
+                }}
+            />
+        </View>
+    );
+}
+
+
+const RenderItemComunidadeDecks = (deck: deckProps) => {
+
+    const nivel: number = deck.level === "facil" ? 1 : deck.level === "medio" ? 2 : 3;
+
+
+    return (
+        <View className='rounded-2xl p-1 bg-white border border-slate-200 overflow-hidden' style={{ width: tamanhoCard, boxShadow: "0px 1px 8px rgba(0, 0, 0, 0.5)" }}>
+            <View className='rounded-xl overflow-hidden h-36 border border-primary-200'>
+                <CardCover themeId={deck.themeId} />
+            </View>
+
+            <View className='px-2 py-2'>
+                <Text className='text-lg font-poppinsBold'>{deck.title}</Text>
+                <Text className='text-sm text-slate-600'>{deck.details}</Text>
+            </View>
+
+            <View className='flex-row mb-2 mx-2'>
+                <View className='flex-row gap-2 border border-slate-300 bg-primary-50 rounded-full py-1.5 px-2 items-center'>
+                    <Text className='text-xs font-bold text-slate-600 tracking-wide'>Nível</Text>
+                    <View className='flex-row gap-1'>
+                        {Array.from({ length: 3 }).map((_, index) => (
+                            <Fontisto name='fire' size={12} color={index <= nivel ? "#f59e0b" : "#fff"} />
+                        ))}
+                    </View>
+                </View>
+            </View>
+        </View>
+    )
+}

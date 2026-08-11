@@ -28,7 +28,7 @@ export default function CardShortHome({ themeId, title, detalhes, nivel, conclui
             <View className='flex-row'>
                 
                 {/* CAPA DA MATÉRIA (Largura fixa para não esmagar o texto) */}
-                <View className='w-32 h-32 rounded-xl overflow-hidden border-r border-slate-100'>
+                <View className='w-28 h-28 rounded-xl overflow-hidden border-r border-slate-100'>
                     <CardCover themeId={themeId} />
                 </View>
 
@@ -45,7 +45,7 @@ export default function CardShortHome({ themeId, title, detalhes, nivel, conclui
                     </View>
 
                     <View className='flex-row items-end justify-between mt-3 gap-4'>
-                        <View className='border border-primary-100 py-1.5 flex-1 px-2 rounded-lg gap-1'>
+                        <View className='border border-primary-100 flex-row  items-center justify-between py-1.5 flex-1 px-2 rounded-lg gap-1'>
                             <Text className='text-xs'>Nível:</Text>
                             {/* ESTRELAS COM CONTEXTO (Sempre renderiza 3, pintando as ativas) */}
                             <View className='flex-row gap-1 pb-1'>
