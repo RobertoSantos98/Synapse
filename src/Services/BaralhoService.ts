@@ -18,6 +18,8 @@ export interface deckProps {
   cards? : CardProps[]
 }
 
+const token = ""
+
 
 class BaralhoService {
 
@@ -47,13 +49,16 @@ class BaralhoService {
 
     static async Post(dados: CriarBaralhoDTO){
         try {
-            const response = await api.post("/Deck", dados);
+            const response = await api.post("/Deck", dados,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
     
             return response.data;
             
         } catch (error: any) {
             if (error.response) {
-                // Imprime a fofoca inteira que o C# mandou de volta!
                 console.log("MOTIVO DA REJEIÇÃO NO C#:", JSON.stringify(error.response.data, null, 2));
             } else {
                 console.log("Erro na camada de Serviço ao criar Baralho: ", error.message);

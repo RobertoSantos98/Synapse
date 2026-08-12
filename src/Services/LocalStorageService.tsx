@@ -2,14 +2,19 @@ import BaralhoService, { deckProps } from "./BaralhoService";
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 
-
 const LOCAL_DECKS_KEY = "LocalStorageDecks"
+
+export type DownloadProgress = {
+    current: number;
+    total: number;
+    percentage: number;
+}
 
 class LocalStorageService {
 
 
 
-    static async DownloadDeck(deckId: string) : Promise<deckProps>{
+    static async DownloadDeckById(deckId: string) : Promise<deckProps>{
 
         try {
             const deck = await BaralhoService.GetDeckById(deckId);
@@ -37,6 +42,19 @@ class LocalStorageService {
         
 
     }
+
+    // static async DownloadCardsByDeck(deckId: string, onProgress?:( progress: DownloadProgress) => void): Promise<deckProps>{
+
+    //     try {
+    //         const deck = await BaralhoService.GetDeckById(deckId);
+
+            
+
+
+    //     } catch (error) {
+            
+    //     }
+    // }
 }
 
 
