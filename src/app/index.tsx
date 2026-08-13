@@ -10,7 +10,8 @@ import {
   ScrollView,
   TextInputProps,
   Animated,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert
 } from 'react-native';
 import LogoSynapse from '../Assets/logo-component';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -18,12 +19,15 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import CircuitBackground from '../Assets/circuitBackGround';
 import UserService from '../Services/UserService';
+import { useAuth } from '../context/AuthContext';
 
 export default function SignIn() {
   const slideUp = useRef(new Animated.Value(0)).current;
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { login } = useAuth();
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener(
@@ -63,11 +67,11 @@ export default function SignIn() {
     }
 
     try {
-      const response = await UserService.Logar(payload);
+      const response = await login(payload) ;
 
-      router.replace("/(tabs)/Home");
+    } catch (error: any) {
 
-    } catch (error) {
+      Alert.alert("Erro", error.message)
 
     } finally {
       setIsLoading(false);
@@ -126,7 +130,7 @@ export default function SignIn() {
 
               <View className='w-full rounded-xl overflow-hidden shadow-lg shadow-primary-500/30'>
                 <LinearGradient colors={["#4338ca", "#312e81"]} className='w-full' start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
-                  <TouchableOpacity onPress={() => router.replace('/(tabs)/Home')} className='flex-row w-full gap-2 items-center justify-center py-4' activeOpacity={0.7}>
+                  <TouchableOpacity onPress={() => handleLogin()} className='flex-row w-full gap-2 items-center justify-center py-4' activeOpacity={0.7}>
                     {isLoading? <ActivityIndicator size={22} color={"#fff"} /> : 
                       <View className='flex-row gap-2'>
                         <Text className='text-white font-extrabold text-xl tracking-wider'>Entrar</Text>
@@ -150,7 +154,7 @@ export default function SignIn() {
 
               <View className='flex-row py-2'>
                 <Text className='text-slate-400 text-md'>Não tem uma conta? </Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => router.push('/createUser')}>
                   <Text className='text-primary-500 text-md'>Crie uma Grátis</Text>
                 </TouchableOpacity>
               </View>

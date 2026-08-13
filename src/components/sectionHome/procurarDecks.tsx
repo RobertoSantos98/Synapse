@@ -90,7 +90,7 @@ const RenderItemComunidadeDecks = (deck: deckProps) => {
                     <Text className='text-xs font-bold text-slate-600 tracking-wide'>Nível</Text>
                     <View className='flex-row gap-1'>
                         {Array.from({ length: 3 }).map((_, index) => (
-                            <Fontisto name='fire' size={12} color={index <= nivel ? "#f59e0b" : "#c7d2fe"} />
+                            <Fontisto name='fire' key={index} size={12} color={index <= nivel ? "#f59e0b" : "#c7d2fe"} />
                         ))}
                     </View>
                 </View>

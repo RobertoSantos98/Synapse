@@ -7,7 +7,7 @@
   import * as SplashScreen from 'expo-splash-screen';
 
 	import { Stack } from "expo-router";
-// import as SplashScreenSecond from './SplashScreen';
+import SplashScreenAuth from './SplashScreen';
 import { useEffect } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
 
@@ -17,7 +17,7 @@ SplashScreen.preventAutoHideAsync();
 function RootNavigator(){
   const { isAuthenticated, isLoading} = useAuth();
 
-  if(isLoading) return null
+  if(isLoading) return <SplashScreenAuth/>
 
   return(
     <Stack screenOptions={{headerShown: false}}>

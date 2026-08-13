@@ -1,3 +1,4 @@
+import { ResponseModelDTO, User } from "../types/auth";
 import { apiService } from "./api";
 
 
@@ -13,19 +14,18 @@ export interface CreateUserProps{
 
 class UserService {
 
-    static async Logar(data: CreateUserProps){
+    static async GetUserById(userId: string): Promise<User>{
 
         try {
-            const response = await apiService.post("/User/auth", data);
+            const response =await apiService.get<User>(`/User/${userId}`);
             
+            return response.data;
             
-        } catch (error) {
+        } catch (error: any) {
 
-            console.log("Erro: ", error);
+            console.log("Erro: ", error.message)
             throw error
-
         }
-
 
     }
 }
