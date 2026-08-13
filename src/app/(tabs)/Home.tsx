@@ -45,72 +45,134 @@ export default function Home() {
 
                 <View style={{ paddingTop: insets.top }} />
 
-                <View className='flex-row justify-between items-center px-6 py-6 '>
-                    <View>
-                        <Text className='text-5xl text-slate-900 tracking-wider'>
-                            Olá, <Text className='text-primary-500 font-jaro'>Raphael!</Text>
+                <View className="flex-row justify-between items-center px-6 pt-5 pb-4">
+                    <View className="flex-1">
+                        <Text className="text-4xl text-slate-900 tracking-wide">
+                            Olá,{" "}
+                            <Text className="text-primary-500 font-jaro">
+                                Raphael!
+                            </Text>
                         </Text>
-                        <Text className='text-sm text-slate-500 tracking-widest font-medium mt-1'>
-                            Pronto para estudar hoje?
+
+                        <Text className="text-sm text-slate-500 font-medium mt-1">
+                            Pronto para avançar hoje?
                         </Text>
                     </View>
 
-                    <TouchableOpacity activeOpacity={0.9} className='rounded-full bg-white shadow-lg p-4 border border-slate-200 active:bg-slate-200'>
-                        <Ionicons name='settings-sharp' size={22} color={"#64748b"} />
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        className="rounded-full bg-white shadow-md p-3 border border-slate-200"
+                    >
+                        <Ionicons
+                            name="settings-sharp"
+                            size={20}
+                            color="#64748b"
+                        />
                     </TouchableOpacity>
                 </View>
 
 
+                <View className="mx-6 my-4 rounded-3xl overflow-hidden shadow-primary">
+                    <LinearGradient
+                        colors={["#4338ca", "#3730a3", "#312e81"]}
+                        style={StyleSheet.absoluteFill}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 1 }}
+                    />
 
-                <View className='mx-6 my-2 rounded-xl gap-4 overflow-hidden p-4 relative shadow-primary'>
-                    <LinearGradient 
-                        colors={["#4338ca", "#4338ca", "#312e81"]} 
-                        style={[StyleSheet.absoluteFill]}
-                        start={{ x: 1, y: 0 }} end={{ x: 1, y: 1 }} />
+                    <View className="p-5 gap-5">
 
-                    <View className='flex-row justify-center gap-2'>
-                        <View className='gap-1 items-center'>
-                            <View className='flex-row gap-2 items-center'>
-                                <View className='bg-orange-500/20 blur-xl rounded-full h-5 justify-end'>
-                                    <AntDesign name='fire' color={"#f59e0b"} size={14} className='' />
-                                </View>
-                                <Text className='text-white text-2xl font-bold'>{ofensivaDiaria} dias</Text>
+                        {/* Topo */}
+                        <View className="flex-row justify-between items-start">
+
+                            <View>
+                                <Text className="text-indigo-200 text-xs font-semibold uppercase tracking-wider">
+                                    Missão de hoje
+                                </Text>
+
+                                <Text className="text-white text-2xl font-bold mt-1">
+                                    {cardsRevisadosHoje}/{metaDiariaCards} cartas
+                                </Text>
+
+                                <Text className="text-indigo-200 text-sm mt-1">
+                                    Continue avançando no seu objetivo
+                                </Text>
                             </View>
-                            <Text className='text-slate-300'>Ofensiva Diária</Text>
-                        </View>
 
-                        <View className='w-[1px] h-2/3 bg-primary-700 self-center' />
+                            {/* Ofensiva */}
+                            <View className="flex-row items-center bg-orange-400/15 px-3 py-2 rounded-full">
+                                <AntDesign
+                                    name="fire"
+                                    size={15}
+                                    color="#f59e0b"
+                                />
 
-                        <View className='gap-1 items-center'>
-                            <Text className='text-white text-2xl font-bold'>{cardsParaRevisarHoje} Cards</Text>
-                            <Text className='text-slate-300'>Para Revisar Hoje</Text>
-                        </View>
-
-                        <View className='w-[1px] h-2/3 bg-primary-700 self-center' />
-
-                        <View className='gap-1 items-center'>
-                            <Text className='text-white text-2xl font-bold'>~{tempoEstimado} min</Text>
-                            <Text className='text-slate-300'>Tempo Estimado</Text>
-                        </View>
-
-                    </View>
-
-                    <View className='gap-2'>
-                        <Text className='text-white font-bold '>Estudo Diário: <Text className='text-slate-300 font-normal'>{cardsRevisadosHoje}/{metaDiariaCards} Cartas Dominadas</Text>
-                        </Text>
-
-                        <View className='flex-row items-center gap-2'>
-                            <View className='bg-primary-900 h-2 flex-1 rounded-full'>
-                                <View className='bg-primary-500 h-2 rounded-full' style={{ width: `${porcentagemProgresso}%` }}>
-                                    <View className='absolute right-0 -top-1.5 itens-center bg-primary-400 py-1 px-1.5 rounded-full'>
-                                        <Text className='text-white self-center text-xs'>{porcentagemProgresso}%</Text>
-                                    </View>
-                                </View>
+                                <Text className="text-orange-300 font-bold ml-1">
+                                    {ofensivaDiaria}
+                                </Text>
                             </View>
-                            <Text className='text-slate-300 text-xs'>30</Text>
+
                         </View>
 
-                        <Text className='font-bold text-sm text-center text-white'>Quase lá! Mais {cardsParaRevisarHoje} cards e você carimba o passaporte de hoje.</Text>
+                        {/* Progresso */}
+                        <View className="gap-2">
+
+                            <View className="flex-row justify-between">
+                                <Text className="text-indigo-100 text-sm">
+                                    Progresso diário
+                                </Text>
+
+                                <Text className="text-white text-sm font-bold">
+                                    {porcentagemProgresso}%
+                                </Text>
+                            </View>
+
+                            <View className="h-2.5 bg-indigo-950/60 rounded-full overflow-hidden">
+                                <View
+                                    className="h-full bg-indigo-400 rounded-full"
+                                    style={{
+                                        width: `${porcentagemProgresso}%`
+                                    }}
+                                />
+                            </View>
+
+                        </View>
+
+                        <View className="flex-row gap-3">
+
+                            <View className="flex-1 bg-white/10 rounded-2xl p-3">
+                                <Text className="text-indigo-200 text-xs">
+                                    Restantes
+                                </Text>
+
+                                <Text className="text-white text-lg font-bold mt-1">
+                                    {Math.max(metaDiariaCards - cardsRevisadosHoje, 0)} cartas
+                                </Text>
+                            </View>
+
+                            <View className="flex-1 bg-white/10 rounded-2xl p-3">
+                                <Text className="text-indigo-200 text-xs">
+                                    Tempo estimado
+                                </Text>
+
+                                <Text className="text-white text-lg font-bold mt-1">
+                                    ~{tempoEstimado} min
+                                </Text>
+                            </View>
+
+                        </View>
+
+                        <View className="flex-row items-center gap-2">
+
+                            <Text className="text-indigo-100 text-sm flex-1">
+                                Mais{" "}
+                                <Text className="text-white font-bold">
+                                    {Math.max(metaDiariaCards - cardsRevisadosHoje, 0)} cartas
+                                </Text>
+                                {" "}e a missão de hoje está completa.
+                            </Text>
+                        </View>
+
                     </View>
                 </View>
 
@@ -118,12 +180,11 @@ export default function Home() {
 
                 <MinhaBiblioteca />
 
-                <ProcurarDecks/>
+                <ProcurarDecks />
+
+                <DecksAmigos />
 
                 <DashBoard />
-
-                <DecksAmigos/>
-
 
 
 
