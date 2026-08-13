@@ -10,5 +10,6 @@ export interface LoginDTO{
 export interface LoginResponse{
     id: string,
     nome: string,
-    token: string
+    token: string,
+    user: User
 }
