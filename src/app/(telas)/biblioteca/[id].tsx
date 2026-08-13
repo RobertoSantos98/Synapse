@@ -288,11 +288,15 @@ const RenderItemCardMeuDeck = ({ id, question, answer, wrongAnswer }: CardProps)
         wrongAnswer: wrongAnswer
     }
 
+    const [ modalDetailCard, setModalDetailCard] = useState(false);
+
+    if(modalDetailCard) return <DetailCard {...card as CardProps} />
+
     return (
         <TouchableOpacity
             className='p-2 bg-white rounded-2xl items-center justify-center'
             style={{ width: tamanhoCard, height: tamanhoCard + 40, boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.5)' }}
-            onPress={() => <DetailCard {...card} />}
+            onPress={() => setModalDetailCard(true)}
         >
             <Text className='text-center text-xs tracking-wider leading-normal font-poppinsBold'>{question}</Text>
         </TouchableOpacity>

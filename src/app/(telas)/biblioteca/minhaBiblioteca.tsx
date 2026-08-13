@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Dimensions, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import  BaralhoService, { deckProps } from '../../../Services/BaralhoService';
+import BaralhoService, { deckProps } from '../../../Services/BaralhoService';
 
 
 const width = Dimensions.get('window').width
@@ -13,50 +13,44 @@ const tamanhoCard = (width - 52) / 2;
 
 
 export default function MinhaBiblioteca() {
-  const [ isLoading, setIsLoading ] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
 
   const [menuAdicionar, setMenuAdicionar] = useState(true);
   const [menuMostrarDeck, setMenuMostrarDeck] = useState<"MeuDeck" | "Baixados">("MeuDeck");
 
   const filter = [
-    { id: 1, title: "Todos", filterselected: () => { } },
-    { id: 2, title: "Informática", filterselected: () => { } },
-    { id: 3, title: "Linguagem", filterselected: () => { } },
-    { id: 4, title: "Ciêcias Humanas", filterselected: () => { } },
-    { id: 5, title: "Matemática", filterselected: () => { } },
-  ]
+    { id: 1, title: "Todos" },
+    { id: 2, title: "Informática" },
+    { id: 3, title: "Linguagem" },
+    { id: 4, title: "Ciêcias Humanas" },
+    { id: 5, title: "Matemática" },
+  ] as const;
 
-  const [filterselected, setFilterSelected] = useState<
-    "Todos" | "Informática" | "Linguagem" | "Ciêcias Humanas" | "Matemática"
-  >("Todos");
 
-  const [ biblioteca, setBiblioteca ] = useState<deckProps[]>();
-  //   { id: 6, themeId: 'tech', title: "Informática" },
-  //   { id: 7, themeId: 'tech', title: "Informática" },
-  //   { id: 10, themeId: "languages", title: "Linguagem" },
-  //   { id: 9, themeId: "science", title: "Ciências Humanas" },
-  //   { id: 11, themeId: "science", title: "Ciências Humanas" },
-  //   { id: 8, themeId: "languages", title: "Linguagem" },
-  //   { id: 12, themeId: 'tech', title: "Informática" },
-  // ];
+  type FilterTitle = typeof filter[number]["title"];
+
+  const [filterSelected, setFilterSelected] = useState<FilterTitle>("Todos");
+
+  const [biblioteca, setBiblioteca] = useState<deckProps[]>([]);
+
   const handleBiblioteca = async () => {
     setIsLoading(true);
-      
-    try{
+
+    try {
       const data = await BaralhoService.GetDeck();
       setBiblioteca(data);
 
-      } catch(error) {
-        Alert.alert("Ops!", "Algo saiu errado.");
-        console.log("Erro: ", error)
-      } finally{
-        setIsLoading(false);
-      }
+    } catch (error) {
+      Alert.alert("Ops!", "Algo saiu errado.");
+      console.log("Erro: ", error)
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   useEffect(() => {
-      handleBiblioteca();
-    }, [])
+    handleBiblioteca();
+  }, [])
 
 
   return (
@@ -93,18 +87,18 @@ export default function MinhaBiblioteca() {
           <View className='flex-row p-2 mb-2 gap-2 justify-end items-center'>
 
             <View className='flex-1 items-start flex-row gap-2'>
-              <LinearGradient pointerEvents='none' colors={["transparent", "transparent", "#fff"]} style={[StyleSheet.absoluteFill, {zIndex: 10}]} start={{x: 0, y: 0}} end={{x: 1, y: 0}} />
+              <LinearGradient pointerEvents='none' colors={["transparent", "transparent", "#fff"]} style={[StyleSheet.absoluteFill, { zIndex: 10 }]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} />
               <FlatList
                 data={filter}
                 keyExtractor={(i) => i.id.toString()}
                 renderItem={(({ item }) => (
                   <TouchableOpacity
                     key={item.id}
-                    className={`px-4 py-2 border border-slate-400 rounded-full ${filterselected === item.title ? 'bg-primary-500' : ''
+                    className={`px-4 py-2 border border-slate-400 rounded-full ${filterSelected === item.title ? 'bg-primary-500' : ''
                       }`}
                     onPress={() => setFilterSelected(item.title)}
                   >
-                    <Text className={`font-bold text-xs ${filterselected === item.title ? "text-white" : "text-slate-500" }`}>{item.title}</Text>
+                    <Text className={`font-bold text-xs ${filterSelected === item.title ? "text-white" : "text-slate-500"}`}>{item.title}</Text>
                   </TouchableOpacity>
                 )
                 )}
@@ -124,15 +118,15 @@ export default function MinhaBiblioteca() {
 
           {menuMostrarDeck === "MeuDeck" ?
             <View className='flex-row flex-wrap gap-2'>
-              { isLoading ? 
-              <View className='gap-8 flex-1 item-center justify-center'>
-                <ActivityIndicator size={46} />
-                <Text className='text-2xl text-center font-poppinsBlack'>Carregando...</Text>
-              </View>
-              :
-              biblioteca.map((item) => (
-                <RenderItemsCardBiblioteca key={item.id} id={item.id} title={item.title} themeId={item.themeId} />
-              ))}
+              {isLoading ?
+                <View className='gap-8 flex-1 item-center justify-center'>
+                  <ActivityIndicator size={46} />
+                  <Text className='text-2xl text-center font-poppinsBlack'>Carregando...</Text>
+                </View>
+                :
+                biblioteca.map((item) => (
+                  <RenderItemsCardBiblioteca key={item.id} id={item.id} title={item.title} themeId={item.themeId} details={item.details} level={item.level} totalCards={item.totalCards} />
+                ))}
             </View>
             :
             <View className='gap-2'>
@@ -188,11 +182,11 @@ const RenderItemsCardBiblioteca = ({ id, title, themeId }: RenderItemsCardBiblio
 }
 
 const RenderItemsCardBaixados = ({ title, themeId, details, totalCards, level }: RenderItemsCardBibliotecaProps) => {
-  
-  const nivel : number = level === "facil" ? 1 : level === "medio" ? 2 : 3;
-  
+
+  const nivel: number = level === "facil" ? 1 : level === "medio" ? 2 : 3;
+
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={{ height: 100 }}
       className='bg-white flex-row rounded-2xl overflow-hidden border border-slate-300 shadow-sm mb-1 active:bg-slate-50'
       activeOpacity={0.7}
@@ -218,7 +212,7 @@ const RenderItemsCardBaixados = ({ title, themeId, details, totalCards, level }:
           <View className='flex-row justify-between'>
             <Text className='text-xs text-slate-400'>Nível: </Text>
             <View className='flex-row gap-1'>
-              {Array.from({length: 3}).map((_, index) => (
+              {Array.from({ length: 3 }).map((_, index) => (
                 <Fontisto name='fire' size={12} color={index <= nivel ? "#f59e0b" : "#e2e8f0"} />
               ))}
             </View>
@@ -227,7 +221,7 @@ const RenderItemsCardBaixados = ({ title, themeId, details, totalCards, level }:
 
 
       </View>
-        
+
     </TouchableOpacity>
   )
 }

@@ -2,7 +2,7 @@ import { Modal, Text, TouchableOpacity, View } from 'react-native';
 import { CardProps } from '../Services/CardService';
 import { useLocalSearchParams } from 'expo-router';
 
-export default function DetailCard({card}: {card: CardProps}) {
+export default function DetailCard(card: CardProps) {
 
  return (
    <Modal className='flex-1 absolute'>
