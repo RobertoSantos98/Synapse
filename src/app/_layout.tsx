@@ -9,8 +9,34 @@
 	import { Stack } from "expo-router";
 // import as SplashScreenSecond from './SplashScreen';
 import { useEffect } from 'react';
+import { AuthProvider, useAuth } from '../context/AuthContext';
 
 SplashScreen.preventAutoHideAsync();
+
+
+function RootNavigator(){
+  const { isAuthenticated, isLoading} = useAuth();
+
+  if(isLoading) return null
+
+  return(
+    <Stack screenOptions={{headerShown: false}}>
+
+      <Stack.Protected guard={!isAuthenticated} >
+        <Stack.Screen name='index' />
+      </Stack.Protected>
+
+      <Stack.Protected guard={isAuthenticated} >
+        <Stack.Screen name='(tabs)' />
+        <Stack.Screen name='(telas)' />
+      </Stack.Protected>
+
+    </Stack>
+  )
+
+}
+
+
 
 
 export default function Layout() {
@@ -33,11 +59,9 @@ export default function Layout() {
 	return (
     
       <SafeAreaProvider>
-        <Stack screenOptions={{ headerShown: false}}>
-          <Stack.Screen name='index'  />
-          <Stack.Screen name='(tabs)'  />
-          <Stack.Screen name='(telas)' />
-        </Stack>
+        <AuthProvider>
+          <RootNavigator/>
+        </AuthProvider>
       </SafeAreaProvider>
     
 	);
