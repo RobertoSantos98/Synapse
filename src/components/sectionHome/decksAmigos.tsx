@@ -45,7 +45,7 @@ type renderDeckAmigosProps = {
     themeId: string,
     title: string,
     detalhes: string,
-    nivel: "facil" | "medio" | "dificil",
+    nivel: string,
 }
 
 const RenderDeckAmigos = ({ amigo, themeId, title, detalhes, nivel }: renderDeckAmigosProps) => {

@@ -4,7 +4,7 @@ import { Theme, THEMES } from '@/themes-config';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { ActivityIndicator, Alert, Dimensions, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { BaralhoService } from '../../Services/BaralhoService';
+import BaralhoService from '../../Services/BaralhoService';
 import { router } from 'expo-router';
 
 const tamanhoCard = (Dimensions.get('window').width - 72) / 2;
@@ -14,7 +14,7 @@ export default function CriarDeck() {
 
     const [ titleDeck, setTitleDeck ] = useState("");
     const [ descricaoDeck, setDescricaoDeck ] = useState("");
-    const [themeSelected, setThemeSelected] = useState<Theme>();
+    const [themeSelected, setThemeSelected] = useState<Theme>(THEMES[0]);
     const [nivelSelected, setNivelSelected ] = useState<"facil" | "medio" | "dificil">("facil");
 
     const [modalTema, setmodalTema] = useState(false);
@@ -45,7 +45,7 @@ export default function CriarDeck() {
             Alert.alert("Seu Baralho foi criado!")
             setTitleDeck(""),
             setDescricaoDeck(""),
-            setThemeSelected(undefined),
+            setThemeSelected(THEMES[0]),
 
             router.back();
 
