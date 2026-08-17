@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { ActivityIndicator, Alert, Dimensions, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import BaralhoService from '../../Services/BaralhoService';
 import { router } from 'expo-router';
+import { useAuth } from '@/src/context/AuthContext';
 
 const tamanhoCard = (Dimensions.get('window').width - 72) / 2;
 
@@ -16,6 +17,8 @@ export default function CriarDeck() {
     const [ descricaoDeck, setDescricaoDeck ] = useState("");
     const [themeSelected, setThemeSelected] = useState<Theme>(THEMES[0]);
     const [nivelSelected, setNivelSelected ] = useState<"facil" | "medio" | "dificil">("facil");
+    const [isPrivate, setIsPrivate ] = useState(false);
+    const { user } = useAuth()
 
     const [modalTema, setmodalTema] = useState(false);
     const [ isLoading, setIsLoading ] = useState(false);
@@ -37,6 +40,8 @@ export default function CriarDeck() {
                 title: titleDeck,
                 details: descricaoDeck,
                 level: nivelSelected,
+                userId: user?.id,
+                isPrivate: isPrivate
             }
 
 
@@ -66,8 +71,20 @@ export default function CriarDeck() {
                 <HeaderStack title='Criar Baralho' />
 
                 <View className='bg-white rounded-2xl p-4 mx-6'>
-                    <View className='rounded-xl overflow-hidden border border-primary-200' style={{ width: tamanhoCard, height: tamanhoCard + 40 }}>
-                        <CardCover themeId={themeSelected?.id} />
+                    <View className='flex-row justify-between'>
+                        <View className='rounded-xl overflow-hidden border border-primary-200' style={{ width: tamanhoCard, height: tamanhoCard + 40 }}>
+                            <CardCover themeId={themeSelected?.id} />
+                        </View>
+
+                        <View className='gap-2'>
+                            <Text className='text-xs text-slate-400 text-center'>{isPrivate ? "Privado" : "Público"}</Text>
+                            <TouchableOpacity className='bg-primary-500 w-20 rounded-full p-1 self-start' onPress={() => setIsPrivate(!isPrivate)}>
+                                <View className='bg-white p-2 rounded-full' style={{alignSelf: isPrivate? "flex-start" : "flex-end"}}>
+                                    <MaterialIcons name='lock' size={16} color={isPrivate? "#6366f1" : "#e2e8f0"} />
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+
                     </View>
 
                     <View className='py-4'>

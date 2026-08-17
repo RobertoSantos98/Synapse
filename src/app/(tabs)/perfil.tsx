@@ -1,5 +1,6 @@
 import BackGroundLightHome from '@/src/Assets/backGround-lightHome';
 import BackgroundHome from '@/src/Assets/backgroundHome';
+import { useAuth } from '@/src/context/AuthContext';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
@@ -26,6 +27,8 @@ export default function Perfil() {
     { id: 4, title: "Histórico de Arena", icon: "sword-cross", onPressButton: () => { } },
     { id: 5, title: "Nos Avalie", icon: "star-outline", onPressButton: () => { } },
   ];
+
+  const { logout } = useAuth()
 
 
   return (
@@ -117,7 +120,9 @@ export default function Perfil() {
             </TouchableOpacity>
           ))}
 
-          <TouchableOpacity className='bg-red-50 border border-rose-200 rounded-2xl p-4 active:bg-rose-100 justify-between' activeOpacity={0.7} style={{ width: widthCardsPerfil, height: widthCardsPerfil - 30 }}>
+          <TouchableOpacity 
+            onPress={() => logout()}
+            className='bg-red-50 border border-rose-200 rounded-2xl p-4 active:bg-rose-100 justify-between' activeOpacity={0.7} style={{ width: widthCardsPerfil, height: widthCardsPerfil - 30 }}>
             <View className='bg-white p-2.5 rounded-full border border-rose-100 self-start'>
               <MaterialCommunityIcons name='logout' size={24} color={"#e11d48"} />
             </View>
