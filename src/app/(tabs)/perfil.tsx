@@ -1,11 +1,13 @@
 import BackGroundLightHome from '@/src/Assets/backGround-lightHome';
-import BackgroundHome from '@/src/Assets/backgroundHome';
 import { useAuth } from '@/src/context/AuthContext';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
-import { Dimensions, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useMemo, useRef } from 'react';
+import { Dimensions, FlatList, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import { AvatarService } from '@/src/Services/AvatarService';
+import { AVATAR_SEEDS } from '@/src/utils/avatarSeeds';
 
 type acessoMenuProps = {
   id: number,
@@ -19,6 +21,15 @@ export default function Perfil() {
   const insets = useSafeAreaInsets()
 
   const widthCardsPerfil = ((Dimensions.get('window').width - 64) / 2);
+
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const snapPoint = useMemo(() => ["50%"], []);
+  const abrirBottomSheet = () => {
+    bottomSheetRef.current?.snapToIndex(1);
+  };
+  const fecharBottomSheet = () => {
+    bottomSheetRef.current?.close();
+  };
 
   const acessoMenu: acessoMenuProps[] = [
     { id: 1, title: "Lista de Amigos", icon: "account-multiple-outline", onPressButton: () => { } },
@@ -69,7 +80,9 @@ export default function Perfil() {
                 <Text className='text-white font-bold text-sm tracking-wider'>Adicionar Amigo</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity className='bg-white border border-slate-200 shadow-sm flex-1 py-3.5 rounded-xl justify-center items-center'>
+              <TouchableOpacity
+                onPress={abrirBottomSheet}
+                className='bg-white border border-slate-200 shadow-sm flex-1 py-3.5 rounded-xl justify-center items-center'>
                 <Text className='text-slate-600 font-bold text-sm'>Alterar Avatar</Text>
               </TouchableOpacity>
             </View>
@@ -120,7 +133,7 @@ export default function Perfil() {
             </TouchableOpacity>
           ))}
 
-          <TouchableOpacity 
+          <TouchableOpacity
             onPress={() => logout()}
             className='bg-red-50 border border-rose-200 rounded-2xl p-4 active:bg-rose-100 justify-between' activeOpacity={0.7} style={{ width: widthCardsPerfil, height: widthCardsPerfil - 30 }}>
             <View className='bg-white p-2.5 rounded-full border border-rose-100 self-start'>
@@ -136,6 +149,34 @@ export default function Perfil() {
 
 
       </ScrollView>
+
+      <BottomSheet ref={bottomSheetRef} snapPoints={snapPoint} index={-1} enablePanDownToClose>
+        <BottomSheetView>
+          <View className='p-4'>
+            <Text className='text-center text-lg font-poppinsBold mb-4'>Escolha o seu Avatar</Text>
+            <FlatList
+              data={AVATAR_SEEDS}
+              keyExtractor={(item) => item}
+              renderItem={({item}) => (
+                <TouchableOpacity
+                  className='bg-primary-50 rounded-full'
+                >
+                    <Image
+                      source={{ uri: AvatarService.getAvatarUrl(item) }}
+                      style={{ width: 80, height: 80, borderRadius: 40 }}
+                    />
+                </TouchableOpacity>
+              )}
+              numColumns={4}
+              contentContainerStyle={{
+                gap: 2,
+                alignItems: 'center',
+                justifyContent: 'space-around'
+              }}
+            />
+          </View>
+        </BottomSheetView>
+      </BottomSheet>
     </View>
   );
 }

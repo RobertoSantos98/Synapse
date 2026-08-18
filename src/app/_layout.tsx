@@ -1,26 +1,27 @@
 
-  import '../../global.css';
-  import { SafeAreaProvider } from 'react-native-safe-area-context';
-  import { useFonts, Poppins_900Black, Poppins_700Bold } from '@expo-google-fonts/poppins'
-  import { BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue'
-  import { Jaro_400Regular } from '@expo-google-fonts/jaro'
-  import * as SplashScreen from 'expo-splash-screen';
+import '../../global.css';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { useFonts, Poppins_900Black, Poppins_700Bold } from '@expo-google-fonts/poppins'
+import { BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue'
+import { Jaro_400Regular } from '@expo-google-fonts/jaro'
+import * as SplashScreen from 'expo-splash-screen';
 
-	import { Stack } from "expo-router";
+import { Stack } from "expo-router";
 import SplashScreenAuth from './SplashScreen';
 import { useEffect } from 'react';
 import { AuthProvider, useAuth } from '../context/AuthContext';
+import { Gesture, GestureHandlerRootView } from 'react-native-gesture-handler';
 
 SplashScreen.preventAutoHideAsync();
 
 
-function RootNavigator(){
-  const { isAuthenticated, isLoading} = useAuth();
+function RootNavigator() {
+  const { isAuthenticated, isLoading } = useAuth();
 
-  if(isLoading) return <SplashScreenAuth/>
+  if (isLoading) return <SplashScreenAuth />
 
-  return(
-    <Stack screenOptions={{headerShown: false}}>
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
 
       <Stack.Protected guard={!isAuthenticated} >
         <Stack.Screen name='index' />
@@ -48,21 +49,22 @@ export default function Layout() {
 
   });
 
-  useEffect(()=> {
-    if(fontsLoaded) {
+  useEffect(() => {
+    if (fontsLoaded) {
       SplashScreen.hideAsync()
     }
   }, [fontsLoaded])
 
-  if(!fontsLoaded) return null
+  if (!fontsLoaded) return null
 
-	return (
-    
+  return (
+    <GestureHandlerRootView>
       <SafeAreaProvider>
         <AuthProvider>
-          <RootNavigator/>
+          <RootNavigator />
         </AuthProvider>
       </SafeAreaProvider>
-    
-	);
+    </GestureHandlerRootView>
+
+  );
 }
