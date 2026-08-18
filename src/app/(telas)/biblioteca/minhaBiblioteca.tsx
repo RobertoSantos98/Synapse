@@ -32,6 +32,7 @@ export default function MinhaBiblioteca() {
   const [filterSelected, setFilterSelected] = useState<FilterTitle>("Todos");
 
   const [biblioteca, setBiblioteca] = useState<deckProps[]>([]);
+  const [decksBaixados, setDecksBaixados] = useState<deckProps[]>([]);
 
   const handleBiblioteca = async () => {
     setIsLoading(true);
@@ -40,9 +41,14 @@ export default function MinhaBiblioteca() {
       const data = await BaralhoService.GetDeck();
       setBiblioteca(data);
 
+      const dataDecksBaixados = await BaralhoService.GetDecksBaixados();
+      setDecksBaixados(dataDecksBaixados);
+
     } catch (error) {
+
       Alert.alert("Ops!", "Algo saiu errado.");
-      console.log("Erro: ", error)
+      console.log("Erro: ", error);
+
     } finally {
       setIsLoading(false);
     }
@@ -130,7 +136,7 @@ export default function MinhaBiblioteca() {
             </View>
             :
             <View className='gap-2'>
-              {biblioteca.map((item) => (
+              {decksBaixados.map((item) => (
                 <RenderItemsCardBaixados key={item.id} id={item.id} title={item.title} themeId={item.themeId} details={item.details} level={item.level} totalCards={item.totalCards} />
               ))}
             </View>
@@ -162,7 +168,7 @@ const RenderItemsCardBiblioteca = ({ id, title, themeId }: RenderItemsCardBiblio
     <TouchableOpacity
       onPress={() => router.push(`/(telas)/biblioteca/${id}`)}
       style={{ width: tamanhoCard, height: tamanhoCard + 42 }}
-      className='rounded-2xl overflow-hidden flex-col border border-slate-200 bg-white active:bg-slate-50 shadow-sm'
+      className='rounded-2xl overflow-hidden flex-col border border-slate-300 bg-white active:bg-slate-50 shadow-sm'
       activeOpacity={0.7}
     >
       <View className='flex-1 w-full'>
@@ -213,7 +219,7 @@ const RenderItemsCardBaixados = ({ title, themeId, details, totalCards, level }:
             <Text className='text-xs text-slate-400'>Nível: </Text>
             <View className='flex-row gap-1'>
               {Array.from({ length: 3 }).map((_, index) => (
-                <Fontisto name='fire' size={12} color={index <= nivel ? "#f59e0b" : "#e2e8f0"} />
+                <Fontisto key={index} name='fire' size={12} color={index <= nivel ? "#f59e0b" : "#e2e8f0"} />
               ))}
             </View>
           </View>

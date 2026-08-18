@@ -79,10 +79,10 @@ export default function Detalhes() {
                 <View className='h-80'>
                     <View className='absolute z-20 w-full justify-between flex-row p-4' style={{ marginTop: insets.top }}>
                         <TouchableOpacity className='bg-white p-4 rounded-full border border-slate-200' onPress={() => router.back()}>
-                            <MaterialIcons name='arrow-back-ios-new' size={24} color={"#6366f1"} />
+                            <MaterialIcons name='arrow-back-ios-new' size={18} color={"#6366f1"} />
                         </TouchableOpacity>
-                        <TouchableOpacity className='bg-white p-4 rounded-full border border-slate-200'>
-                            <MaterialCommunityIcons name='download-box' size={24} color={"#6366f1"} />
+                        <TouchableOpacity className='bg-white p-4 rounded-full border border-slate-200' onPress={() => BaralhoService.DownloadDeck(id)}>
+                            <MaterialCommunityIcons name='download-box' size={18} color={"#6366f1"} />
                         </TouchableOpacity>
                     </View>
                     <CardCover themeId={deck ? deck.themeId : "default"} />
