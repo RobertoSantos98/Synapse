@@ -18,6 +18,8 @@ export interface deckProps {
   title: string,
   details: string,
   level: string,
+  isPrivate: boolean,
+  userId: string,
   totalCards: number,
   cards? : CardProps[]
 }

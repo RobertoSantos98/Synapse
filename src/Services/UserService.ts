@@ -17,7 +17,7 @@ class UserService {
     static async GetUserById(userId: string): Promise<User>{
 
         try {
-            const response =await apiService.get<User>(`/User/${userId}`);
+            const response = await apiService.get<User>(`/User/${userId}`);
             
             return response.data;
             

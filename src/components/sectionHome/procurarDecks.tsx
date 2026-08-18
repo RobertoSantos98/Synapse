@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import BaralhoService, { deckProps } from '@/src/Services/BaralhoService';
 import CardCover from '../cardCover';
 import { router } from 'expo-router';
+import UserService from '@/src/Services/UserService';
+import { User } from '@/src/types/auth';
 
 const tamanhoCard = Dimensions.get('window').width - 80;
 
@@ -32,15 +34,6 @@ export default function ProcurarDecks() {
 
     return (
         <View className='bg-primary-500 py-4'>
-            <View className='flex-row border border-primary-200 mx-4 rounded-full'>
-                <TextInput
-                    placeholder='Buscar'
-                    className='bg-slate-100 rounded-l-full px-4 py-2 justify-between flex-1'
-                />
-                <TouchableOpacity className='bg-slate-100 border-l border-primary-400 rounded-r-full py-2 px-4'>
-                    <MaterialIcons name='search' size={22} color={"#6366f1"} />
-                </TouchableOpacity>
-            </View>
 
             <View className='px-6 py-3 flex-row justify-between items-end'>
                 <Text className='font-poppinsBold text-lg text-slate-100 tracking-wide'>Decks Da Comunidade</Text>
@@ -57,12 +50,14 @@ export default function ProcurarDecks() {
             <FlatList
                 data={decksComunidade}
                 keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => <RenderItemComunidadeDecks id={item.id} title={item.title} themeId={item.themeId} details={item.details} level={item.level} totalCards={item.totalCards} />}
+                renderItem={({ item }) => <RenderItemComunidadeDecks isPrivate={item.isPrivate} userId={item.userId} id={item.id} title={item.title} themeId={item.themeId} details={item.details} level={item.level} totalCards={item.totalCards} />}
                 contentContainerStyle={{
-                    paddingLeft: 16,
-                    paddingVertical: 8
+                    paddingHorizontal: 16,
+                    paddingVertical: 8,
+                    gap: 8
                 }}
                 horizontal
+                showsHorizontalScrollIndicator={false}
             />
         </View>
     );
@@ -73,9 +68,12 @@ const RenderItemComunidadeDecks = (deck: deckProps) => {
 
     const nivel: number = deck.level === "facil" ? 1 : deck.level === "medio" ? 2 : 3;
 
-
     return (
-        <View className='rounded-2xl p-1 bg-white border border-slate-200 overflow-hidden' style={{ width: tamanhoCard, boxShadow: "0px 1px 8px rgba(0, 0, 0, 0.5)" }}>
+        <TouchableOpacity 
+            className='rounded-2xl p-1 bg-white border border-slate-200 overflow-hidden' 
+            style={{ width: tamanhoCard, boxShadow: "0px 1px 8px rgba(0, 0, 0, 0.5)" }}
+            onPress={() => router.push(`/(telas)/biblioteca/${deck.id}`)}    
+        >
             <View className='rounded-xl overflow-hidden h-36 border border-primary-200'>
                 <CardCover themeId={deck.themeId} />
             </View>
@@ -95,6 +93,6 @@ const RenderItemComunidadeDecks = (deck: deckProps) => {
                     </View>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
