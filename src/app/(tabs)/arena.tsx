@@ -54,7 +54,7 @@ export default function Arena() {
           <TouchableOpacity
             activeOpacity={0.8}
             className='overflow-hidden rounded-3xl border-2 border-primary-600 px-4 py-4 gap-2'
-            onPress={() => router.push('/(telas)/Arena/Solo')}
+            onPress={() => router.push('/(telas)/PrepararEstudo/prepararEstudos')}
           >
             <LinearGradient colors={["#818cf8", "#4f46e5"]} style={StyleSheet.absoluteFill} start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }} />
             <View className='p-4 bg-primary-400 rounded-3xl self-start'>

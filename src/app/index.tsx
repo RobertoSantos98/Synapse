@@ -18,7 +18,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import CircuitBackground from '../Assets/circuitBackGround';
-import UserService from '../Services/UserService';
 import { useAuth } from '../context/AuthContext';
 
 export default function SignIn() {
@@ -34,7 +33,7 @@ export default function SignIn() {
       Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
       (event) => {
         Animated.timing(slideUp, {
-          toValue: -120, // Ajustado para subir de forma suave
+          toValue: -120,
           duration: 250,
           useNativeDriver: true,
         }).start();
@@ -66,8 +65,10 @@ export default function SignIn() {
       password: password
     }
 
+    console.log(payload);
+    
     try {
-      const response = await login(payload) ;
+      const response = await login(payload);
 
     } catch (error: any) {
 
@@ -115,6 +116,8 @@ export default function SignIn() {
                 placeholder='Digite seu usuário'
                 autoCapitalize="none"
                 keyboardType="email-address"
+                value={email}
+                onChangeText={setEmail}
               />
 
               <View className='gap-2 w-full'>
@@ -122,6 +125,8 @@ export default function SignIn() {
                   icon='lock-outline'
                   placeholder='Digite sua Senha'
                   isPassword={true}
+                  value={password}
+                  onChangeText={setPassword}
                 />
                 <TouchableOpacity className='self-end'>
                   <Text className='text-primary-500 text-sm font-bold mt-2 pr-2'>Esqueceu a Senha?</Text>
@@ -131,7 +136,7 @@ export default function SignIn() {
               <View className='w-full rounded-xl overflow-hidden shadow-lg shadow-primary-500/30'>
                 <LinearGradient colors={["#4338ca", "#312e81"]} className='w-full' start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
                   <TouchableOpacity onPress={() => handleLogin()} className='flex-row w-full gap-2 items-center justify-center py-4' activeOpacity={0.7}>
-                    {isLoading? <ActivityIndicator size={22} color={"#fff"} /> : 
+                    {isLoading ? <ActivityIndicator size={22} color={"#fff"} /> :
                       <View className='flex-row gap-2'>
                         <Text className='text-white font-extrabold text-xl tracking-wider'>Entrar</Text>
                         <MaterialCommunityIcons name='arrow-right' size={16} color={"#FFF"} />

@@ -129,7 +129,7 @@ export default function Home() {
 
                             <View className="h-2.5 bg-indigo-950/60 rounded-full overflow-hidden">
                                 <View
-                                    className="h-full bg-indigo-400 rounded-full"
+                                    className="h-full bg-orange-500 rounded-full"
                                     style={{
                                         width: `${porcentagemProgresso}%`
                                     }}

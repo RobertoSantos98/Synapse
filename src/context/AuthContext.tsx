@@ -57,6 +57,9 @@ export function AuthProvider({children}: AuthProviderProps) {
     }
 
     async function login(data:LoginDTO): Promise<void> {
+
+        console.log("AuthContext: ", data)
+
         const response = await AuthService.Login(data);
 
         await SecureStorage.setItemAsync(TOKEN_KEY, response.token);

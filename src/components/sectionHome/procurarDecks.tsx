@@ -64,7 +64,7 @@ export default function ProcurarDecks() {
 }
 
 
-const RenderItemComunidadeDecks = (deck: deckProps) => {
+export const RenderItemComunidadeDecks = (deck: deckProps) => {
 
     const nivel: number = deck.level === "facil" ? 1 : deck.level === "medio" ? 2 : 3;
 
