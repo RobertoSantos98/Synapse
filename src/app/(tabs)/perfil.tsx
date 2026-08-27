@@ -2,12 +2,14 @@ import BackGroundLightHome from '@/src/Assets/backGround-lightHome';
 import { useAuth } from '@/src/context/AuthContext';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useCallback, useMemo, useRef } from 'react';
-import { Dimensions, FlatList, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Alert, Dimensions, FlatList, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetFlashList, BottomSheetFlatList, BottomSheetView } from "@gorhom/bottom-sheet";
 import { AvatarService } from '@/src/Services/AvatarService';
 import { AVATAR_SEEDS } from '@/src/utils/avatarSeeds';
+import UserService from '@/src/Services/UserService';
+import { User } from '@/src/types/auth';
 
 type acessoMenuProps = {
   id: number,
@@ -18,7 +20,7 @@ type acessoMenuProps = {
 
 export default function Perfil() {
 
-  const insets = useSafeAreaInsets()
+  const insets = useSafeAreaInsets();
 
   const widthCardsPerfil = ((Dimensions.get('window').width - 64) / 2);
 
@@ -39,7 +41,28 @@ export default function Perfil() {
     { id: 5, title: "Nos Avalie", icon: "star-outline", onPressButton: () => { } },
   ];
 
-  const { logout } = useAuth()
+  const { logout, atualizarUser, user } = useAuth();
+
+  const handleChangeAvatar = async (avatar: string) => {
+
+    try {
+
+      if (user) {
+        console.log(user.id, avatar)
+        var result = await UserService.ChangeAvatar(user.id, avatar);
+        const novoUser = result;
+        user.avatarUrl = novoUser.avatarUrl;
+        atualizarUser(novoUser);
+        Alert.alert("Avatar Atualizado!")
+      }
+
+
+    } catch (error: any) {
+      Alert.alert("Erro", error.message);
+    }
+
+
+  }
 
 
   return (
@@ -54,7 +77,14 @@ export default function Perfil() {
           <View className='flex-row justify-between items-start mb-4'>
 
             <View className='rounded-full h-24 w-24 bg-primary-100 items-center justify-center border-4 border-white shadow-sm'>
-              <Ionicons name='person' size={46} color={"#6366f1"} />
+              {user?.avatarUrl ? (
+                <Image
+                  source={{ uri: AvatarService.getAvatarUrl(user.avatarUrl) }}
+                  style={{ width: 80, height: 80, borderRadius: 40 }}
+                />
+              ) :
+                <Ionicons name='person' size={46} color={"#6366f1"} />
+              }
               <View className='bg-slate-800 absolute -bottom-2 px-3 rounded-full border-2 border-white '>
                 <Text className='text-white font-poppinsBlack text-xs'>LVL 32</Text>
               </View>
@@ -152,31 +182,40 @@ export default function Perfil() {
 
       <BottomSheet ref={bottomSheetRef} snapPoints={snapPoint} index={-1} enablePanDownToClose>
         <BottomSheetView>
-          <View className='p-4'>
+
+          <View className='p-4 flex-1'>
+
             <Text className='text-center text-lg font-poppinsBold mb-4'>Escolha o seu Avatar</Text>
-            <FlatList
-              data={AVATAR_SEEDS}
-              keyExtractor={(item) => item}
-              renderItem={({item}) => (
-                <TouchableOpacity
-                  className='bg-primary-50 rounded-full'
-                >
-                    <Image
-                      source={{ uri: AvatarService.getAvatarUrl(item) }}
-                      style={{ width: 80, height: 80, borderRadius: 40 }}
-                    />
-                </TouchableOpacity>
-              )}
-              numColumns={4}
-              contentContainerStyle={{
-                gap: 2,
-                alignItems: 'center',
-                justifyContent: 'space-around'
-              }}
-            />
+              
+                <BottomSheetFlatList
+                  data={AVATAR_SEEDS}
+                  keyExtractor={(item) => item}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity
+                      className='bg-primary-50 rounded-full border border-primary-500'
+                      onPress={() => handleChangeAvatar(item)}
+                    >
+                      <Image
+                        source={{ uri: AvatarService.getAvatarUrl(item) }}
+                        style={{ width: 80, height: 80, borderRadius: 35 }}
+                      />
+                    </TouchableOpacity>
+                  )}
+                  numColumns={4}
+                  columnWrapperStyle={{
+                    justifyContent: 'space-between',
+                    marginBottom: 16
+                  }}
+                  contentContainerStyle={{
+                    paddingBottom: 40
+                  }}
+                />
+             
           </View>
+
+          <View style={{ height: 100 }} />
         </BottomSheetView>
       </BottomSheet>
-    </View>
+    </View >
   );
 }

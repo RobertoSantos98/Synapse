@@ -23,5 +23,10 @@ export const AVATAR_SEEDS = [
   "marcela",
   "juvenal",
   "leon",
-  "nilce"
+  "nilce",
+  "Jadice",
+  "Marcelo",
+  "Mario",
+  "Fernando"
+
 ];

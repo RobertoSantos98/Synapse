@@ -56,7 +56,7 @@ export default function PrepararEstudos() {
                     <TextInput className='text-lg flex-1' placeholder='Procurar' />
                 </View>
 
-                <View className='gap-4 bg-primary-600 rounded p-2'>
+                <View className='gap-4 bg-primary-600 rounded-2xl p-4'>
                     <View>
                         <Text className='text-primary-200'>Decks Selecionados: </Text>
                     </View>
@@ -73,7 +73,7 @@ export default function PrepararEstudos() {
                                 }}
                             />
                         ) : (
-                            <View className='h-28 justify-center'>
+                            <View className='h-32 justify-center'>
                                 <Text className='text-white text-2xl font-bold text-center'>Nenhum deck selecionado.</Text>
                             </View>
                         )}
@@ -177,7 +177,7 @@ const RenderCards = ({ deck, pressionado }: deckEscolhasProps) => {
 
 function RenderDecksEscolhidos({ themeId, title }: deckEscolhidosProps) {
     return (
-        <View className='h-32 w-24 rounded-lg border border-black/40 overflow-hidden relative'>
+        <View className='h-32 w-24 rounded-lg border border-primary-900 overflow-hidden relative'>
             <CardCover themeId={themeId} />
             <Text className='text-xs texte-black absolute bottom-2 font-bold self-center'>{title}</Text>
         </View>

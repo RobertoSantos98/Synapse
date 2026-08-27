@@ -13,6 +13,8 @@ interface AuthContextProps {
 
     login: (data: LoginDTO) => Promise<void>;
     logout: () => Promise<void>;
+
+    atualizarUser: (user: User) => void
 }
 
 interface AuthProviderProps {
@@ -79,8 +81,12 @@ export function AuthProvider({children}: AuthProviderProps) {
         setUser(null);
     }
 
+    async function atualizarUser(user: User){
+        await SecureStorage.setItemAsync( USER_KEY, JSON.stringify(user));
+    }
+
     return(
-        <AuthContext.Provider value={{user, token, isAuthenticated: !!token, isLoading, login, logout}}>
+        <AuthContext.Provider value={{user, token, isAuthenticated: !!token, isLoading, login, logout, atualizarUser}}>
             {children}
         </AuthContext.Provider>
     )
