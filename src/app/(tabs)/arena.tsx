@@ -42,7 +42,8 @@ export default function Arena() {
                 source={{ uri: AvatarService.getAvatarUrl("Eren") }}
                 style={{ width: 70, height: 70, alignSelf: 'center' }}
               />
-            </View>            <Text className='text-white font-bold  text-center'>Eren</Text>
+            </View>
+            <Text className='text-white font-bold  text-center'>Eren</Text>
             <View className='bg-primary-600 pr-2 flex-row h-60 rounded-t-xl items-center justify-center border border-primary-300' style={{ width: tamanhoPodium, boxShadow: '-2px 2px 8px rgba(0, 0, 0, 0.5)' }}>
               <Text className='text-6xl font-poppinsBold text-white'>1</Text>
             </View>
@@ -54,7 +55,8 @@ export default function Arena() {
                 source={{ uri: AvatarService.getAvatarUrl("Mikase") }}
                 style={{ width: 70, height: 70, alignSelf: 'center' }}
               />
-            </View>            <Text className='text-white font-bold  text-center'>Mikasa</Text>
+            </View>            
+            <Text className='text-white font-bold  text-center'>Mikasa</Text>
             <View className='bg-primary-400 pr-2 flex-row h-28 rounded-t-xl items-center justify-center' style={{ width: tamanhoPodium }}>
               <Text className='text-6xl font-poppinsBold text-white'>3</Text>
             </View>

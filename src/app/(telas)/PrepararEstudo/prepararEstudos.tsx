@@ -1,9 +1,12 @@
+import CalcularNivelDeck from '@/src/components/CalcularNivelDecks';
 import CardCover from '@/src/components/cardCover';
+import { AvatarService } from '@/src/Services/AvatarService';
 import BaralhoService, { deckProps } from '@/src/Services/BaralhoService';
 import { Fontisto, MaterialIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Dimensions, FlatList, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const tamanhoCard = Dimensions.get('window').width - 80;
@@ -56,7 +59,15 @@ export default function PrepararEstudos() {
                     <TextInput className='text-lg flex-1' placeholder='Procurar' />
                 </View>
 
-                <View className='gap-4 bg-primary-600 rounded-2xl p-4'>
+                <View className='gap-4 rounded-2xl p-4 overflow-hidden border-2 border-primary-700'>
+
+                    <LinearGradient
+                        colors={["#4f46e5", "#4338ca"]}
+                        style={StyleSheet.absoluteFill}
+                        start={{x: 0, y: 1}}
+                        end={{x: 1, y: 0}}
+                    />
+
                     <View>
                         <Text className='text-primary-200'>Decks Selecionados: </Text>
                     </View>
@@ -126,7 +137,7 @@ type deckEscolhidosProps = {
     themeId: string,
     title?: string,
     pressionado?: () => void
-    deck: deckProps
+    deck: deckProps,
 }
 
 
@@ -175,11 +186,19 @@ const RenderCards = ({ deck, pressionado }: deckEscolhasProps) => {
     )
 }
 
-function RenderDecksEscolhidos({ themeId, title }: deckEscolhidosProps) {
+function RenderDecksEscolhidos({ themeId, title, deck }: deckEscolhidosProps) {
     return (
-        <View className='h-32 w-24 rounded-lg border border-primary-900 overflow-hidden relative'>
+        <View className='h-32 w-24 rounded-lg border border-primary-400 overflow-hidden relative'>
             <CardCover themeId={themeId} />
-            <Text className='text-xs texte-black absolute bottom-2 font-bold self-center'>{title}</Text>
+            <Text className='text-xs texte-black absolute bottom-2 font-bold self-center tracking-wider'>{title}</Text>
+            <View className='bg-orange-50 p-1 absolute rounded-full top-1 right-1 border border-orange-200'>
+                <CalcularNivelDeck nivel={deck.level} size={9}  />
+            </View>
+            <View>
+                {/* <Image
+                    source={{uri: AvatarService.getAvatarUrl(deck.)}}
+                /> */}
+            </View>
         </View>
     )
 }
