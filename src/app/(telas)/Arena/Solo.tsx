@@ -1,319 +1,250 @@
+import { useEffect, useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
+
 import CircuitBackground from '@/src/Assets/circuitBackGround';
 import HeaderStack from '@/src/components/headerStack';
 import TelaCarregamento from '@/src/components/telaCarregamento';
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { useEffect, useState } from 'react';
-import { LinearGradient } from 'expo-linear-gradient';
-
-const tamanhoCard = Dimensions.get('window').width - 48;
+import CardPrimary from '@/src/components/CardPrimary';
 
 export default function PlaySolo() {
+  const insets = useSafeAreaInsets();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [mensagem, setMensagem] = useState('');
+  const [percent, setPercent] = useState<number>(0);
 
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [mensagem, setMensagem] = useState("");
-    const [percent, setPercent] = useState<number>(0);
+  useEffect(() => {
+    handleLoading();
+  }, []);
 
-    useEffect(() => {
-        handleLoading();
-    }, []);
+  const handleLoading = async () => {
+    setIsLoading(true);
 
-    const handleLoading = async () => {
-        setIsLoading(true);
+    try {
+      setPercent(0);
+      setMensagem('Baixando seus Cards...');
+      await handleSimularApi();
 
-        try {
-            setPercent(0);
+      setPercent(0);
+      setMensagem('Farmando Aura...');
+      await handleSimularApi();
 
-            setMensagem("Baixando seus Cards...");
-            await handleSimularApi();
+      setPercent(0);
+      setMensagem('Contando os Cards...');
+      await handleSimularApi();
 
-            setPercent(0);
-
-            setMensagem("Farmando Aura...");
-            await handleSimularApi();
-
-            setPercent(0);
-
-            setMensagem("Contando os Cards...");
-            await handleSimularApi();
-
-            setPercent(100);
-
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const handleSimularApi = (): Promise<void> => {
-        return new Promise((resolve) => {
-
-            const interval = setInterval(() => {
-
-                setPercent((prev) => {
-
-                    if (prev >= 100) {
-                        clearInterval(interval);
-                        resolve();
-                        return 100;
-                    }
-
-                    return prev + 1;
-                });
-
-            }, 30);
-        });
-    };
-
-    if (isLoading) {
-        return (
-            <TelaCarregamento
-                mensagem={mensagem}
-                percent={percent}
-            />
-        );
+      setPercent(100);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
+  };
 
-    const cards = {
-        id: "1",
-        deckId: "235452",
-        question: "O que é o Javascript?",
-        answer: "Uma linguagem usada tanto no front quanto no Back-End",
-        wrongAnswer: "Uma linguagem de marcação usada nos aplicativos mobiles junto com .Net."
-    };
+  const handleSimularApi = (): Promise<void> => {
+    return new Promise((resolve) => {
+      const interval = setInterval(() => {
+        setPercent((prev) => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            resolve();
+            return 100;
+          }
+          return prev + 1;
+        });
+      }, 20);
+    });
+  };
 
-    return (
-        <View className="flex-1">
+  if (isLoading) {
+    return <TelaCarregamento mensagem={mensagem} percent={percent} />;
+  }
 
-            <CircuitBackground />
+  const card = {
+    id: '1',
+    deckId: '235452',
+    category: 'JAVASCRIPT',
+    question: 'O que é o Javascript?',
+    answer: 'Uma linguagem de programação usada tanto no Front-End quanto no Back-End.',
+    wrongAnswer: 'Um framework'
+  };
 
-            <View className="flex-1">
+  return (
+    <View className="flex-1 bg-indigo-950">
+      <CircuitBackground />
 
-                <HeaderStack title="Player Solo" />
+      <View className="flex-1">
+        <HeaderStack title="Player Solo" />
 
-                <View className="flex-1 px-6">
+        <View
+          className="flex-1 px-6 justify-between"
+          style={{ paddingBottom: Math.max(insets.bottom, 20) }}
+        >
+          {/* HEADER DE STATUS E PROGRESSO */}
+          <View className="mt-2 gap-3">
+            <View className="flex-row items-center justify-between">
+              <View>
+                <Text className="text-indigo-300/70 text-[10px] font-poppinsBold tracking-widest uppercase">
+                  Progresso
+                </Text>
+                <Text className="text-white text-base font-poppinsBold">
+                  Card 01 <Text className="text-indigo-300/50">/ 10</Text>
+                </Text>
+              </View>
 
-                    {/* STATUS DA PARTIDA */}
-                    <View className="flex-row items-center justify-between mt-4 mb-5">
-
-                        <View>
-                            <Text className="text-indigo-200 text-xs font-poppinsBold">
-                                PROGRESSO
-                            </Text>
-
-                            <Text className="text-white text-lg font-poppinsBold">
-                                Card 01 / 10
-                            </Text>
-                        </View>
-
-                        <View className="flex-row items-center bg-indigo-950/80 border border-indigo-400/40 px-4 py-2 rounded-full">
-                            <Text className="text-yellow-300 text-base mr-1">
-                                ✦
-                            </Text>
-
-                            <Text className="text-indigo-100 font-poppinsBold">
-                                120 Aura
-                            </Text>
-                        </View>
-
-                    </View>
-
-                    {/* PROGRESSO */}
-                    <View className="h-1.5 bg-indigo-950 rounded-full overflow-hidden mb-7">
-
-                        <LinearGradient
-                            colors={["#818cf8", "#c084fc"]}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 0 }}
-                            style={{
-                                width: '10%',
-                                height: '100%',
-                            }}
-                        />
-
-                    </View>
-
-                    {/* CARD */}
-                    <View
-                        style={[
-                            styles.card,
-                            {
-                                width: tamanhoCard,
-                                height: tamanhoCard,
-                            }
-                        ]}
-                    >
-
-                        <LinearGradient
-                            colors={[
-                                "rgba(255,255,255,0.98)",
-                                "rgba(238,242,255,0.98)"
-                            ]}
-                            style={StyleSheet.absoluteFill}
-                        />
-
-                        {/* LABEL */}
-                        <View className="absolute top-5 left-5 bg-indigo-100 px-3 py-1 rounded-full">
-                            <Text className="text-indigo-700 text-xs font-poppinsBold">
-                                PERGUNTA
-                            </Text>
-                        </View>
-
-                        {/* NÚMERO */}
-                        <View className="absolute top-5 right-5">
-                            <Text className="text-indigo-200 text-5xl font-poppinsBold">
-                                01
-                            </Text>
-                        </View>
-
-                        {/* CONTEÚDO */}
-                        <View className="flex-1 items-center justify-center px-8">
-
-                            <Text className="text-indigo-500 text-sm font-poppinsBold mb-4">
-                                JAVASCRIPT
-                            </Text>
-
-                            <Text
-                                className="text-indigo-950 text-3xl text-center font-poppinsBold"
-                            >
-                                {cards.question}
-                            </Text>
-
-                            <View className="w-12 h-1 bg-indigo-500 rounded-full mt-6 mb-5" />
-
-                            <Text className="text-gray-400 text-sm text-center font-poppins">
-                                Você sabe a resposta?
-                            </Text>
-
-                        </View>
-
-                    </View>
-
-                    {/* DIFICULDADE */}
-                    <View className="mt-7">
-
-                        <Text className="text-indigo-200 text-xs font-poppinsBold mb-3">
-                            NÍVEL DE DIFICULDADE
-                        </Text>
-
-                        <View className="flex-row gap-3">
-
-                            {/* FÁCIL */}
-                            <TouchableOpacity
-                                activeOpacity={0.75}
-                                className="flex-1 bg-indigo-950/80 border border-green-400/40 rounded-2xl py-3 items-center"
-                            >
-                                <Text className="text-green-400 text-lg font-poppinsBold">
-                                    ✓
-                                </Text>
-
-                                <Text className="text-green-300 font-poppinsBold">
-                                    Fácil
-                                </Text>
-
-                                <Text className="text-indigo-300 text-xs mt-1">
-                                    +10 Aura
-                                </Text>
-                            </TouchableOpacity>
-
-                            {/* MÉDIO */}
-                            <TouchableOpacity
-                                activeOpacity={0.75}
-                                className="flex-1 bg-indigo-950/80 border border-yellow-400/40 rounded-2xl py-3 items-center"
-                            >
-                                <Text className="text-yellow-400 text-lg font-poppinsBold">
-                                    ~
-                                </Text>
-
-                                <Text className="text-yellow-300 font-poppinsBold">
-                                    Médio
-                                </Text>
-
-                                <Text className="text-indigo-300 text-xs mt-1">
-                                    +20 Aura
-                                </Text>
-                            </TouchableOpacity>
-
-                            {/* DIFÍCIL */}
-                            <TouchableOpacity
-                                activeOpacity={0.75}
-                                className="flex-1 bg-indigo-950/80 border border-red-400/40 rounded-2xl py-3 items-center"
-                            >
-                                <Text className="text-red-400 text-lg font-poppinsBold">
-                                    !
-                                </Text>
-
-                                <Text className="text-red-300 font-poppinsBold">
-                                    Difícil
-                                </Text>
-
-                                <Text className="text-indigo-300 text-xs mt-1">
-                                    +30 Aura
-                                </Text>
-                            </TouchableOpacity>
-
-                        </View>
-
-                    </View>
-
-                    {/* ESPAÇAMENTO */}
-                    <View className="flex-1" />
-
-                    {/* VIRAR */}
-                    <View className="pb-6 pt-5">
-
-                        <TouchableOpacity
-                            activeOpacity={0.85}
-                            className="h-16 rounded-2xl overflow-hidden"
-                        >
-
-                            <LinearGradient
-                                colors={["#818cf8", "#6366f1", "#4338ca"]}
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 1 }}
-                                style={StyleSheet.absoluteFill}
-                            />
-
-                            <View className="flex-1 flex-row items-center justify-center">
-
-                                <Text className="text-white text-xl font-poppinsBold">
-                                    Virar
-                                </Text>
-
-                                <Text className="text-white text-xl ml-3">
-                                    ↻
-                                </Text>
-
-                            </View>
-
-                        </TouchableOpacity>
-
-                    </View>
-
-                </View>
-
+              {/* BADGE DE AURA */}
+              <View className="flex-row items-center gap-1.5 bg-indigo-900/60 border border-indigo-400/30 px-3.5 py-1.5 rounded-full shadow-sm">
+                <MaterialIcons name="auto-awesome" size={14} color="#FDE047" />
+                <Text className="text-indigo-100 text-xs font-poppinsBold">
+                  120 Aura
+                </Text>
+              </View>
             </View>
 
+            {/* BARRA DE PROGRESSO */}
+            <View className="h-2 w-full bg-indigo-950/80 rounded-full overflow-hidden border border-indigo-800/40">
+              <LinearGradient
+                colors={['#818CF8', '#C084FC']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={{ width: '10%', height: '100%' }}
+              />
+            </View>
+          </View>
+
+          {/* CARD PRINCIPAL (Sleeve / Flashcard) */}
+
+          <CardPrimary card={card}/>
+
+
+          {/* <TouchableOpacity
+            activeOpacity={0.95}
+            onPress={() => setIsFlipped(!isFlipped)}
+            className="w-full my-4 min-h-[320px] max-h-[380px] flex-1 rounded-3xl overflow-hidden border border-indigo-200/30 shadow-2xl elevation-8 bg-white"
+          >
+            <LinearGradient
+              colors={['#FFFFFF', '#EEF2FF']}
+              style={{ flex: 1, padding: 24, justifyContent: 'space-between' }}
+            >
+              {/* TOPO DO CARD */}
+              {/* <View className="flex-row justify-between items-center">
+                <View className="bg-indigo-100/80 px-3 py-1 rounded-full border border-indigo-200/50">
+                  <Text className="text-indigo-700 text-[11px] font-poppinsBold uppercase tracking-wider">
+                    {isFlipped ? 'Resposta' : 'Pergunta'}
+                  </Text>
+                </View>
+
+                <Text className="text-indigo-300 font-poppinsBold text-2xl">
+                  #01
+                </Text>
+              </View>
+
+              {/* CORPO DO CARD */}
+              {/* <View className="items-center justify-center my-auto px-2">
+                <Text className="text-indigo-500 text-xs font-poppinsBold tracking-widest uppercase mb-2">
+                  {card.category}
+                </Text>
+
+                <Text className="text-indigo-950 text-2xl text-center font-poppinsBold leading-snug">
+                  {isFlipped ? card.answer : card.question}
+                </Text>
+
+                <View className="w-10 h-1 bg-indigo-400/40 rounded-full my-4" />
+
+                <Text className="text-indigo-400 text-xs text-center font-poppinsRegular">
+                  {isFlipped ? 'Toque para voltar à pergunta' : 'Toque no card para revelar'}
+                </Text>
+              </View> */}
+
+              {/* RODAPÉ DO CARD */}
+              {/* <View className="flex-row items-center justify-center gap-1">
+                <MaterialIcons name="touch-app" size={14} color="#818CF8" />
+                <Text className="text-indigo-400/80 text-[11px] font-poppinsMedium">
+                  Toque para alternar
+                </Text>
+              </View>
+            </LinearGradient>
+          </TouchableOpacity> */}
+
+          {/* SELEÇÃO DE DIFICULDADE */}
+          <View className="mb-3">
+            <Text className="text-indigo-300/70 text-[10px] font-poppinsBold tracking-widest uppercase mb-2.5">
+              Nível de Dificuldade
+            </Text>
+
+            <View className="flex-row gap-2.5">
+              {/* FÁCIL */}
+              <TouchableOpacity
+                activeOpacity={0.75}
+                className="flex-1 bg-emerald-950/40 border border-emerald-500/30 rounded-2xl py-2.5 items-center justify-center active:bg-emerald-900/40"
+              >
+                <MaterialIcons name="check-circle-outline" size={18} color="#34D399" />
+                <Text className="text-emerald-300 text-xs font-poppinsBold mt-1">
+                  Fácil
+                </Text>
+                <Text className="text-emerald-400/70 text-[10px] font-poppinsMedium">
+                  +10 Aura
+                </Text>
+              </TouchableOpacity>
+
+              {/* MÉDIO */}
+              <TouchableOpacity
+                activeOpacity={0.75}
+                className="flex-1 bg-amber-950/40 border border-amber-500/30 rounded-2xl py-2.5 items-center justify-center active:bg-amber-900/40"
+              >
+                <MaterialIcons name="remove-circle-outline" size={18} color="#FBBF24" />
+                <Text className="text-amber-300 text-xs font-poppinsBold mt-1">
+                  Médio
+                </Text>
+                <Text className="text-amber-400/70 text-[10px] font-poppinsMedium">
+                  +20 Aura
+                </Text>
+              </TouchableOpacity>
+
+              {/* DIFÍCIL */}
+              <TouchableOpacity
+                activeOpacity={0.75}
+                className="flex-1 bg-rose-950/40 border border-rose-500/30 rounded-2xl py-2.5 items-center justify-center active:bg-rose-900/40"
+              >
+                <MaterialIcons name="error-outline" size={18} color="#F87171" />
+                <Text className="text-rose-300 text-xs font-poppinsBold mt-1">
+                  Difícil
+                </Text>
+                <Text className="text-rose-400/70 text-[10px] font-poppinsMedium">
+                  +30 Aura
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* BOTÃO AÇÃO (VIRAR CARD) */}
+          {/* <TouchableOpacity
+            activeOpacity={0.85}
+            onPress={() => setIsFlipped(!isFlipped)}
+            className="h-14 w-full rounded-2xl overflow-hidden shadow-lg elevation-4"
+          >
+            <LinearGradient
+              colors={['#818CF8', '#6366F1', '#4338CA']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 8,
+              }}
+            >
+              <Text className="text-white text-base font-poppinsBold">
+                {isFlipped ? 'Mostrar Pergunta' : 'Virar Card'}
+              </Text>
+              <MaterialIcons name="flip" size={20} color="#FFF" />
+            </LinearGradient>
+          </TouchableOpacity> */}
         </View>
-    );
+      </View>
+    </View>
+  );
 }
-
-const styles = StyleSheet.create({
-    card: {
-        overflow: 'hidden',
-        borderRadius: 24,
-
-        borderWidth: 1,
-        borderColor: 'rgba(199, 210, 254, 0.8)',
-
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 10,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 20,
-
-        elevation: 10,
-    },
-});

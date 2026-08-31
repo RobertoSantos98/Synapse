@@ -1,13 +1,15 @@
 import CardCover from '@/src/components/cardCover';
 import { ExpoRoot, router, useLocalSearchParams } from 'expo-router';
-import { use, useEffect, useState } from 'react';
+import { use, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Dimensions, FlatList, Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import BaralhoService, {  deckProps } from '../../../Services/BaralhoService';
+import BaralhoService, { deckProps } from '../../../Services/BaralhoService';
 import { Fontisto, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CardService, { CardProps } from '../../../Services/CardService';
 import BackGroundLightHome from '@/src/Assets/backGround-lightHome';
 import DetailCard from '@/src/components/DetailsCard';
+import BottomSheet, { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
+import CardPrimary from '@/src/components/CardPrimary';
 
 
 const tamanhoCard = (Dimensions.get('window').width / 3);
@@ -19,9 +21,23 @@ export default function Detalhes() {
 
     const [deck, setDeck] = useState<deckProps | null>(null);
     const [isPrivate, setIsPrivate] = useState(true);
+
     const fogo: number = deck?.level === "facil" ? 1 : deck?.level ? 2 : 3;
 
-    const [modalVisible, setModalVisible] = useState(false)
+    const [selectedCard, setSelectedCard] = useState<CardProps | null>(null);
+
+    const bottomSheetRef = useRef<BottomSheet>(null);
+    const snap = useMemo(() => ["50%", "100%"], []);
+
+    const bottomSheetRefNovoCard = useRef<BottomSheet>(null);
+    const snapNovoCard = useMemo(() => ["90%", "100%"], []);
+
+    function abrirSheet() {
+        bottomSheetRef.current?.snapToIndex(0);
+    }
+    function abrirSheetNovoCard() {
+        bottomSheetRefNovoCard.current?.snapToIndex(0);
+    }
 
 
     const handleLoadDeck = async () => {
@@ -34,41 +50,10 @@ export default function Detalhes() {
         handleLoadDeck();
     }, [])
 
-    const [isLoadingCreateCard, setIsLoadingCreateCard] = useState(false);
 
-
-    const [frenteCard, setFrenteCard] = useState("");
-    const [versoCard, setVersoCard] = useState("");
-    const [wrongAnswer, setWrongAnswer] = useState("");
-    const [step, setStep] = useState(1);
-
-    const handleCard = async () => {
-        setIsLoadingCreateCard(true);
-
-        try {
-
-            const data: CardProps = {
-                deckId: deck?.id,
-                question: frenteCard,
-                answer: versoCard,
-                wrongAnswer: wrongAnswer
-            }
-
-            const response = await CardService.PostCard(data);
-            Alert.alert("Sucesso!", "Card Criado com sucesso");
-            setFrenteCard("");
-            setVersoCard("");
-            setWrongAnswer("");
-            setStep(1);
-
-        } catch (error: any) {
-            console.log("Erro: ", error.message);
-
-        } finally {
-
-            setIsLoadingCreateCard(false);
-
-        }
+    function handleSelectedCard(card: CardProps) {
+        setSelectedCard(card);
+        abrirSheet();
     }
 
 
@@ -126,7 +111,7 @@ export default function Detalhes() {
                                 <Text className='text-primary-200 text-2xl font-bold'>Cartas do Baralho: </Text>
                                 <Text className='text-xl font-bold text-white'>{deck?.totalCards}</Text>
                             </View>
-                            <TouchableOpacity className='flex-row bg-white p-2 items-center gap-2 rounded-lg' onPress={() => setModalVisible(true)}>
+                            <TouchableOpacity className='flex-row bg-white p-2 items-center gap-2 rounded-lg' onPress={abrirSheetNovoCard}>
                                 <MaterialCommunityIcons name='cards-outline' size={16} color={"#6366f1"} />
                                 <Text className='text-primary-500 text-md font-bold'>Criar Carta</Text>
                             </TouchableOpacity>
@@ -136,7 +121,7 @@ export default function Detalhes() {
                             <FlatList
                                 data={deck.cards}
                                 keyExtractor={(c) => c.id || c.question}
-                                renderItem={({ item }) => <RenderItemCardMeuDeck id={item.id} question={item.question} answer={item.answer} wrongAnswer={item.wrongAnswer} />}
+                                renderItem={({ item }) => <RenderItemCardMeuDeck card={item} setSelectedCard={() => handleSelectedCard(item)} />}
                                 horizontal
                                 contentContainerStyle={{
                                     gap: 4,
@@ -175,130 +160,200 @@ export default function Detalhes() {
 
             </ScrollView>
 
-            <Modal
-                visible={modalVisible}
-                animationType='slide'
-                transparent={true}
+            <BottomSheet
+                ref={bottomSheetRefNovoCard}
+                index={-1}
+                snapPoints={snapNovoCard}
+                enablePanDownToClose
             >
-                <View className='flex-1 justify-end'>
-                    <TouchableOpacity onPress={() => setModalVisible(false)} className='h-14' />
-                    <View className='flex-1 backdrop-blur-md w-full bg-white/90 bottom-0 rounded-t-3xl border border-slate-400 pt-2 overflow-hidden' style={{ boxShadow: '0px -8px 10px rgba(0, 0, 0, 0.2)' }}>
+                <BottomSheetView>
+                    <CriarNovoCard deckId={deck?.id} />
+                </BottomSheetView>
+            </BottomSheet>
 
-                        <BackGroundLightHome />
-
-                        <View className='p-4 gap-4'>
-                            <View className='flex-row justify-between items-center'>
-                                <Text className='text-2xl font-poppinsBold text-primary-500'>Criar Carta</Text>
-                                <TouchableOpacity
-                                    className='p-3 bg-slate-50 rounded-full border border-slate-200'
-                                    style={{ boxShadow: '-1px 4px 8px rgba(0, 0, 0, 0.1)' }}
-                                    onPress={() => setModalVisible(false)}>
-                                    <MaterialCommunityIcons name='close' size={18} />
-                                </TouchableOpacity>
-                            </View>
-
-                            <View className='items-center'>
-                                <View className='bg-white border border-slate-400 rounded-xl justify-center p-2' style={{ height: tamanhoCardAdc * 1.5, width: tamanhoCardAdc, boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3) ' }}>
-                                    <Text className='text-center font-bold text-xl tracking-wider leading-normal'>
-                                        {step === 1 ? frenteCard : step === 2 ? versoCard : wrongAnswer}
-                                    </Text>
-                                </View>
-                            </View>
-
-                            {(() => {
-                                switch (step) {
-                                    case 1:
-                                        return (
-                                            <View className='p-4 border border-slate-200 rounded-xl gap-2 bg-white'>
-                                                <Text className='font-bold text-md text-slate-900'>Digite a Frente da Carta: </Text>
-                                                <TextInput
-                                                    className='border border-primary-200 rounded-2xl px-4 py-6 bg-slate-50'
-                                                    style={{ boxShadow: '-1px 4px 10px rgba(0, 0, 0, 0.1)' }}
-                                                    value={frenteCard}
-                                                    onChangeText={setFrenteCard}
-                                                />
-                                            </View>
-                                        )
-                                    case 2:
-                                        return (
-                                            <View className='p-4 border border-slate-200 rounded-xl gap-2 bg-white'>
-                                                <Text className='font-bold text-md text-slate-900'>Digite o Verso da Carta: </Text>
-                                                <TextInput
-                                                    className='border border-primary-200 rounded-2xl px-4 py-6 bg-slate-50'
-                                                    style={{ boxShadow: '-1px 4px 10px rgba(0, 0, 0, 0.1)' }}
-                                                    value={versoCard}
-                                                    onChangeText={setVersoCard}
-                                                />
-                                            </View>
-                                        )
-                                    case 3:
-                                        return (
-                                            <View className='p-4 border border-slate-200 rounded-xl gap-2 bg-white'>
-                                                <Text className='font-bold text-md text-slate-900'>Digite uma resposta Errada para Jogar: </Text>
-                                                <TextInput
-                                                    className='border border-primary-200 rounded-2xl px-4 py-6 bg-slate-50'
-                                                    style={{ boxShadow: '-1px 4px 10px rgba(0, 0, 0, 0.1)' }}
-                                                    value={wrongAnswer}
-                                                    onChangeText={setWrongAnswer}
-                                                />
-                                            </View>
-                                        )
-
-                                    default:
-                                        return null
-                                }
-                            })()
-                            }
-
-                            <View className='flex-row gap-2'>
-                                <TouchableOpacity
-                                    onPress={() => step != 1 ? setStep(step - 1) : setStep(1)}
-                                    className='py-4 w-1/6 bg-white items-center justify-center rounded-xl border border-slate-200' style={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>
-                                    <MaterialCommunityIcons name='arrow-left' size={18} />
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    onPress={() => step === 1 ? setStep(2) : step === 2 ? setStep(3) : step === 3 ? handleCard() : setStep(1)}
-                                    disabled={isLoadingCreateCard}
-                                    className='flex-1 bg-primary-500 py-4 rounded-xl items-center border border-primary-600'
-                                    style={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)' }}
-                                >
-                                    <Text className='text-2xl font-bold text-white'>{isLoadingCreateCard ?
-                                        <ActivityIndicator size={28} color={"#fff"} /> :
-                                        step != 3 ? "Virar" : "Criar"}</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-
-                    </View>
-                </View>
-
-            </Modal>
+            <BottomSheet
+                ref={bottomSheetRef}
+                index={-1}
+                snapPoints={snap}
+                enablePanDownToClose
+                enableDynamicSizing={false}
+            >
+                <BottomSheetView>
+                    <RenderCardDetail card={selectedCard}/>
+                </BottomSheetView>
+            </BottomSheet>
 
         </View>
     );
 }
 
+type RenderItemCardMeuDeckProps = {
+    card: CardProps,
+    setSelectedCard: () => void
+}
 
-const RenderItemCardMeuDeck = ({ id, question, answer, wrongAnswer }: CardProps) => {
+const RenderItemCardMeuDeck = ({ card, setSelectedCard }: RenderItemCardMeuDeckProps) => {
 
-    const card : CardProps = {
-        id: id,
-        question: question,
-        answer: answer,
-        wrongAnswer: wrongAnswer
-    }
-
-    const [ modalDetailCard, setModalDetailCard] = useState(false);
-
-    if(modalDetailCard) return <DetailCard {...card as CardProps} />
 
     return (
-        <TouchableOpacity
-            className='p-2 bg-white rounded-2xl items-center justify-center'
-            style={{ width: tamanhoCard, height: tamanhoCard + 40, boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.5)' }}
-            onPress={() => setModalDetailCard(true)}
-        >
-            <Text className='text-center text-xs tracking-wider leading-normal font-poppinsBold'>{question}</Text>
-        </TouchableOpacity>
+        <View>
+            <TouchableOpacity
+                className='p-2 bg-white rounded-2xl items-center justify-center'
+                style={{ width: tamanhoCard, height: tamanhoCard + 40, boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.5)' }}
+                onPress={setSelectedCard}
+            >
+                <Text className='text-center text-xs tracking-wider leading-normal font-poppinsBold'>{card.question}</Text>
+
+            </TouchableOpacity>
+        </View>
+    )
+}
+
+
+
+type CriarNovoCardProps = {
+    deckId?: string
+}
+
+function CriarNovoCard({ deckId }: CriarNovoCardProps ) {
+
+    const [isLoadingCreateCard, setIsLoadingCreateCard] = useState(false);
+
+
+
+    const [frenteCard, setFrenteCard] = useState("");
+    const [versoCard, setVersoCard] = useState("");
+    const [wrongAnswer, setWrongAnswer] = useState("");
+    const [step, setStep] = useState(1);
+
+    const handleCard = async () => {
+        setIsLoadingCreateCard(true);
+
+        try {
+
+            const data: CardProps = {
+                deckId: deckId,
+                question: frenteCard,
+                answer: versoCard,
+                wrongAnswer: wrongAnswer
+            }
+
+            const response = await CardService.PostCard(data);
+            Alert.alert("Sucesso!", "Card Criado com sucesso");
+            setFrenteCard("");
+            setVersoCard("");
+            setWrongAnswer("");
+            setStep(1);
+
+        } catch (error: any) {
+            console.log("Erro: ", error.message);
+
+        } finally {
+
+            setIsLoadingCreateCard(false);
+
+        }
+    }
+
+    return (
+            <View className='flex-1 backdrop-blur-md w-full bg-white/90 pt-2' >
+
+                <View className='p-4 gap-4'>
+                    <View className='flex-row justify-between items-center'>
+                        <Text className='text-2xl font-poppinsBold text-primary-500'>Criar Carta</Text>
+                        <TouchableOpacity
+                            className='p-3 bg-slate-50 rounded-full border border-slate-200'
+                            style={{ boxShadow: '-1px 4px 8px rgba(0, 0, 0, 0.1)' }}
+                            onPress={() => { }}>
+                            <MaterialCommunityIcons name='close' size={18} />
+                        </TouchableOpacity>
+                    </View>
+
+                    <View className='items-center'>
+                        <View className='bg-white border border-slate-400 rounded-xl justify-center p-2' style={{ height: tamanhoCardAdc * 1.5, width: tamanhoCardAdc, boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3) ' }}>
+                            <Text className='text-center font-bold text-xl tracking-wider leading-normal'>
+                                {step === 1 ? frenteCard : step === 2 ? versoCard : wrongAnswer}
+                            </Text>
+                        </View>
+                    </View>
+
+                    {(() => {
+                        switch (step) {
+                            case 1:
+                                return (
+                                    <View className='p-4 border border-slate-200 rounded-xl gap-2 bg-white'>
+                                        <Text className='font-bold text-md text-slate-900'>Digite a Frente da Carta: </Text>
+                                        <TextInput
+                                            className='border border-primary-200 rounded-2xl px-4 py-6 bg-slate-50'
+                                            style={{ boxShadow: '-1px 4px 10px rgba(0, 0, 0, 0.1)' }}
+                                            value={frenteCard}
+                                            onChangeText={setFrenteCard}
+                                        />
+                                    </View>
+                                )
+                            case 2:
+                                return (
+                                    <View className='p-4 border border-slate-200 rounded-xl gap-2 bg-white'>
+                                        <Text className='font-bold text-md text-slate-900'>Digite o Verso da Carta: </Text>
+                                        <TextInput
+                                            className='border border-primary-200 rounded-2xl px-4 py-6 bg-slate-50'
+                                            style={{ boxShadow: '-1px 4px 10px rgba(0, 0, 0, 0.1)' }}
+                                            value={versoCard}
+                                            onChangeText={setVersoCard}
+                                        />
+                                    </View>
+                                )
+                            case 3:
+                                return (
+                                    <View className='p-4 border border-slate-200 rounded-xl gap-2 bg-white'>
+                                        <Text className='font-bold text-md text-slate-900'>Digite uma resposta Errada para Jogar: </Text>
+                                        <TextInput
+                                            className='border border-primary-200 rounded-2xl px-4 py-6 bg-slate-50'
+                                            style={{ boxShadow: '-1px 4px 10px rgba(0, 0, 0, 0.1)' }}
+                                            value={wrongAnswer}
+                                            onChangeText={setWrongAnswer}
+                                        />
+                                    </View>
+                                )
+
+                            default:
+                                return null
+                        }
+                    })()
+                    }
+
+                    <View className='flex-row gap-2'>
+                        <TouchableOpacity
+                            onPress={() => step != 1 ? setStep(step - 1) : setStep(1)}
+                            className='py-4 w-1/6 bg-white items-center justify-center rounded-xl border border-slate-200' style={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)' }}>
+                            <MaterialCommunityIcons name='arrow-left' size={18} />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => step === 1 ? setStep(2) : step === 2 ? setStep(3) : step === 3 ? handleCard() : setStep(1)}
+                            disabled={isLoadingCreateCard}
+                            className='flex-1 bg-primary-500 py-4 rounded-xl items-center border border-primary-600'
+                            style={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)' }}
+                        >
+                            <Text className='text-2xl font-bold text-white'>{isLoadingCreateCard ?
+                                <ActivityIndicator size={28} color={"#fff"} /> :
+                                step != 3 ? "Virar" : "Criar"}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+        </View>
+    )
+}
+
+
+type RenderCardDetailProps = {
+    card: CardProps
+}
+
+function RenderCardDetail({card}: RenderCardDetailProps) {
+    return(
+        <View className='mx-4 my-2' >
+            <Text className='font-bold text-base'>Detalhes: </Text>
+            <CardPrimary card={card} />
+        </View>
     )
 }
