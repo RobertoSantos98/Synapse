@@ -1,7 +1,8 @@
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
@@ -14,6 +15,7 @@ export default function ConfigurarSessao() {
 
 
 
+    const podeContinuar = quantidadeCards > 0;
 
 
 
@@ -44,7 +46,7 @@ export default function ConfigurarSessao() {
 
     return (
         <View
-            className="flex-1 bg-primary-950"
+            className="flex-1 bg-primary-100"
             style={{
                 paddingTop: insets.top
             }}
@@ -58,21 +60,21 @@ export default function ConfigurarSessao() {
                     <TouchableOpacity
                         onPress={() => router.back()}
                         activeOpacity={0.8}
-                        className="w-11 h-11 rounded-full bg-white/10 border border-white/10 items-center justify-center"
+                        className="w-11 h-11 rounded-full bg-white/80 border border-slate-400 items-center justify-center"
                     >
                         <MaterialIcons
                             name="arrow-back-ios-new"
                             size={17}
-                            color="#fff"
+                            color="#64748b"
                         />
                     </TouchableOpacity>
 
                     <View className="items-end">
-                        <Text className="text-xs font-bold text-indigo-300 tracking-widest">
+                        <Text className="text-xs font-bold text-indigo-500 tracking-widest">
                             PREPARAR
                         </Text>
 
-                        <Text className="text-white font-bold">
+                        <Text className="text-slate-400 font-bold">
                             ETAPA 02 / 03
                         </Text>
                     </View>
@@ -81,7 +83,7 @@ export default function ConfigurarSessao() {
 
                 <View className="mt-6">
 
-                    <Text className="text-white text-3xl font-poppinsBold">
+                    <Text className="text-slate-700 text-3xl font-poppinsBold">
                         Configure sua sessão
                     </Text>
 
@@ -95,7 +97,22 @@ export default function ConfigurarSessao() {
 
             <View className='gap-6'>
 
-                <View className='bg-primary-500 mx-4 px-4 py-4 rounded-2xl gap-4 border border-primary-300'>
+                <View className=' mx-4 px-4 py-4 rounded-2xl gap-4 border border-primary-800 overflow-hidden'>
+
+                    {/* <LinearGradient
+                        colors={["#475569", "#334155"]}
+                        style={StyleSheet.absoluteFill}
+                        start={{x: 0, y: 1}}
+                        end={{x:1, y: 0.5}}
+                    /> */}
+                    <LinearGradient
+                        colors={["#6366f1", "#3730a3"]}
+                        style={StyleSheet.absoluteFill}
+                        start={{ x: 0.5, y: 1 }}
+                        end={{ x: 1, y: 0.5 }}
+                    />
+
+
                     <Text className='text-white text-lg font-bold'>Quantidade de cartas: </Text>
 
                     <View className='items-center flex-row gap-2 justify-center'>
@@ -122,35 +139,40 @@ export default function ConfigurarSessao() {
                     </View>
                 </View>
 
-                <View className='bg-primary-500 mx-4 px-4 py-4 rounded-2xl gap-4 border border-primary-300'>
-                    <Text className='text-white font-bold text-lg'>Modo de Estudo: </Text>
+                <View className='bg-white mx-4 px-4 py-4 rounded-2xl gap-4 border border-slate-300 overflow-hidden'>
+
+
+                    <Text className='text-slate-800 font-bold text-lg'>Modo de Estudo: </Text>
 
                     <View className='gap-2'>
                         {modoEstudoSelecao.map((item) => (
                             <TouchableOpacity key={item.valor}
+                                activeOpacity={0.8}
                                 onPress={() => setModoEstudo(item.valor)}
                                 className='flex-row gap-4 items-center p-4 rounded-xl'
                                 style={{
                                     borderWidth: 1,
-                                    borderColor: modoEstudo === item.valor ? "#f97316" : "#4f46e5",
+                                    borderColor: modoEstudo === item.valor ? "#f97316" : "#e0e7ff",
+                                    backgroundColor: modoEstudo === item.valor ? "#eef2ff" : "#fff"
+
                                 }}
                             >
                                 {modoEstudo === item.valor ? (
-                                        <View className='bg-orange-500 h-4 w-4 rounded-full ' />
-                                    ) : (
-                                        <View className='bg-primary-100 h-4 w-4 rounded-full ' />
-                                    )
+                                    <View className='bg-orange-500 h-4 w-4 rounded-full border border-orange-700' />
+                                ) : (
+                                    <View className='bg-primary-100 h-4 w-4 rounded-full border border-primary-100' />
+                                )
                                 }
-                                <Text className='font-bold text-primary-100'>{item.title}</Text>
+                                <Text className='font-bold text-slate-600'>{item.title}</Text>
                             </TouchableOpacity>
                         ))}
 
                     </View>
 
                 </View>
-                
-                <View className='bg-primary-500 mx-4 px-4 py-4 rounded-2xl gap-4 border border-primary-300'>
-                    <Text className='text-white font-bold text-lg'>Ordem: </Text>
+
+                <View className='bg-white mx-4 px-4 py-4 rounded-2xl gap-4 border border-slate-300 overflow-hidden'>
+                    <Text className='text-slate-800 font-bold text-lg'>Ordem: </Text>
 
                     <View className='gap-2'>
                         {ordemSelecao.map((item) => (
@@ -159,20 +181,62 @@ export default function ConfigurarSessao() {
                                 className='flex-row gap-4 items-center p-4 rounded-xl'
                                 style={{
                                     borderWidth: 1,
-                                    borderColor: ordemEstudo === item.valor ? "#f97316" : "#4f46e5",
+                                    borderColor: ordemEstudo === item.valor ? "#f97316" : "#e0e7ff",
+                                    backgroundColor: ordemEstudo === item.valor ? "#eef2ff" : "#fff"
                                 }}
                             >
                                 {ordemEstudo === item.valor ? (
-                                        <View className='bg-orange-500 h-4 w-4 rounded-full ' />
-                                    ) : (
-                                        <View className='bg-primary-100 h-4 w-4 rounded-full ' />
-                                    )
+                                    <View className='bg-orange-500 h-4 w-4 rounded-full ' />
+                                ) : (
+                                    <View className='bg-primary-100 h-4 w-4 rounded-full ' />
+                                )
                                 }
-                                <Text className='font-bold text-primary-100'>{item.title}</Text>
+                                <Text className='font-bold text-slate-600'>{item.title}</Text>
                             </TouchableOpacity>
                         ))}
 
                     </View>
+
+                </View>
+
+                <View
+                    className="px-5 pt-3 bg-primary-100"
+                    style={{
+                        paddingBottom: insets.bottom + 12
+                    }}
+                >
+
+                    <TouchableOpacity
+                        disabled={!podeContinuar}
+                        activeOpacity={0.85}
+                        onPress={() => {
+                            // Próxima etapa
+
+                        }}
+                        className={`
+                            h-16 rounded-2xl
+                            flex-row items-center justify-center
+                            ${podeContinuar
+                                ? 'bg-indigo-500'
+                                : 'bg-slate-300'
+                            }
+                        `}
+                    >
+
+                        <Text className="text-white text-lg font-poppinsBold">
+                            Continuar
+                        </Text>
+
+                        <MaterialIcons
+                            name="arrow-forward"
+                            size={22}
+                            color="#fff"
+                            style={{
+                                marginLeft: 8
+                            }}
+                        />
+
+                    </TouchableOpacity>
 
                 </View>
 
