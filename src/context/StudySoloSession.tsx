@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { deckProps } from "../Services/BaralhoService";
+import { router } from "expo-router";
 
 
 interface StudySoloSessionContextData {
@@ -22,9 +23,11 @@ interface StudySoloSessionContextData {
 
     limparSessao: () => void;
 
+    irParaEstudo: () => void;
+
 }
 
-const StudySoloSessionContext = createContext({} as StudySoloSessionContextData);
+const StudySoloSessionContext = createContext<StudySoloSessionContextData | undefined>(undefined);
 
 export function StudySoloSessionProvider({ children }: { children: ReactNode }) {
 
@@ -43,7 +46,7 @@ export function StudySoloSessionProvider({ children }: { children: ReactNode }) 
     }
 
     const voltarStep = () => {
-        setStep(prev => Math.min(prev - 1, 1))
+        setStep(prev => Math.max(prev - 1, 1))
     }
 
     const adicionarDeck = (deck: deckProps) => {
@@ -83,8 +86,12 @@ export function StudySoloSessionProvider({ children }: { children: ReactNode }) 
         );
     };
 
+    const irParaEstudo = () => {
+        router.push('/(telas)/Arena/EstudoSolo/Solo')
+    }
+
     return (
-        <StudySoloSessionContext.Provider value={{ step, proximoStep, voltarStep, decksEscolhidos, adicionarDeck, removerDeck, quantidadeCards, setQuantidadeCards, handleQuantidade, modoEstudo, setModoEstudo, ordemEstudo, setOrdemEstudo, limparSessao }}>
+        <StudySoloSessionContext.Provider value={{ step, proximoStep, voltarStep, decksEscolhidos, adicionarDeck, removerDeck, quantidadeCards, setQuantidadeCards, handleQuantidade, modoEstudo, setModoEstudo, ordemEstudo, setOrdemEstudo, limparSessao, irParaEstudo }}>
             {children}
         </StudySoloSessionContext.Provider>
     )
@@ -93,7 +100,9 @@ export function StudySoloSessionProvider({ children }: { children: ReactNode }) 
 export function useStudySoloSession() {
     const context = useContext(StudySoloSessionContext);
 
-    if (!context) throw new Error("useStudySoloSession deve ser usado dentro de StudySessionProvider");
+    if (!context) {
+        throw new Error("useStudySoloSession deve ser usado dentro de StudySessionProvider");
+    }
 
     return context;
 }

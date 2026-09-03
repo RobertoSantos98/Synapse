@@ -1,6 +1,6 @@
 import ConfigurarSessao from './configurarSessao';
 import ResumoSessao from './Resumo';
-import { StudySoloSessionProvider, useStudySoloSession } from '@/src/context/StudySoloSession';
+import { useStudySoloSession } from '@/src/context/StudySoloSession';
 import PrepararSessao from './PrepararSessao';
 
 
@@ -8,9 +8,7 @@ export default function PrepararEstudos() {
     
     
     return(
-        <StudySoloSessionProvider>
             <Preparacao/>
-        </StudySoloSessionProvider>
     )
     
 }
@@ -20,6 +18,7 @@ function Preparacao(){
 
     const { step } = useStudySoloSession();
 
+    console.log("STEP ATUAL:", step);
 
     if(step === 1 ) return <PrepararSessao/>
 

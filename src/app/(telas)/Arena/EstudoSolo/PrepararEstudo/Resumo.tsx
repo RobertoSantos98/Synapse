@@ -19,7 +19,7 @@ export default function ResumoSessao() {
 
     const insets = useSafeAreaInsets();
 
-    const { quantidadeCards, modoEstudo, ordemEstudo, decksEscolhidos, voltarStep } = useStudySoloSession();
+    const { quantidadeCards, modoEstudo, ordemEstudo, decksEscolhidos, voltarStep, irParaEstudo } = useStudySoloSession();
 
 
     const formatarModo = (modo: string) => {
@@ -475,7 +475,7 @@ export default function ResumoSessao() {
                     <TouchableOpacity
                         activeOpacity={0.85}
                         onPress={() => {
-                            // Criar/Iniciar sessão aqui
+                            irParaEstudo();
 
                             console.log({
                                 decksEscolhidos,
@@ -483,8 +483,6 @@ export default function ResumoSessao() {
                                 modoEstudo,
                                 ordemEstudo
                             });
-
-                            // router.push('/(telas)/Arena/Solo')
                         }}
                         className="flex-1 bg-primary-500 py-5 rounded-2xl"
                     >

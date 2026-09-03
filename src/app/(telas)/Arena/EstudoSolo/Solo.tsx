@@ -24,11 +24,7 @@ export default function PlaySolo() {
 
     try {
       setPercent(0);
-      setMensagem('Baixando seus Cards...');
-      await handleSimularApi();
-
-      setPercent(0);
-      setMensagem('Farmando Aura...');
+      setMensagem('Baixando os Cards...');
       await handleSimularApi();
 
       setPercent(0);
@@ -118,55 +114,6 @@ export default function PlaySolo() {
 
           <CardPrimary card={card}/>
 
-
-          {/* <TouchableOpacity
-            activeOpacity={0.95}
-            onPress={() => setIsFlipped(!isFlipped)}
-            className="w-full my-4 min-h-[320px] max-h-[380px] flex-1 rounded-3xl overflow-hidden border border-indigo-200/30 shadow-2xl elevation-8 bg-white"
-          >
-            <LinearGradient
-              colors={['#FFFFFF', '#EEF2FF']}
-              style={{ flex: 1, padding: 24, justifyContent: 'space-between' }}
-            >
-              {/* TOPO DO CARD */}
-              {/* <View className="flex-row justify-between items-center">
-                <View className="bg-indigo-100/80 px-3 py-1 rounded-full border border-indigo-200/50">
-                  <Text className="text-indigo-700 text-[11px] font-poppinsBold uppercase tracking-wider">
-                    {isFlipped ? 'Resposta' : 'Pergunta'}
-                  </Text>
-                </View>
-
-                <Text className="text-indigo-300 font-poppinsBold text-2xl">
-                  #01
-                </Text>
-              </View>
-
-              {/* CORPO DO CARD */}
-              {/* <View className="items-center justify-center my-auto px-2">
-                <Text className="text-indigo-500 text-xs font-poppinsBold tracking-widest uppercase mb-2">
-                  {card.category}
-                </Text>
-
-                <Text className="text-indigo-950 text-2xl text-center font-poppinsBold leading-snug">
-                  {isFlipped ? card.answer : card.question}
-                </Text>
-
-                <View className="w-10 h-1 bg-indigo-400/40 rounded-full my-4" />
-
-                <Text className="text-indigo-400 text-xs text-center font-poppinsRegular">
-                  {isFlipped ? 'Toque para voltar à pergunta' : 'Toque no card para revelar'}
-                </Text>
-              </View> */}
-
-              {/* RODAPÉ DO CARD */}
-              {/* <View className="flex-row items-center justify-center gap-1">
-                <MaterialIcons name="touch-app" size={14} color="#818CF8" />
-                <Text className="text-indigo-400/80 text-[11px] font-poppinsMedium">
-                  Toque para alternar
-                </Text>
-              </View>
-            </LinearGradient>
-          </TouchableOpacity> */}
 
           {/* SELEÇÃO DE DIFICULDADE */}
           <View className="mb-3">

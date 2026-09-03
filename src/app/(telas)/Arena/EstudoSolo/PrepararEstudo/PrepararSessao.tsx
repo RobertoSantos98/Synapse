@@ -345,10 +345,13 @@ export default function PrepararSessao() {
                     <TouchableOpacity
                         disabled={!podeContinuar}
                         activeOpacity={0.85}
-                        onPress={() => {
+                        onPress={
                             // Próxima etapa
-                            proximoStep()
-                        }}
+                            () => {
+                                console.log("Botão clicado")
+                                proximoStep()
+                            }
+                        }
                         className={`
                             h-16 rounded-2xl
                             flex-row items-center justify-center
