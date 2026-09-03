@@ -1,3 +1,4 @@
+import { useStudySoloSession } from '@/src/context/StudySoloSession';
 import { MaterialIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
@@ -16,17 +17,10 @@ export default function ConfigurarSessao() {
 
     const insets = useSafeAreaInsets();
 
-    const [quantidadeCards, setQuantidadeCards] = useState<number>(20);
-    const [modoEstudo, setModoEstudo] = useState<string>('revisao');
-    const [ordemEstudo, setOrdemEstudo] = useState<string>('aleatorio');
+    const { proximoStep, voltarStep, modoEstudo, setModoEstudo, ordemEstudo, setOrdemEstudo, quantidadeCards, handleQuantidade } = useStudySoloSession();
 
     const podeContinuar = quantidadeCards > 0;
 
-    const handleQuantidade = (valor: number) => {
-        setQuantidadeCards(prev =>
-            Math.max(1, prev + valor)
-        );
-    };
 
     const modoEstudoSelecao = [
         {
@@ -485,20 +479,26 @@ export default function ConfigurarSessao() {
                     {/* ================================================= */}
 
                     <View
-                        className="mt-auto px-5 pt-4 bg-slate-50"
+                        className="mt-auto px-5 pt-4 bg-slate-50 flex-row gap-2"
                         style={{
                             paddingBottom: insets.bottom + 12
                         }}
                     >
+                        <TouchableOpacity 
+                            onPress={voltarStep}
+                            className='h-16 items-center justify-center bg-white border border-slate-200 rounded-2xl w-2/12'>
+                            <MaterialIcons name='arrow-back' size={22}  />
+                        </TouchableOpacity>
 
                         <TouchableOpacity
                             disabled={!podeContinuar}
                             activeOpacity={0.85}
                             onPress={() => {
-                                // próxima etapa
+                                proximoStep()
                             }}
                             className={`
                             h-16
+                            flex-1
                             rounded-2xl
                             flex-row
                             items-center

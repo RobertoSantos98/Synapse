@@ -14,6 +14,7 @@ interface StudySoloSessionContextData {
 
     quantidadeCards: number;
     setQuantidadeCards: (quantidade: number) => void;
+    handleQuantidade: (quantidade: number) => void;
     modoEstudo: string;
     setModoEstudo: (modo: string) => void;
     ordemEstudo: string;
@@ -27,7 +28,7 @@ const StudySoloSessionContext = createContext({} as StudySoloSessionContextData)
 
 export function StudySoloSessionProvider({ children }: { children: ReactNode }) {
 
-    const [step, setStep ] = useState<number>(1);
+    const [step, setStep] = useState<number>(1);
 
     const [decksEscolhidos, setDecksEscolhidos] = useState<deckProps[]>([]);
 
@@ -76,8 +77,14 @@ export function StudySoloSessionProvider({ children }: { children: ReactNode }) 
 
     };
 
-    return(
-        <StudySoloSessionContext.Provider value={{step, proximoStep, voltarStep ,decksEscolhidos, adicionarDeck, removerDeck, quantidadeCards, setQuantidadeCards, modoEstudo, setModoEstudo, ordemEstudo, setOrdemEstudo, limparSessao }}>
+    const handleQuantidade = (valor: number) => {
+        setQuantidadeCards(prev =>
+            Math.max(1, prev + valor)
+        );
+    };
+
+    return (
+        <StudySoloSessionContext.Provider value={{ step, proximoStep, voltarStep, decksEscolhidos, adicionarDeck, removerDeck, quantidadeCards, setQuantidadeCards, handleQuantidade, modoEstudo, setModoEstudo, ordemEstudo, setOrdemEstudo, limparSessao }}>
             {children}
         </StudySoloSessionContext.Provider>
     )
@@ -86,7 +93,7 @@ export function StudySoloSessionProvider({ children }: { children: ReactNode }) 
 export function useStudySoloSession() {
     const context = useContext(StudySoloSessionContext);
 
-    if(!context) throw new Error("useStudySoloSession deve ser usado dentro de StudySessionProvider");
+    if (!context) throw new Error("useStudySoloSession deve ser usado dentro de StudySessionProvider");
 
     return context;
 }

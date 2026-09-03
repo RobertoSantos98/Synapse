@@ -1,4 +1,5 @@
 import CardCover from "@/src/components/cardCover";
+import { useStudySoloSession } from "@/src/context/StudySoloSession";
 import BaralhoService, { deckProps } from "@/src/Services/BaralhoService";
 import { Fontisto, MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -16,7 +17,7 @@ export default function PrepararSessao() {
 
     const insets = useSafeAreaInsets();
 
-    const [decksEscolhidos, setDecksEscolhidos] = useState<deckProps[]>([]);
+    const { decksEscolhidos, adicionarDeck, removerDeck, proximoStep } = useStudySoloSession();
     const [decksBiblioteca, setDecksBiblioteca] = useState<deckProps[]>([]);
     const [busca, setBusca] = useState('');
 
@@ -29,37 +30,20 @@ export default function PrepararSessao() {
         }
     };
 
+    const handleDecksEscolhidos = (deck: deckProps) => {
+        const jaExiste = decksEscolhidos.some(d => d.id === deck.id);
+         if(jaExiste) {
+            removerDeck(deck.id);
+         } else{
+             adicionarDeck(deck)
+         }
+
+    }
+
     useEffect(() => {
         handleDecksBiblioteca();
     }, []);
 
-    const handleDeckSelecionado = (deck: deckProps) => {
-
-        const jaEscolhido = decksEscolhidos.some(
-            item => item.id === deck.id
-        );
-
-        // Remove
-        if (jaEscolhido) {
-            setDecksEscolhidos(
-                decksEscolhidos.filter(
-                    item => item.id !== deck.id
-                )
-            );
-            return;
-        }
-
-        // Limite
-        if (decksEscolhidos.length >= 4) {
-            return;
-        }
-
-        // Adiciona
-        setDecksEscolhidos([
-            ...decksEscolhidos,
-            deck
-        ]);
-    };
 
     const decksFiltrados = decksBiblioteca.filter(deck =>
         deck.title
@@ -176,7 +160,7 @@ export default function PrepararSessao() {
                                         <TouchableOpacity
                                             activeOpacity={0.85}
                                             onPress={() =>
-                                                handleDeckSelecionado(deck)
+                                                handleDecksEscolhidos(deck)
                                             }
                                             className="h-28 rounded-2xl overflow-hidden border-2 border-indigo-500"
                                         >
@@ -338,7 +322,7 @@ export default function PrepararSessao() {
                                     deck => deck.id === item.id
                                 )}
                                 pressionado={() =>
-                                    handleDeckSelecionado(item)
+                                    handleDecksEscolhidos(item)
                                 }
                             />
                         )}
@@ -363,10 +347,7 @@ export default function PrepararSessao() {
                         activeOpacity={0.85}
                         onPress={() => {
                             // Próxima etapa
-                            console.log(
-                                'Decks escolhidos:',
-                                decksEscolhidos
-                            );
+                            proximoStep()
                         }}
                         className={`
                             h-16 rounded-2xl
