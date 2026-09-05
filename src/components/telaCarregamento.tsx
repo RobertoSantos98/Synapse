@@ -18,12 +18,6 @@ export default function TelaCarregamento({ mensagem, percent, atual, total }: Te
     const [calcPercent, setCalcPercent] = useState<number | null>(null)
 
 
-    const frases = [
-        { id: 1, comment: "Preparando tudo por aqui..." },
-        { id: 2, comment: "Farmando aura..." },
-        { id: 3, comment: "Resolvendo as coisas..." }
-    ]
-
     useEffect(() => {
         handlePercent();
     }, [atual]);
@@ -46,7 +40,9 @@ export default function TelaCarregamento({ mensagem, percent, atual, total }: Te
 
             <View className='absolute w-full gap-2 bottom-0 py-6 px-6 ' style={{ marginBottom: insets.bottom }}>
                 <View className='flex-row justify-between'>
-                    <Text className='text-2xl font-poppinsBold text-white'>Carregando</Text>
+                    <Text className='text-2xl font-poppinsBold text-white gap-2'>Carregando
+                        <Text className='text-xl text-primary-400'>{atual} / {total}</Text>
+                    </Text>
                     <ActivityIndicator size={18} color={"#fff"} />
                 </View>
                 <View className='h-4 bg-primary-400 rounded-full overflow-hidden border-2 border-primary-400'>

@@ -75,7 +75,7 @@ class BaralhoService {
     }
 
 
-    static async DownloadDeck(DeckId: string) {
+    static async DownloadDeck(DeckId: string): Promise<deckProps> {
 
         try {
             const deck : deckProps = await this.GetDeckById(DeckId);
@@ -84,15 +84,17 @@ class BaralhoService {
 
             const decksSalvos : deckProps[] = response ? JSON.parse(response) : [];
 
-            const deckExistente = decksSalvos.some(d => d.id === deck.id);
+            const deckExistente = decksSalvos.filter(d => d.id === deck.id);
 
-            if(deckExistente) return 
+            if(deckExistente) return deck;
 
             decksSalvos.push(deck);
 
             await AsyncStorage.setItem(DECKS_KEY, JSON.stringify(decksSalvos));
 
-            console.log("Deck Baixado!")
+            console.log("Deck Baixado!");
+
+            return deck;
 
 
         } catch (error: any) {
@@ -112,6 +114,58 @@ class BaralhoService {
             throw error
         }
     }
+
+
+
+    static async HandleDecksJogo(decks: deckProps[], onProgress?: (atual: number, total: number, message: string, porcentagem: number) => void): Promise<deckProps[]>{
+        
+        try {
+            onProgress?.(0, 0, "Verificando Decks Baixados", 0);
+
+            const decksJaBaixados = await this.GetDecksBaixados();
+            const decksParaBaixar = decks.filter(item => !decksJaBaixados.some(baixado => baixado.id === item.id));
+            
+            let totalDecks = decks.length;
+            const totalParaBaixar = decksParaBaixar.length;
+            
+            if(totalParaBaixar === 0) {
+                onProgress?.(totalDecks, totalDecks, "Todos os decks já disponível offline", 100);
+                return decksJaBaixados.filter(baixado => decks.some(deck => deck.id === baixado.id));
+            }
+            
+            let atual = totalDecks - totalParaBaixar;
+
+            let porcentagem = Math.min(atual / totalDecks * 100, 100);
+            
+            onProgress?.(atual, totalDecks, "Baixando...", porcentagem);
+            
+            const decksBaixados: deckProps[] = []
+
+            for(const deck of decksParaBaixar){
+                onProgress?.(atual, totalDecks, "Baixando: ", porcentagem)
+
+                const response = await this.DownloadDeck(deck.id);
+
+                decksBaixados.push(response);
+
+                atual++;
+                porcentagem = Math.min(atual/ totalDecks * 100, 100)
+
+                onProgress?.(atual, totalDecks, `Baixando: ${deck.title}`, porcentagem)
+            }
+
+            return [
+                ...decksJaBaixados.filter(baixado => decks.some(deck => deck.id === baixado.id)),
+                ...decksBaixados
+            ]
+
+        } catch (error) {
+            console.error("Erro ao baixar decks: ", error);
+            return []
+        }
+    }
+
+
 }
 
 export default BaralhoService;

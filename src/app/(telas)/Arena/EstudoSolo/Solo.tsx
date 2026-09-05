@@ -8,6 +8,9 @@ import CircuitBackground from '@/src/Assets/circuitBackGround';
 import HeaderStack from '@/src/components/headerStack';
 import TelaCarregamento from '@/src/components/telaCarregamento';
 import CardPrimary from '@/src/components/CardPrimary';
+import BaralhoService, { deckProps } from '@/src/Services/BaralhoService';
+import { useStudySoloSession } from '@/src/context/StudySoloSession';
+import { CardProps } from '@/src/Services/CardService';
 
 export default function PlaySolo() {
   const insets = useSafeAreaInsets();
@@ -15,57 +18,89 @@ export default function PlaySolo() {
   const [mensagem, setMensagem] = useState('');
   const [percent, setPercent] = useState<number>(0);
 
+  const [decksPartida, setDecksPartida ] = useState<deckProps[]>([]);
+  const [ cardsDaPardida, setCardsDaPartida ] = useState<CardProps[]>([]);
+  const [ cardAtual, setCardAtual ] = useState<CardProps>();
+
+  const [progresso, setProgresso] = useState({
+    atual: 0, total: 0, message: "", porcentagem: 0
+  });
+
+  const { decksEscolhidos } = useStudySoloSession()
+
   useEffect(() => {
-    handleLoading();
+    handleDecksJogo(decksEscolhidos);
   }, []);
 
-  const handleLoading = async () => {
-    setIsLoading(true);
-
+  const handleDecksJogo = async (decks: deckProps[]) => {
     try {
-      setPercent(0);
-      setMensagem('Baixando os Cards...');
-      await handleSimularApi();
+      setIsLoading(true);
+      const response = await BaralhoService.HandleDecksJogo(decks, (atual, total, message, porcentagem) => {setProgresso({atual, total, message, porcentagem})} )
+      setDecksPartida(response);
 
-      setPercent(0);
-      setMensagem('Contando os Cards...');
-      await handleSimularApi();
+      const totalCards = response.flatMap(deck => deck.cards).filter((card): card is CardProps => card !== undefined);
 
-      setPercent(100);
+      setProgresso({atual: 0, total: totalCards.length, message: "Embaralhando as Cartas...", porcentagem: 60});
+
+      const cardsEmbaralhados = embaralhar(totalCards);
+
+      setCardsDaPartida(cardsEmbaralhados);
+
+      setCardAtual(cardsEmbaralhados[0]);
+
     } catch (error) {
-      console.error(error);
+      console.log("Erro: ", error)
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleSimularApi = (): Promise<void> => {
-    return new Promise((resolve) => {
-      const interval = setInterval(() => {
-        setPercent((prev) => {
-          if (prev >= 100) {
-            clearInterval(interval);
-            resolve();
-            return 100;
-          }
-          return prev + 1;
-        });
-      }, 20);
-    });
-  };
-
-  if (isLoading) {
-    return <TelaCarregamento mensagem={mensagem} percent={percent} />;
   }
 
-  const card = {
-    id: '1',
-    deckId: '235452',
-    category: 'JAVASCRIPT',
-    question: 'O que é o Javascript?',
-    answer: 'Uma linguagem de programação usada tanto no Front-End quanto no Back-End.',
-    wrongAnswer: 'Um framework'
-  };
+  const handleProximaPergunta = () => {
+
+  }
+
+
+  // const handleSimularApi = (): Promise<void> => {
+  //   return new Promise((resolve) => {
+  //     const interval = setInterval(() => {
+  //       setPercent((prev) => {
+  //         if (prev >= 100) {
+  //           clearInterval(interval);
+  //           resolve();
+  //           return 100;
+  //         }
+  //         return prev + 1;
+  //       });
+  //     }, 20);
+  //   });
+  // };
+
+  // const card = {
+  //   id: '1',
+  //   deckId: '235452',
+  //   category: 'JAVASCRIPT',
+  //   question: 'O que é o Javascript?',
+  //   answer: 'Uma linguagem de programação usada tanto no Front-End quanto no Back-End.',
+  //   wrongAnswer: 'Um framework'
+  // };
+
+  if (isLoading) {
+    return <TelaCarregamento mensagem={progresso.message} atual={progresso.atual} total={progresso.total} />;
+  }
+
+  function embaralhar<T>(array: T[]): T[] {
+      const novoArray = [... array]
+
+      for(let i = novoArray.length - 1 ; i > 0; i++){
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [novoArray[i], novoArray[j] = novoArray[j], novoArray[i]];
+      }
+
+      return novoArray
+  }
+
+  
 
   return (
     <View className="flex-1 bg-indigo-950">
@@ -112,8 +147,8 @@ export default function PlaySolo() {
 
           {/* CARD PRINCIPAL (Sleeve / Flashcard) */}
 
-          <CardPrimary card={card}/>
-
+          {cardAtual && (<CardPrimary card={cardAtual}/>)}
+        
 
           {/* SELEÇÃO DE DIFICULDADE */}
           <View className="mb-3">
