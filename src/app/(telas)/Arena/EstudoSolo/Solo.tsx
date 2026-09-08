@@ -10,7 +10,8 @@ import TelaCarregamento from '@/src/components/telaCarregamento';
 import CardPrimary from '@/src/components/CardPrimary';
 import BaralhoService, { deckProps } from '@/src/Services/BaralhoService';
 import { useStudySoloSession } from '@/src/context/StudySoloSession';
-import { CardProps } from '@/src/Services/CardService';
+import CardService, { CardProps, DificuldadeCardProps } from '@/src/Services/CardService';
+import { router } from 'expo-router';
 
 export default function PlaySolo() {
   const insets = useSafeAreaInsets();
@@ -18,9 +19,9 @@ export default function PlaySolo() {
   const [mensagem, setMensagem] = useState('');
   const [percent, setPercent] = useState<number>(0);
 
-  const [decksPartida, setDecksPartida ] = useState<deckProps[]>([]);
-  const [ cardsDaPardida, setCardsDaPartida ] = useState<CardProps[]>([]);
-  const [ cardAtual, setCardAtual ] = useState<CardProps>();
+  const [decksPartida, setDecksPartida] = useState<deckProps[]>([]);
+  const [cardsDaPardida, setCardsDaPartida] = useState<CardProps[]>([]);
+  const [cardAtual, setCardAtual] = useState<CardProps>();
 
   const [progresso, setProgresso] = useState({
     atual: 0, total: 0, message: "", porcentagem: 0
@@ -35,14 +36,16 @@ export default function PlaySolo() {
   const handleDecksJogo = async (decks: deckProps[]) => {
     try {
       setIsLoading(true);
-      const response = await BaralhoService.HandleDecksJogo(decks, (atual, total, message, porcentagem) => {setProgresso({atual, total, message, porcentagem})} )
+      const response = await BaralhoService.HandleDecksJogo(decks, (atual, total, message, porcentagem) => { setProgresso({ atual, total, message, porcentagem }) })
       setDecksPartida(response);
 
       const totalCards = response.flatMap(deck => deck.cards).filter((card): card is CardProps => card !== undefined);
 
-      setProgresso({atual: 0, total: totalCards.length, message: "Embaralhando as Cartas...", porcentagem: 60});
+      setProgresso({ atual: 0, total: totalCards.length, message: "Embaralhando as Cartas...", porcentagem: 60 });
 
       const cardsEmbaralhados = embaralhar(totalCards);
+
+      setProgressoTotalCard(cardsEmbaralhados.length);
 
       setCardsDaPartida(cardsEmbaralhados);
 
@@ -55,52 +58,56 @@ export default function PlaySolo() {
     }
   }
 
-  const handleProximaPergunta = () => {
 
+  // Gerenciar Estudo
+
+  const [progressoCard, setProgressoCard] = useState<number>(1);
+  const [progressoTotalCard, setProgressoTotalCard] = useState<number>(0);
+  const [pontosTotalPartida, setPontosTotalPartida] = useState<number>(0);
+  const [porcentagemBarraProgresso, setPorcentagemBarraProgresso ] = useState<string>("0")
+
+
+
+
+  const handleProximaPergunta = async (dificuldade: DificuldadeCardProps) => {
+
+    if (cardAtual != undefined) {
+      await CardService.HandleDificuldadePessoalCard(dificuldade, cardAtual.id);
+      setCardAtual(cardsDaPardida[progressoCard])
+      setProgressoCard(progressoCard + 1);
+
+      const pontos = dificuldade === DificuldadeCardProps.Facil ? 10 : dificuldade === DificuldadeCardProps.Medio ? 20 : 30;
+
+      setPontosTotalPartida(pontosTotalPartida + pontos)
+
+      setPorcentagemBarraProgresso(String(Math.min(progressoCard / progressoTotalCard * 100, 100)))
+    }
+
+    if(progressoCard === progressoTotalCard + 1) {
+      
+      router.back()
+    }
   }
 
 
-  // const handleSimularApi = (): Promise<void> => {
-  //   return new Promise((resolve) => {
-  //     const interval = setInterval(() => {
-  //       setPercent((prev) => {
-  //         if (prev >= 100) {
-  //           clearInterval(interval);
-  //           resolve();
-  //           return 100;
-  //         }
-  //         return prev + 1;
-  //       });
-  //     }, 20);
-  //   });
-  // };
-
-  // const card = {
-  //   id: '1',
-  //   deckId: '235452',
-  //   category: 'JAVASCRIPT',
-  //   question: 'O que é o Javascript?',
-  //   answer: 'Uma linguagem de programação usada tanto no Front-End quanto no Back-End.',
-  //   wrongAnswer: 'Um framework'
-  // };
 
   if (isLoading) {
     return <TelaCarregamento mensagem={progresso.message} atual={progresso.atual} total={progresso.total} />;
   }
 
   function embaralhar<T>(array: T[]): T[] {
-      const novoArray = [... array]
+    const novoArray = [...array]
 
-      for(let i = novoArray.length - 1 ; i > 0; i++){
-        const j = Math.floor(Math.random() * (i + 1));
+    for (let i = novoArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
 
-        [novoArray[i], novoArray[j] = novoArray[j], novoArray[i]];
-      }
+      [novoArray[i], novoArray[j] = novoArray[j], novoArray[i]];
+    }
 
-      return novoArray
+    return novoArray
   }
 
-  
+
 
   return (
     <View className="flex-1 bg-indigo-950">
@@ -121,7 +128,7 @@ export default function PlaySolo() {
                   Progresso
                 </Text>
                 <Text className="text-white text-base font-poppinsBold">
-                  Card 01 <Text className="text-indigo-300/50">/ 10</Text>
+                  Card {progressoCard} <Text className="text-indigo-300/50">/ {progressoTotalCard}</Text>
                 </Text>
               </View>
 
@@ -129,7 +136,7 @@ export default function PlaySolo() {
               <View className="flex-row items-center gap-1.5 bg-indigo-900/60 border border-indigo-400/30 px-3.5 py-1.5 rounded-full shadow-sm">
                 <MaterialIcons name="auto-awesome" size={14} color="#FDE047" />
                 <Text className="text-indigo-100 text-xs font-poppinsBold">
-                  120 Aura
+                  {pontosTotalPartida} Aura
                 </Text>
               </View>
             </View>
@@ -140,15 +147,15 @@ export default function PlaySolo() {
                 colors={['#818CF8', '#C084FC']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
-                style={{ width: '10%', height: '100%' }}
+                style={{ width: `${porcentagemBarraProgresso}%`, height: '100%' }}
               />
             </View>
           </View>
 
           {/* CARD PRINCIPAL (Sleeve / Flashcard) */}
 
-          {cardAtual && (<CardPrimary card={cardAtual}/>)}
-        
+          {cardAtual && (<CardPrimary card={cardAtual} />)}
+
 
           {/* SELEÇÃO DE DIFICULDADE */}
           <View className="mb-3">
@@ -159,6 +166,7 @@ export default function PlaySolo() {
             <View className="flex-row gap-2.5">
               {/* FÁCIL */}
               <TouchableOpacity
+                onPress={() => handleProximaPergunta(DificuldadeCardProps.Facil)}
                 activeOpacity={0.75}
                 className="flex-1 bg-emerald-950/40 border border-emerald-500/30 rounded-2xl py-2.5 items-center justify-center active:bg-emerald-900/40"
               >
@@ -173,6 +181,7 @@ export default function PlaySolo() {
 
               {/* MÉDIO */}
               <TouchableOpacity
+                onPress={() => handleProximaPergunta(DificuldadeCardProps.Medio)}
                 activeOpacity={0.75}
                 className="flex-1 bg-amber-950/40 border border-amber-500/30 rounded-2xl py-2.5 items-center justify-center active:bg-amber-900/40"
               >
@@ -187,6 +196,7 @@ export default function PlaySolo() {
 
               {/* DIFÍCIL */}
               <TouchableOpacity
+                onPress={() => handleProximaPergunta(DificuldadeCardProps.Dificil)}
                 activeOpacity={0.75}
                 className="flex-1 bg-rose-950/40 border border-rose-500/30 rounded-2xl py-2.5 items-center justify-center active:bg-rose-900/40"
               >
