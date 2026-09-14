@@ -43,7 +43,7 @@ class UserService {
 
             if(response === null) throw new Error("Resposta da Api Vazia");
             
-            console.log(response.data)
+            console.log(response.data);
                     
             return response.data.data
 
@@ -52,6 +52,22 @@ class UserService {
             throw error;
         }
 
+    }
+
+    static async AdicionarPontos(pontos: number, userId: string) {
+
+        if(pontos === null || userId === null) throw new Error("Todos os campos devem estar preenchidos");
+
+        const dados = {
+            pontos,
+            userId
+        }
+
+        try {
+            const response = await apiService.post<User>("/User/adicionarPontos", dados);
+        } catch (error) {
+            
+        }
     }
 }
 

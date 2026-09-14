@@ -10,6 +10,7 @@ import { AvatarService } from '@/src/Services/AvatarService';
 import { AVATAR_SEEDS } from '@/src/utils/avatarSeeds';
 import UserService from '@/src/Services/UserService';
 import { User } from '@/src/types/auth';
+import { router } from 'expo-router';
 
 type acessoMenuProps = {
   id: number,
@@ -34,7 +35,7 @@ export default function Perfil() {
   };
 
   const acessoMenu: acessoMenuProps[] = [
-    { id: 1, title: "Lista de Amigos", icon: "account-multiple-outline", onPressButton: () => { } },
+    { id: 1, title: "Lista de Amigos", icon: "account-multiple-outline", onPressButton: () => router.push("/(telas)/ListaAmigos/listaAmigos") },
     { id: 2, title: "Baralhos Salvos", icon: "cards-outline", onPressButton: () => { } },
     { id: 3, title: "Baixar Baralhos", icon: "cloud-download-outline", onPressButton: () => { } },
     { id: 4, title: "Histórico de Arena", icon: "sword-cross", onPressButton: () => { } },
@@ -155,7 +156,7 @@ export default function Perfil() {
         <View className='px-6 py-6 flex-row flex-wrap justify-between gap-y-4'>
 
           {acessoMenu.map((item) => (
-            <TouchableOpacity key={item.id} className='bg-white border border-slate-200 rounded-2xl p-4 active:bg-slate-100 justify-between shadow-sm' activeOpacity={0.7} style={{ width: widthCardsPerfil, height: widthCardsPerfil - 30 }}>
+            <TouchableOpacity onPress={item.onPressButton} key={item.id} className='bg-white border border-slate-200 rounded-2xl p-4 gap-4 active:bg-slate-100 justify-between shadow-sm' activeOpacity={0.7} style={{ width: widthCardsPerfil }}>
               <View className='bg-slate-50 self-start p-2.5 rounded-full border border-slate-100'>
                 <MaterialCommunityIcons name={item.icon} size={24} color={"#6366f1"} />
               </View>
@@ -165,7 +166,7 @@ export default function Perfil() {
 
           <TouchableOpacity
             onPress={() => logout()}
-            className='bg-red-50 border border-rose-200 rounded-2xl p-4 active:bg-rose-100 justify-between' activeOpacity={0.7} style={{ width: widthCardsPerfil, height: widthCardsPerfil - 30 }}>
+            className='bg-red-50 border border-rose-200 rounded-2xl p-4 active:bg-rose-100 justify-between gap-4' activeOpacity={0.7} style={{ width: widthCardsPerfil }}>
             <View className='bg-white p-2.5 rounded-full border border-rose-100 self-start'>
               <MaterialCommunityIcons name='logout' size={24} color={"#e11d48"} />
             </View>

@@ -4,10 +4,9 @@ import { ComponentProps, useState } from 'react';
 import { ActivityIndicator, Alert, Dimensions, Text, TextInput, TextInputProps, TouchableOpacity, View } from 'react-native';
 import AuthService from '../Services/AuthService';
 import { router } from 'expo-router';
+import CircuitBackground from '../Assets/circuitBackGround';
 
 export default function CreateUser() {
-
-    const height = Dimensions.get('window').height;
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -15,6 +14,8 @@ export default function CreateUser() {
     const [usuario, setUsuario] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const width = Dimensions.get("window").width
 
 
     const handlePost = async () => {
@@ -46,62 +47,68 @@ export default function CreateUser() {
 
 
     return (
-        <View className='bg-primary-100 flex-1 justify-center'>
-            <View className='bg-primary-800 absolute top-0 ' style={{ height: height / 2, width: "100%" }} />
+        <View className='flex-1 justify-center items-center'>
 
-            <View className='bg-slate-900/80 mx-4 p-4 rounded-2xl gap-4 -top-14'>
-                <View className='mb-4'>
-                    <Text className='text-2xl font-poppinsBold text-slate-100'>Sejá Bem-Vindo!</Text>
-                    <Text className='text-sm text-slate-300'>Crie seu login para acessar o app.</Text>
-                </View>
+            <CircuitBackground/>
 
-                <TextInputSignIn
-                    icon='account'
-                    placeholder='Nome'
-                    value={nome}
-                    onChangeText={setNome}
-                />
+            <View className='bg-slate-900 border border-primary-300 items-center justify-center' style={{width: 650, borderRadius: 9999}}>
 
-                <TextInputSignIn
-                    icon='account-details'
-                    placeholder='Usuário'
-                    value={usuario}
-                    onChangeText={setUsuario}
-                />
+                <View style={{width: width - 48, height: "70%" , gap: 16, alignItems: 'center', justifyContent: 'center' }}>
+                    <View className='mb-4'>
+                        <Text className='text-2xl font-poppinsBold text-slate-100'>Seja Bem-Vindo!</Text>
+                        <Text className='text-sm text-slate-300'>Crie seu login para acessar o app.</Text>
+                    </View>
 
-                <TextInputSignIn
-                    icon='email'
-                    placeholder='Email'
-                    value={email}
-                    onChangeText={setEmail}
-                />
+                    <TextInputSignIn
+                        icon='account'
+                        placeholder='Nome'
+                        value={nome}
+                        onChangeText={setNome}
+                    />
 
-                <TextInputSignIn
-                    icon='lock-outline'
-                    isPassword
-                    placeholder='Senha'
-                    value={password}
-                    onChangeText={setPassword}
-                />
+                    <TextInputSignIn
+                        icon='account-details'
+                        placeholder='Usuário'
+                        value={usuario}
+                        onChangeText={setUsuario}
+                    />
 
-                <View className='w-full rounded-xl overflow-hidden shadow-lg shadow-primary-500/30'>
-                    <LinearGradient colors={["#4338ca", "#312e81"]} className='w-full' start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
-                        <TouchableOpacity onPress={() => handlePost()} className='flex-row w-full gap-2 items-center justify-center py-4' activeOpacity={0.7}>
-                            {isLoading ? <ActivityIndicator size={22} color={"#fff"} /> :
-                                <View className='flex-row gap-2'>
-                                    <Text className='text-white font-extrabold text-xl tracking-wider'>Criar Conta</Text>
-                                    <MaterialCommunityIcons name='arrow-right' size={16} color={"#FFF"} />
-                                </View>
-                            }
-                        </TouchableOpacity>
-                    </LinearGradient>
+                    <TextInputSignIn
+                        icon='email'
+                        placeholder='Email'
+                        value={email}
+                        onChangeText={setEmail}
+                    />
+
+                    <TextInputSignIn
+                        icon='lock-outline'
+                        isPassword
+                        placeholder='Senha'
+                        value={password}
+                        onChangeText={setPassword}
+                    />
+
+                    <View className='w-full rounded-xl overflow-hidden shadow-lg shadow-primary-500/30 border border-primary-500'>
+                        <LinearGradient colors={["#4338ca", "#312e81"]} className='w-full' start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
+                            <TouchableOpacity onPress={() => handlePost()} className='flex-row w-full gap-2 items-center justify-center py-4' activeOpacity={0.7}>
+                                {isLoading ? <ActivityIndicator size={22} color={"#fff"} /> :
+                                    <View className='flex-row gap-2 items-center'>
+                                        <Text className='text-white font-extrabold text-xl tracking-wider'>Criar Conta</Text>
+                                    </View>
+                                }
+                            </TouchableOpacity>
+                        </LinearGradient>
+                    </View>
+
+                <TouchableOpacity className='py-4 mx-4 rounded-2xl flex-row gap-2 items-center' onPress={() => router.back()}>
+                    <MaterialCommunityIcons name='arrow-left' color={"#c7d2fe"} size={18} />
+                    <Text className='text-lg text-primary-200 text-center'>Volta para tela de Login</Text>
+                </TouchableOpacity>
+
                 </View>
 
             </View>
 
-            <TouchableOpacity className='py-4 mx-4 rounded-2xl' onPress={() => router.back()}>
-                <Text className='text-xl text-primary-500 text-center'>Volta para tela de Login</Text>
-            </TouchableOpacity>
         </View>
     );
 }

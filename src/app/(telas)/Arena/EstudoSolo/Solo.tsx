@@ -16,8 +16,6 @@ import { router } from 'expo-router';
 export default function PlaySolo() {
   const insets = useSafeAreaInsets();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [mensagem, setMensagem] = useState('');
-  const [percent, setPercent] = useState<number>(0);
 
   const [decksPartida, setDecksPartida] = useState<deckProps[]>([]);
   const [cardsDaPardida, setCardsDaPartida] = useState<CardProps[]>([]);
@@ -84,7 +82,14 @@ export default function PlaySolo() {
     }
 
     if(progressoCard === progressoTotalCard + 1) {
-      
+      try {
+        setIsLoading(true);
+
+        
+
+      } catch (error) {
+        console.log("Erro: ", error);
+      }
       router.back()
     }
   }

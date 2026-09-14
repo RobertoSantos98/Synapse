@@ -9,6 +9,7 @@ export default function Layout(){
             headerShown: false
         }}>
             <Stack.Screen name="biblioteca/minhaBiblioteca" />
+            <Stack.Screen name="ListaAmigos/listaAmigos" />
         </Stack>
     )
 }

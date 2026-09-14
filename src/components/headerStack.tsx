@@ -14,11 +14,11 @@ export default function HeaderStack({title}: HeaderStackProps) {
     return (
         <View className='' style={{ paddingTop: insets.top }} >
             <View className='flex-row items-center px-4 py-8 relative justify-center'>
-                <TouchableOpacity className='absolute p-4 bg-slate-100/20 border border-slate-200/40 rounded-full left-4 shadow-sm' onPress={() => router.back()} >
+                <TouchableOpacity className='absolute p-3 border border-slate-200/40 rounded-full left-4 shadow-sm' onPress={() => router.back()} >
                     <MaterialIcons name='arrow-back-ios-new' size={16} color={"#FFF"} />
                 </TouchableOpacity>
 
-                <Text className=' text-2xl font-poppinsBold text-white '>{title}</Text>
+                <Text className=' text-xl font-poppinsBold text-white '>{title}</Text>
             </View>
 
         </View>

@@ -101,7 +101,7 @@ function RenderItemsMiniDecks({deck}: RenderItemDecksProps) {
 
                 <View className='flex-row gap-1.5 mt-1 pt-2 items-center border-t border-slate-100'>
                     {user?.avatarUrl
-                    ?   <Image source={{ uri: AvatarService.getAvatarUrl(user.avatarUrl)}} style={{width: 12, height: 12}} />
+                    ?   <Image source={{ uri: AvatarService.getAvatarUrl(user.avatarUrl)}} style={{width: 14, height: 14}} />
                     :   <MaterialIcons name='account-circle' color={"#6366f1"} size={14}/>}
 
                     <Text className='text-xs text-slate-400'>@{user?.usuario}</Text>
