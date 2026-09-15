@@ -10,6 +10,7 @@ export default function Layout(){
         }}>
             <Stack.Screen name="biblioteca/minhaBiblioteca" />
             <Stack.Screen name="ListaAmigos/listaAmigos" />
+            <Stack.Screen name="Usuario/[id]" />
         </Stack>
     )
 }

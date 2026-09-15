@@ -69,6 +69,22 @@ class UserService {
             
         }
     }
+
+    static async GetUsers(): Promise<User[]> {
+
+        try {
+            const response = await apiService.get<User[]>("/User");
+            if (response) {
+                return response.data
+            } else {
+                return []
+            }
+            
+        } catch (error) {  
+            throw new Error
+            
+        }
+    }
 }
 
 export default UserService;
