@@ -7,7 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Dimensions, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Image, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -53,116 +53,151 @@ export default function Usuario() {
   const percentNivel = Math.min(((user.pontosAtuais ?? 0) / pontosTotalDoNivel) * 100, 100)
 
   return (
-    <View className='flex-1 bg-primary-50' >
+    <ScrollView>
+      <View className='flex-1 bg-primary-50 pb-10' >
 
-      <View className='mb-8'>
+        <View className='mb-8'>
 
-        <View className='h-96 w-full bg-white rounded-br-full overflow-hidden'>
+          <View className='h-96 w-full bg-white rounded-br-full overflow-hidden'>
 
-          <LinearGradient
-            colors={["#6366f1", "#4338ca"]}
-            style={StyleSheet.absoluteFill}
-          />
+            <LinearGradient
+              colors={["#6366f1", "#4338ca"]}
+              style={StyleSheet.absoluteFill}
+            />
 
-          <View className='flex-row pt-6 pb-8 px-4 justify-around' style={{ marginTop: insets.top }}>
+            <View className='flex-row pt-6 pb-8 px-4 justify-around' style={{ marginTop: insets.top }}>
 
-            <Text className='text-white text-base'>Total de Duelos: {user.totalDuelos}</Text>
-            <Text className='text-white text-base'>Vitórias: {user.wins}</Text>
-            <Text className='text-white text-base'>Derrotas: {user.losses}</Text>
-
-          </View>
-
-          <View className='ml-8'>
-
-            <View className='items-center justify-start flex-row gap-4 '>
-
-              <View className='relative'>
-                <View className='bg-primary-50 rounded-full w-32 h-32 border-2 border-white items-center justify-center overflow-hidden'>
-                  {user.avatarUrl ? (
-                    <Image source={{ uri: AvatarService.getAvatarUrl(user.avatarUrl) }} width={105} height={105} />
-                  ) : (
-                    <MaterialCommunityIcons name='account' size={105} />
-                  )}
-
-                </View>
-
-                <View className='absolute bg-black self-center -bottom-1 z-50 px-4 rounded-full border-2 border-white'>
-                  <Text className='text-xs text-white font-poppinsBold'>{user.level}</Text>
-                </View>
-
-              </View>
-
-              <View>
-                <Text className='text-2xl font-poppinsBold text-white'>{user.nome}</Text>
-                <Text className='text-sm text-primary-200'>@{user.usuario}</Text>
-              </View>
-            </View>
-
-            <View className='mt-8 gap-4'>
-
-              <View className='flex-row gap-2 items-center'>
-                <View className='bg-orange-400 rounded-full p-1'>
-                  <MaterialCommunityIcons name="star-four-points" size={22} color="#fff" />
-                </View>
-
-                <Text className='text-white font-bold'>{user.experiencePoints}</Text>
-              </View>
-
-              <View className='flex-row gap-2 items-center'>
-                <View className='bg-orange-400 rounded-full p-1'>
-                  <MaterialCommunityIcons name="fire" size={22} color="#fff" />
-                </View>
-
-                <Text className='text-white font-bold'>10</Text>
-              </View>
+              <Text className='text-white text-base'>Total de Duelos: {user.totalDuelos}</Text>
+              <Text className='text-white text-base'>Vitórias: {user.wins}</Text>
+              <Text className='text-white text-base'>Derrotas: {user.losses}</Text>
 
             </View>
 
+            <View className='ml-8'>
 
+              <View className='items-center justify-start flex-row gap-4 '>
+
+                <View className='relative'>
+                  <View className='bg-primary-50 rounded-full w-32 h-32 border-2 border-white items-center justify-center overflow-hidden'>
+                    {user.avatarUrl ? (
+                      <Image source={{ uri: AvatarService.getAvatarUrl(user.avatarUrl) }} width={105} height={105} />
+                    ) : (
+                      <MaterialCommunityIcons name='account' size={105} />
+                    )}
+
+                  </View>
+
+                  <View className='absolute bg-black self-center -bottom-1 z-50 px-4 rounded-full border-2 border-white'>
+                    <Text className='text-xs text-white font-poppinsBold'>{user.level}</Text>
+                  </View>
+
+                </View>
+
+                <View>
+                  <Text className='text-2xl font-poppinsBold text-white'>{user.nome}</Text>
+                  <Text className='text-sm text-primary-200'>@{user.usuario}</Text>
+                </View>
+              </View>
+
+              <View className='mt-8 gap-4'>
+
+                <View className='flex-row gap-2 items-center'>
+                  <View className='bg-orange-400 rounded-full p-1'>
+                    <MaterialCommunityIcons name="star-four-points" size={22} color="#fff" />
+                  </View>
+
+                  <Text className='text-white font-bold'>{user.experiencePoints}</Text>
+                </View>
+
+                <View className='flex-row gap-2 items-center'>
+                  <View className='bg-orange-400 rounded-full p-1'>
+                    <MaterialCommunityIcons name="fire" size={22} color="#fff" />
+                  </View>
+
+                  <Text className='text-white font-bold'>10</Text>
+                </View>
+
+              </View>
+
+
+            </View>
           </View>
+
+          <View className=' items-center justify-center gap-2 pb-4 absolute -bottom-2 right-12'>
+            <TouchableOpacity className='p-4 bg-orange-400/20 rounded-full' activeOpacity={0.8}>
+              <View className='items-center bg-orange-400 rounded-full h-20 w-20 justify-center'>
+                <MaterialCommunityIcons name='account-plus' size={24} color={"#fff"} />
+              </View>
+            </TouchableOpacity>
+            <Text className='text-slate-500 text-base font-poppinsBold'>Adicionar Amigo</Text>
+          </View>
+
+
         </View>
 
-        <View className=' items-center justify-center gap-2 pb-4 absolute -bottom-2 right-12'>
-          <TouchableOpacity className='p-4 bg-orange-400/20 rounded-full' activeOpacity={0.8}>
-            <View className='items-center bg-orange-400 rounded-full h-20 w-20 justify-center'>
-              <MaterialCommunityIcons name='account-plus' size={24} color={"#fff"} />
-            </View>
+
+        <View className='bg-white border border-slate-200 mx-2 my-4 rounded-2xl p-4 gap-2'>
+
+          <View className='flex-row justify-between'>
+            <Text className='text-sm text-slate-400'>Nivel Atual:
+              <Text className='text-orange-400 text-base font-poppinsBlack'> {user.level}</Text>
+            </Text>
+
+            <Text className='text-sm text-slate-400'>{user.pontosAtuais}/
+              <Text className='text-base text-slate-500 font-poppinsBold'>{pontosTotalDoNivel}</Text>
+            </Text>
+          </View>
+
+
+          <View className='bg-orange-100 rounded-full overflow-hidden'>
+            <View className='bg-orange-400 h-2' style={{ width: `${percentNivel}%` }} />
+          </View>
+
+
+        </View>
+
+        <View className='flex-row py-4 mx-4'>
+
+          <View className='gap-2 flex-1 items-center'>
+            <Text className='text-center text-xl font-poppinsBold text-slate-600'>44</Text>
+            <Text className='text-slate-400'>Decks Curtidos</Text>
+          </View>
+
+          <View className='w-0.5 bg-primary-400 my-2 mx-4 rounded-full' />
+
+          <View className='gap-2 flex-1 items-center'>
+            <Text className='text-center text-xl font-poppinsBold text-slate-600'>12</Text>
+            <Text className='text-slate-400'>Decks Criados</Text>
+          </View>
+
+          <View className='w-0.5 bg-primary-400 my-2 mx-4 rounded-full' />
+
+          <View className='gap-2 flex-1 items-center'>
+            <Text className='text-center text-xl font-poppinsBold text-slate-600'>96</Text>
+            <Text className='text-slate-400'>Curtidas</Text>
+          </View>
+
+        </View>
+
+
+        {decksUsuario && (
+          <MiniDeckHorizontal title={titleBaralhos} decks={decksUsuario} />
+        )}
+
+        <View className='py-4 gap-4'>
+          <TouchableOpacity className='bg-slate-50 mx-2 rounded-2xl py-4 border border-slate-300 shadow-sm'>
+            <Text className='text-slate-800 font-poppinsBold text-lg tracking-wide text-center'>Compartilhar Perfil</Text>
           </TouchableOpacity>
-          <Text className='text-slate-500 text-base font-poppinsBold'>Adicionar Amigo</Text>
+          <TouchableOpacity className='bg-red-50 mx-2 rounded-2xl py-4 border border-red-300 shadow-sm'>
+            <Text className='text-red-500 font-poppinsBold text-lg tracking-wide text-center'>Denunciar {user.nome}</Text>
+          </TouchableOpacity>
         </View>
+
 
 
       </View>
 
-
-      <View className='bg-white border border-slate-200 mx-2 my-4 rounded-2xl p-4 gap-2'>
-
-        <View className='flex-row justify-between'>
-          <Text className='text-sm text-slate-400'>Nivel Atual:
-            <Text className='text-orange-400 text-base font-poppinsBlack'> {user.level}</Text>
-          </Text>
-
-          <Text className='text-sm text-slate-400'>{user.pontosAtuais}/
-            <Text className='text-base text-slate-500 font-poppinsBold'>{pontosTotalDoNivel}</Text>
-          </Text>
-        </View>
-
-
-        <View className='bg-orange-100 rounded-full overflow-hidden'>
-          <View className='bg-orange-400 h-2' style={{ width: `${percentNivel}%` }} />
-        </View>
-
-
-      </View>
-
-
-      {decksUsuario && (
-        <MiniDeckHorizontal title={titleBaralhos} decks={decksUsuario} />
-      )}
-
-
-
-    </View>
+    </ScrollView>
   );
 }
 

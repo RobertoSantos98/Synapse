@@ -38,8 +38,8 @@ export default function BibliotecaComunidade() {
 
             <ScrollView>
 
-                <View className='bg-primary-600'>
-                    <HeaderStack title='Decks da Comunidade' />
+                <View className='bg-primary-500 rounded-b-2xl pb-4'>
+                    <HeaderStack title='Decks da Comunidade' subTitle='Visite os decks compartilhados pela comunidade do Synapse' />
 
                     <View className='px-6 flex-row mb-4'>
                         <TextInput
