@@ -8,12 +8,15 @@ import ProcurarDecks from '@/src/components/sectionHome/procurarDecks';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function Home() {
 
     const insets = useSafeAreaInsets();
+
+    const [statusOnline, setStatusOnline] = useState<boolean>(false);
+    const [tentandoConectar, setTentandoConectar] = useState<boolean>(true);
 
     const ofensivaDiaria = 5;
     const cardsParaRevisarHoje = 24;
@@ -45,7 +48,21 @@ export default function Home() {
 
                 <View style={{ paddingTop: insets.top }} />
 
-                <View className="flex-row justify-between items-center px-6 pt-5 pb-4">
+                <View className='flex-row justify-end mx-4 my-2 items-center'>
+                    <Text className='text-slate-400 text-sm font-bold'>Status: </Text>
+                    <TouchableOpacity className='px-2'>
+                        {tentandoConectar ?
+                            <ActivityIndicator color={"#6366f1"} /> :
+                            <Text
+                                className='text-base font-bold'
+                                style={{
+                                    color: statusOnline ? "#22c55e" : "#ef4444"
+                                }}>{statusOnline ? "Conectado" : "Offline"}</Text>
+                        }
+                    </TouchableOpacity>
+                </View>
+
+                <View className="flex-row justify-between items-center px-6 pt-2 pb-4">
                     <View className="flex-1">
                         <Text className="text-4xl text-slate-900 tracking-wide">
                             Olá,{" "}
@@ -58,6 +75,7 @@ export default function Home() {
                             Pronto para avançar hoje?
                         </Text>
                     </View>
+
 
                     <TouchableOpacity
                         activeOpacity={0.8}

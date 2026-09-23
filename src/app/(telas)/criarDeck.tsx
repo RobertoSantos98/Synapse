@@ -2,11 +2,12 @@ import CardCover from '@/src/components/cardCover';
 import HeaderStack from '@/src/components/headerStack';
 import { Theme, THEMES } from '@/themes-config';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Dimensions, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import BaralhoService from '../../Services/BaralhoService';
 import { router } from 'expo-router';
 import { useAuth } from '@/src/context/AuthContext';
+import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 
 const tamanhoCard = (Dimensions.get('window').width - 72) / 2;
 
@@ -28,6 +29,16 @@ export default function CriarDeck() {
         {id: "medio", title: "Médio"},
         {id: "dificil", title: "Difícil"},
     ]
+
+    const bottomSheetRef = useRef<BottomSheetModal>(null);
+    // const snap = useMemo(() => ["50%"], []);
+
+    function abrirSheet(){
+        bottomSheetRef.current?.present();
+    }
+    function fecharSheet(){
+        bottomSheetRef.current?.close();
+    }
 
     async function handleCriarBaralho() {
         if(!titleDeck.trim()) return Alert.alert("Atenção", "Dê um nome ao seu baralho.")
@@ -68,7 +79,7 @@ export default function CriarDeck() {
 
             <ScrollView className='bg-primary-500'>
 
-                <HeaderStack title='Criar Baralho' />
+                <HeaderStack title='Criar Baralho' subTitle='Crie seu Baralho para estudos' />
 
                 <View className='bg-white rounded-2xl p-4 mx-6'>
                     <View className='flex-row justify-between'>
@@ -128,7 +139,7 @@ export default function CriarDeck() {
 
                         <View className='py-2 gap-2'>
                             <Text className='text-slate-700 ml-2 font-bold'>Escolha um Tema:</Text>
-                            <TouchableOpacity onPress={() => setmodalTema(!modalTema)} className='items-center py-2 px-2 bg-slate-50 rounded-xl border border-slate-200 flex-row' >
+                            <TouchableOpacity onPress={abrirSheet} className='items-center py-2 px-2 bg-slate-50 rounded-xl border border-slate-200 flex-row' >
                                 <Text className='flex-1'>{themeSelected?.title}</Text>
                                 <View className='bg-slate-200 p-2 rounded-lg self-end'>
                                     <MaterialIcons name='keyboard-arrow-down' size={18} color={"#334155"} />
@@ -148,27 +159,33 @@ export default function CriarDeck() {
             </ScrollView>
 
 
+                <BottomSheetModal
+                    ref={bottomSheetRef}
+                    enablePanDownToClose
+                    backgroundStyle={{backgroundColor: "#f1f5f9"}}
+                >
+                    <BottomSheetView>
+                        <View className='bottom-0 h-1/2 overflow-y-scroll z-20 w-full bg-slate-100 rounded-t-3xl'>
+                            <View className='py-2 border-b border-slate-200 justify-between px-4 items-end flex-row'>
+                                <Text className='self-center font-bold'>Selecione o Tema</Text>
+                            </View>
 
-            {modalTema && (
-                <View className='absolute bottom-0 h-1/2 overflow-y-scroll z-20 w-full bg-slate-100 rounded-t-3xl border border-slate-200'>
-                    <View className='py-2 border-b border-slate-200 justify-between px-4 items-end flex-row'>
-                        <Text className='self-center font-bold'>Selecione o Tema</Text>
-                        <TouchableOpacity onPress={() => setmodalTema(false)}>
-                            <MaterialCommunityIcons name='close' size={24} />
-                        </TouchableOpacity>
-                    </View>
+                            <View className='p-4 gap-2'>
+                                {THEMES.map((t) => (
+                                    <TouchableOpacity onPress={() => [setThemeSelected(t), fecharSheet()]} key={t.id} className=' flex-row gap-6 items-center bg-white px-6 py-6 border border-slate-200 rounded-xl'>
+                                        <MaterialCommunityIcons name={t.icon} size={18} color={"#475569"}/>
+                                        <Text className='text-sm font-bold text-slate-600'>{t.title}</Text>
+                                    </TouchableOpacity>
+                                ))}
+                            </View>
 
-                    <View className='p-4 gap-2'>
-                        {THEMES.map((t) => (
-                            <TouchableOpacity onPress={() => [setThemeSelected(t), setmodalTema(false)]} key={t.id} className=' flex-row gap-6 items-center bg-white px-6 py-6 border border-slate-200 rounded-xl'>
-                                <MaterialCommunityIcons name={t.icon} size={18} color={"#475569"}/>
-                                <Text className='text-sm font-bold text-slate-600'>{t.title}</Text>
-                            </TouchableOpacity>
-                        ))}
-                    </View>
+                        </View>
+                    </BottomSheetView>
 
-                </View>
-            )}
+
+                </BottomSheetModal>
+            
+            
 
             {isLoading && (
                 <View className='h-full w-full bg-white/60 absolute z-50 items-center gap-16 justify-center'>

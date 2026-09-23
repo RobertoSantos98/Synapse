@@ -1,24 +1,36 @@
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import TitleHome from '../titleHome';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import CardCover from '../cardCover';
 import { router } from 'expo-router';
+import { useEffect, useState } from 'react';
+import BaralhoService, { deckProps } from '@/src/Services/BaralhoService';
 
 const widthScreen = Dimensions.get('window').width;
 
 const tamanhoCard = (widthScreen - 58) / 3;
 
 export default function MinhaBiblioteca() {
-    const biblioteca = [
-        { id: 1, themeId: 'tech', title: "Informática" },
-        { id: 2, themeId: "languages", title: "Linguagem" },
-        { id: 3, themeId: "science", title: "Ciências Humanas" },
-        { id: 4, themeId: "languages", title: "Linguagem" },
-        { id: 5, themeId: "science", title: "Ciências Humanas" },
-        { id: 6, themeId: 'tech', title: "Informática" },
-    ];
+
+    const [ biblioteca, setBiblioteca ] = useState<deckProps[]>([]);
+
+    const handleBiblioteca = async () => {
+        try {
+            const response = await BaralhoService.GetDecksBaixados();
+            setBiblioteca(response)
+            
+        } catch (error: any) {
+            Alert.alert("Erro ao Acessar a biblioteca", error.message)
+        }
+    }
+
+    useEffect(() => {
+        handleBiblioteca()
+    }, [])
+
+
 
     return (
         <View className='mb-4 '>
@@ -27,13 +39,14 @@ export default function MinhaBiblioteca() {
             <View className='px-3 mx-3 rounded-2xl py-3 flex-row justify-between flex-wrap gap-y-4 bg-white shadow-lg'>
                 
                 {biblioteca.slice(0, 5).map((item) => (
-                    <RenderItemsCardBiblioteca key={item.id} id={item.id}themeId={item.themeId} title={item.title} />
+                    <RenderItemsCardBiblioteca key={item.id} id={item.id} themeId={item.themeId} title={item.title} />
                 ))}
 
                 <TouchableOpacity 
                     style={{ width: tamanhoCard, height: tamanhoCard + 42 }} 
                     className='bg-slate-50 border-2 border-dashed border-primary-300 rounded-2xl items-center justify-center active:bg-primary-50' 
                     activeOpacity={0.7}
+                    onPress={() => router.push('/(telas)/criarDeck')}
                 >
                     <View className="bg-primary-100 p-2 rounded-full mb-2">
                         <MaterialCommunityIcons name='plus-thick' size={20} color={"#4338ca"} />
@@ -48,7 +61,7 @@ export default function MinhaBiblioteca() {
 }
 
 type RenderItemsCardBibliotecaProps = {
-    id: number;
+    id: string;
     title: string;
     themeId: string;
 }
@@ -59,6 +72,7 @@ const RenderItemsCardBiblioteca = ({ id, title, themeId }: RenderItemsCardBiblio
             style={{ width: tamanhoCard, height: tamanhoCard + 42 }} 
             className='rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-sm active:bg-slate-50 flex-col' 
             activeOpacity={0.7}
+            onPress={() => router.push(`/(telas)/biblioteca/${id}`)}
         >
             {/* PARTE SUPERIOR: Apenas a Capa com o Ícone (ocupa o espaço principal) */}
             <View className='flex-1 w-full'>

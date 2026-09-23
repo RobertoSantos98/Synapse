@@ -41,6 +41,7 @@ export default function Detalhes() {
 
     const handleLoadDeck = async () => {
         const response = await BaralhoService.GetDeckById(id);
+        console.log(response)
         setDeck(response)
     }
 
@@ -57,7 +58,6 @@ export default function Detalhes() {
 
 
     return (
-        <BottomSheetModalProvider>
             <View className='flex-1'>
                 <ScrollView className=''>
 
@@ -95,12 +95,12 @@ export default function Detalhes() {
                             </View>
 
                             <View className='items-center justify-center gap-2'>
-                                <TouchableOpacity className='border border-primary-300 bg-primary-500 w-12 rounded-full p-1' style={{ alignItems: isPrivate ? "flex-start" : "flex-end" }} onPress={() => setIsPrivate(!isPrivate)} activeOpacity={0.9} >
-                                    <View className='h-6 w-6 rounded-full items-center justify-center' style={{ backgroundColor: isPrivate ? "#fff" : "#a5b4fc" }} >
-                                        <MaterialIcons name={isPrivate ? 'lock' : 'lock-open'} color={"#6366f1"} />
+                                <TouchableOpacity className='border border-primary-300 bg-primary-500 w-12 rounded-full p-1' style={{ alignItems: deck?.isPrivate ? "flex-start" : "flex-end" }} onPress={() => setIsPrivate(!isPrivate)} activeOpacity={0.9} >
+                                    <View className='h-6 w-6 rounded-full items-center justify-center' style={{ backgroundColor: deck?.isPrivate ? "#fff" : "#e5e5e5" }} >
+                                        <MaterialIcons name={deck?.isPrivate ? 'lock' : 'lock-open'} color={"#6366f1"} />
                                     </View>
                                 </TouchableOpacity>
-                                <Text className='text-xs font-bold text-slate-400'>{isPrivate ? "Privado" : "Público"}</Text>
+                                <Text className='text-xs font-bold text-slate-400'>{deck?.isPrivate ? "Privado" : "Público"}</Text>
                             </View>
                         </View>
 
@@ -143,25 +143,23 @@ export default function Detalhes() {
 
                             <View className='flex-row gap-2 items-center'>
                                 <MaterialCommunityIcons name='file-settings-outline' size={18} color={"#64748b"} />
-                                <Text className='text-lg text-slate-500 font-bold'>Opções do Criador</Text>
+                                <Text className='text-lg text-slate-500 font-bold'>Ver:</Text>
                             </View>
-
-
 
                             <View className='flex-row gap-2 mb-2'>
 
-                                <TouchableOpacity className='bg-slate-50 border border-slate-200 gap-4 p-4 rounded-2xl flex-1 shadow-sm'>
-                                    <View className='bg-primary-50 rounded-full p-2 self-start border border-primary-200'>
-                                        <MaterialCommunityIcons name='account' size={18} color={"#6366f1"} />
+                                <TouchableOpacity onPress={() => router.push(`/(telas)/Usuario/${deck?.userId}`)} className='bg-white border border-slate-200 gap-4 p-4 rounded-2xl flex-1 shadow-sm'>
+                                    <View className='bg-slate-100 rounded-full p-2 self-start border border-slate-200'>
+                                        <MaterialCommunityIcons name='account' size={22} color={"#6366f1"} />
                                     </View>
-                                    <Text className='text-base text-black self-end'>Ver Perfil do Criador</Text>
+                                    <Text className='text-base text-slate-500 self-end'>Ver Perfil do Criador</Text>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity className='bg-slate-50 border border-slate-200 gap-4 p-4 rounded-2xl flex-1 shadow-sm'>
-                                    <View className='bg-primary-50 rounded-full p-2 self-start border border-primary-200'>
-                                        <MaterialCommunityIcons name='thumb-up' size={18} color={"#6366f1"} />
+                                <TouchableOpacity className='bg-white border border-slate-200 gap-4 p-4 rounded-2xl flex-1 shadow-sm'>
+                                    <View className='bg-slate-100 rounded-full p-2 self-start border border-slate-200'>
+                                        <MaterialCommunityIcons name='thumb-up' size={22} color={"#6366f1"} />
                                     </View>
-                                    <Text className='text-base text-black self-end'>Curtir</Text>
+                                    <Text className='text-base text-slate-500 self-end'>Curtir</Text>
                                 </TouchableOpacity>
 
                             </View>
@@ -169,25 +167,25 @@ export default function Detalhes() {
                             <View className='h-0.5 bg-slate-200 my-2 mx-4 rounded-full' />
 
                             <View className='flex-row gap-2 items-center'>
-                                <MaterialCommunityIcons name='account-settings-outline' size={18} color={"#64748b"} />
+                                <MaterialCommunityIcons name='account-settings-outline' size={22} color={"#64748b"} />
                                 <Text className='text-lg text-slate-500 font-bold'>Opções do Criador</Text>
                             </View>
 
 
                             <View className='flex-row gap-2'>
 
-                                <TouchableOpacity className='bg-slate-50 border border-slate-200 gap-4 p-4 rounded-2xl flex-1 shadow-sm'>
-                                    <View className='bg-primary-50 rounded-full p-2 self-start border border-primary-200'>
-                                        <MaterialCommunityIcons name='file-edit' size={18} color={"#6366f1"} />
+                                <TouchableOpacity className='bg-white border border-slate-200 gap-4 p-4 rounded-2xl flex-1 shadow-sm'>
+                                    <View className='bg-slate-100 rounded-full p-2 self-start border border-slate-200'>
+                                        <MaterialCommunityIcons name='file-edit' size={22} color={"#6366f1"} />
                                     </View>
-                                    <Text className='text-base text-black self-end'>Editar Informações</Text>
+                                    <Text className='text-base text-slate-500 self-end'>Editar Informações</Text>
                                 </TouchableOpacity>
 
-                                <TouchableOpacity className='bg-slate-50 border border-slate-200 gap-4 p-4 rounded-2xl flex-1 shadow-sm'>
-                                    <View className='bg-rose-50 rounded-full p-2 self-start border border-rose-200'>
-                                        <MaterialCommunityIcons name='delete' size={18} color={"#f43f5e"} />
+                                <TouchableOpacity className='bg-rose-50 border border-rose-200 gap-4 p-4 rounded-2xl flex-1 shadow-sm'>
+                                    <View className='bg-slate-50 rounded-full p-2 self-start border border-rose-200'>
+                                        <MaterialCommunityIcons name='delete' size={22} color={"#f43f5e"} />
                                     </View>
-                                    <Text className='text-base text-black self-end'>Excluir Baralho</Text>
+                                    <Text className='text-base text-slate-500 self-end'>Excluir Baralho</Text>
                                 </TouchableOpacity>
 
 
@@ -228,7 +226,6 @@ export default function Detalhes() {
 
             </View>
 
-        </BottomSheetModalProvider>
     );
 }
 
