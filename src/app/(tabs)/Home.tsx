@@ -5,25 +5,24 @@ import DashBoard from '@/src/components/sectionHome/dashboard';
 import DecksAmigos from '@/src/components/sectionHome/decksAmigos';
 import MinhaBiblioteca from '@/src/components/sectionHome/minhaBiblioteca';
 import ProcurarDecks from '@/src/components/sectionHome/procurarDecks';
+import { useAuth } from '@/src/context/AuthContext';
+import UserService from '@/src/Services/UserService';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function Home() {
 
     const insets = useSafeAreaInsets();
 
-    const [statusOnline, setStatusOnline] = useState<boolean>(false);
-    const [tentandoConectar, setTentandoConectar] = useState<boolean>(true);
-
     const ofensivaDiaria = 5;
     const cardsParaRevisarHoje = 24;
     const tempoEstimado = 8;
 
     const cardsRevisadosHoje = 10;
-    const metaDiariaCards = 30;
+    const [metaDiariaCards, setMetaDiariaCards] = useState<number>(0);
 
     const porcentagemProgresso = Math.min(
         Math.round((cardsRevisadosHoje / metaDiariaCards) * 100),
@@ -48,19 +47,7 @@ export default function Home() {
 
                 <View style={{ paddingTop: insets.top }} />
 
-                <View className='flex-row justify-end mx-4 my-2 items-center'>
-                    <Text className='text-slate-400 text-sm font-bold'>Status: </Text>
-                    <TouchableOpacity className='px-2'>
-                        {tentandoConectar ?
-                            <ActivityIndicator color={"#6366f1"} /> :
-                            <Text
-                                className='text-base font-bold'
-                                style={{
-                                    color: statusOnline ? "#22c55e" : "#ef4444"
-                                }}>{statusOnline ? "Conectado" : "Offline"}</Text>
-                        }
-                    </TouchableOpacity>
-                </View>
+                <HandleHomeLoading setMetaDiaria={setMetaDiariaCards} />
 
                 <View className="flex-row justify-between items-center px-6 pt-2 pb-4">
                     <View className="flex-1">
@@ -213,4 +200,61 @@ export default function Home() {
         </View>
 
     );
+}
+
+
+type HandleHomeLoadingProps = {
+    setMetaDiaria: (number: number) => void
+}
+
+function HandleHomeLoading({setMetaDiaria} : HandleHomeLoadingProps) {
+
+    const { user } = useAuth();
+
+    const [statusOnline, setStatusOnline] = useState<boolean>(false);
+    const [tentandoConectar, setTentandoConectar] = useState<boolean>(true);
+
+    useEffect(() => {
+        handleLoading()
+    }, [])
+
+    const handleLoading = async () => {
+        try {
+            if(user){
+                const response = await UserService.GetUserById(user?.id);
+                setMetaDiaria(response.metaDiaria);
+                setStatusOnline(true);
+
+                console.log("Usuario Atualizado: ", user)
+            }
+        } catch (error: any) {
+            Alert.alert("Erro! Tente Novamente", error.message)
+            
+        } finally{
+            setTentandoConectar(false);
+            console.log(tentandoConectar)
+        }
+    }
+
+
+    return (
+        <View className='justify-center mx-4 my-2 items-end'>
+            <View className='flex-row'>
+                <Text className='text-slate-400 text-sm font-bold'>Status: </Text>
+                <TouchableOpacity className='px-2'>
+                    {tentandoConectar ?
+                        <ActivityIndicator color={"#6366f1"} /> :
+                        <Text
+                            className='text-base font-bold'
+                            style={{
+                                color: statusOnline ? "#22c55e" : "#ef4444"
+                            }}>{statusOnline ? "Conectado" : "Offline"}</Text>
+                    }
+                </TouchableOpacity>
+            </View>
+            {!statusOnline && !tentandoConectar &&(
+                <Text className='text-xs text-slate-400'>Clique para tentar novamente</Text>
+            )}
+        </View>
+    )
 }

@@ -4,6 +4,7 @@ export interface User {
     usuario: string,
     level: number,
     avatarUrl: null,
+    metaDiaria: number,
     experiencePoints: number,
     wins: number,
     losses: number,

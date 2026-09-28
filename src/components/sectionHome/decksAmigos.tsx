@@ -1,12 +1,16 @@
 import { Dimensions, FlatList, Text, TouchableOpacity, View } from 'react-native';
 import TitleHome from '../titleHome';
 import CardCover from '../cardCover';
-import { Fontisto, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Fontisto, MaterialIcons } from '@expo/vector-icons';
+import { useState } from 'react';
+import { Skeleton } from '../Skeleton';
 
 
 const tamanhoCard = (Dimensions.get('window').width - 64)
 
 export default function DecksAmigos() {
+
+    const [ loading, setLoading ] = useState<boolean>(true)
 
     const deckAmigos = [
         { id: 1, amigo: "Kaike", themeId: 'math', title: "Matemática", detalhes: "Estudo da escola", nivel: "medio" },
@@ -22,20 +26,25 @@ export default function DecksAmigos() {
         <View>
             <TitleHome title='Decks de Amigos' label='Ver Mais' onPressLabel={() => { }} />
 
+            
+            {loading ? <LoadingDeckAmigos/> : (
 
-            <View>
-                <FlatList
-                    data={deckAmigos}
-                    renderItem={({ item }) => <RenderDeckAmigos amigo={item.amigo} themeId={item.themeId} title={item.title} detalhes={item.detalhes} nivel={item.nivel} />}
-                    keyExtractor={(item) => item.id.toString()}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={{
-                        paddingHorizontal: 16,
-                        gap: 8
-                    }}
-                />
-            </View>
+                <View>
+                    <FlatList
+                        data={deckAmigos}
+                        renderItem={({ item }) => <RenderDeckAmigos amigo={item.amigo} themeId={item.themeId} title={item.title} detalhes={item.detalhes} nivel={item.nivel} />}
+                        keyExtractor={(item) => item.id.toString()}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        contentContainerStyle={{
+                            paddingHorizontal: 16,
+                            gap: 8
+                        }}
+                    />
+                </View>
+            )}
+
+
         </View>
     );
 }
@@ -94,4 +103,13 @@ const RenderDeckAmigos = ({ amigo, themeId, title, detalhes, nivel }: renderDeck
 
         </TouchableOpacity>
     )
+}
+
+function LoadingDeckAmigos() {
+  return (
+    <View className='px-4 pb-4 flex-row gap-4'>
+      <Skeleton height={120} width={tamanhoCard} />
+      <Skeleton height={120} width={tamanhoCard} />
+    </View>
+  );
 }

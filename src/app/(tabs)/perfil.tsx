@@ -65,6 +65,8 @@ export default function Perfil() {
 
   }
 
+  // if(!user) return <PerfilLoading/>
+
 
   return (
     <View style={{ flex: 1 }}>
@@ -100,8 +102,8 @@ export default function Perfil() {
           <View className='py-2 gap-2'>
             <View className='gap-1'>
               <View className='flex-row items-end gap-2'>
-                <Text className='text-5xl tracking-tighter text-slate-900 font-jaro gap-2' style={{ textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowOffset: { width: 0, height: 0 }, textShadowRadius: 4 }}>Raphael Santos</Text>
-                <Text className='text-2xl font-poppinsBold text-slate-300'>#1519</Text>
+                <Text className='text-5xl tracking-tighter text-slate-900 font-jaro gap-2' style={{ textShadowColor: 'rgba(0, 0, 0, 0.5)', textShadowOffset: { width: 0, height: 0 }, textShadowRadius: 4 }}>{user?.nome}</Text>
+                <Text className='text-2xl font-poppinsBold text-slate-300'>@{user?.usuario}</Text>
               </View>
             </View>
 
