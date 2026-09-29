@@ -13,6 +13,7 @@ import { AuthProvider, useAuth } from '../context/AuthContext';
 import { Gesture, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetProvider } from '@gorhom/bottom-sheet/lib/typescript/contexts';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { ConnectionProvider } from '../context/ConnectionContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -63,9 +64,14 @@ export default function Layout() {
     <GestureHandlerRootView>
       <SafeAreaProvider>
         <AuthProvider>
-          <BottomSheetModalProvider>
-            <RootNavigator />
-          </BottomSheetModalProvider>
+          
+          <ConnectionProvider>
+
+            <BottomSheetModalProvider>
+              <RootNavigator />
+            </BottomSheetModalProvider>
+    
+          </ConnectionProvider>
         </AuthProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

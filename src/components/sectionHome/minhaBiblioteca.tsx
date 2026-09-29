@@ -7,12 +7,16 @@ import CardCover from '../cardCover';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import BaralhoService, { deckProps } from '@/src/Services/BaralhoService';
+import { Skeleton } from '../Skeleton';
 
 const widthScreen = Dimensions.get('window').width;
 
 const tamanhoCard = (widthScreen - 58) / 3;
 
 export default function MinhaBiblioteca() {
+
+    const [loading, setLoading] = useState<boolean>(true);
+
 
     const [ biblioteca, setBiblioteca ] = useState<deckProps[]>([]);
 
@@ -23,6 +27,8 @@ export default function MinhaBiblioteca() {
             
         } catch (error: any) {
             Alert.alert("Erro ao Acessar a biblioteca", error.message)
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -37,10 +43,15 @@ export default function MinhaBiblioteca() {
             <TitleHome title='Minha Biblioteca' label='Ver Tudo' onPressLabel={() => router.push('/(telas)/biblioteca/minhaBiblioteca')} />
 
             <View className='px-3 mx-3 rounded-2xl py-3 flex-row justify-between flex-wrap gap-y-4 bg-white shadow-lg'>
+
+                {loading? <RenderLoading/> : (
+                    
+                    biblioteca.slice(0, 5).map((item) => (
+                        <RenderItemsCardBiblioteca key={item.id} id={item.id} themeId={item.themeId} title={item.title} />
+                    ))
+
+                )}
                 
-                {biblioteca.slice(0, 5).map((item) => (
-                    <RenderItemsCardBiblioteca key={item.id} id={item.id} themeId={item.themeId} title={item.title} />
-                ))}
 
                 <TouchableOpacity 
                     style={{ width: tamanhoCard, height: tamanhoCard + 42 }} 
@@ -90,4 +101,13 @@ const RenderItemsCardBiblioteca = ({ id, title, themeId }: RenderItemsCardBiblio
             </View>
         </TouchableOpacity>
     );
+}
+
+function RenderLoading(){
+    return(
+        <View className='flex-wrap flex-row justify-between gap-2'>
+            <Skeleton width={tamanhoCard} height={tamanhoCard + 42} />
+            <Skeleton width={tamanhoCard} height={tamanhoCard + 42} />
+        </View>
+    )
 }

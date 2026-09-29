@@ -7,6 +7,7 @@ import UserService from '../Services/UserService';
 import { User } from '../types/auth';
 import { AvatarService } from '../Services/AvatarService';
 import { router } from 'expo-router';
+import { Skeleton } from './Skeleton';
 
 export interface MiniDeckHorizontalProps  {
     title: string,
@@ -56,6 +57,8 @@ type RenderItemDecksProps = {
     deck: deckProps
 }
 function RenderItemsMiniDecks({deck}: RenderItemDecksProps) {
+
+    const [loading, setLoading ] = useState<boolean>(true);
     
     const [ user, setUser ] = useState<User>();
     const nivel = deck.level === "facil" ? 1 : deck.level === "medio" ? 2 : 3;
@@ -68,6 +71,9 @@ function RenderItemsMiniDecks({deck}: RenderItemDecksProps) {
                 if(isMounted) setUser(response);
             } catch (error) {
                 console.log("Erro ao buscar usuário: ", error)
+            } finally{
+
+                if(isMounted) setLoading(false);
             }
         }
         handleUser();
@@ -76,6 +82,13 @@ function RenderItemsMiniDecks({deck}: RenderItemDecksProps) {
             isMounted = false;
         };
     }, [deck.userId]);
+
+
+    if(loading){
+        return(
+            <Skeleton width={tamanhoWigth / 2} height={tamanhoWigth / 2 + 40}  />
+        )
+    }
 
 
     return (

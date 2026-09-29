@@ -1,16 +1,14 @@
 import BackGroundLightHome from '@/src/Assets/backGround-lightHome';
-import CircuitBackground from '@/src/Assets/circuitBackGround';
-import CardCover from '@/src/components/cardCover';
 import HeaderStack from '@/src/components/headerStack';
 import MiniDeckHorizontal from '@/src/components/MiniDeckHorizontal';
 import BaralhoService, { deckProps } from '@/src/Services/BaralhoService';
-import UserService from '@/src/Services/UserService';
-import { User } from '@/src/types/auth';
-import { Fontisto, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
-import { Dimensions, FlatList, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {  ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function BibliotecaComunidade() {
+
+    const connected = true;
 
     const [bibliotecaDecksNovos, setBibliotecaDecksNovos] = useState<deckProps[]>();
 
@@ -52,15 +50,32 @@ export default function BibliotecaComunidade() {
                     </View>
                 </View>
 
-                {bibliotecaDecksNovos && (
-                    <MiniDeckHorizontal title={"Últimos Decks Postados"} decks={bibliotecaDecksNovos}/>
-                )}
-                {bibliotecaDecksNovos && (
-                    <MiniDeckHorizontal title={"Decks em alta"} decks={bibliotecaDecksNovos}/>
-                )}
-                {bibliotecaDecksNovos && (
-                    <MiniDeckHorizontal title={"Mais Bem Avaliados"} decks={bibliotecaDecksNovos}/>
-                )}
+                {connected ? (
+                        bibliotecaDecksNovos && (
+                            <>
+                            <MiniDeckHorizontal title={"Últimos Decks Postados"} decks={bibliotecaDecksNovos}/>
+                            <MiniDeckHorizontal title={"Decks em alta"} decks={bibliotecaDecksNovos}/>
+                            <MiniDeckHorizontal title={"Mais Bem Avaliados"} decks={bibliotecaDecksNovos}/>
+                            </>
+                        )
+                    
+                ) : (
+                    <View className='items-center justify-center gap-8 mt-28 bg-slate-100 border border-slate-200 mx-4 p-8 shadow-lg rounded-2xl'>
+
+                        <FontAwesome5 name='sad-tear' size={74} color={"#f43f5e"}  />
+
+                        <View className='items-center'>
+                            <Text className='text-3xl font-poppinsBold text-slate-700'>Puxa!</Text>
+                            <Text className='text-lg font-bold text-slate-400'>Parece que você não está conectado.</Text>
+                        </View>
+
+                        <TouchableOpacity className='rounded-full border border-primary-300 bg-primary-50 py-2 px-8 '>
+                            <Text className='text-lg text-primary-600 font-bold'>Tentar conectar</Text>
+                        </TouchableOpacity>
+                    </View>
+                )
+                }
+
 
 
 

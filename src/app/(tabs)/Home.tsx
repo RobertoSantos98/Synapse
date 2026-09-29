@@ -241,7 +241,11 @@ function HandleHomeLoading({setMetaDiaria} : HandleHomeLoadingProps) {
         <View className='justify-center mx-4 my-2 items-end'>
             <View className='flex-row'>
                 <Text className='text-slate-400 text-sm font-bold'>Status: </Text>
-                <TouchableOpacity className='px-2'>
+                <TouchableOpacity 
+                    className='px-2'
+                    onPress={handleLoading}
+                    disabled={statusOnline}   
+                >
                     {tentandoConectar ?
                         <ActivityIndicator color={"#6366f1"} /> :
                         <Text

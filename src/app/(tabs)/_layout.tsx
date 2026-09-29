@@ -103,13 +103,17 @@ const BotaoPersonalizado = ({
             width: 85,
             height: 85,
             borderRadius: 999,
-            backgroundColor: "#6366f1",
+            // backgroundColor: "#6366f1",
             justifyContent: "center",
             alignItems: "center",
             position: 'absolute',
+            overflow: 'hidden',
+            borderWidth: 1,
+            borderColor: "#6366f1"
           },
         ]}
       >
+        <LinearGradient colors={["#312e81", "#6366f1"]} style={[StyleSheet.absoluteFill]} />
         <MaterialCommunityIcons name="sword-cross" size={28} color="#FFF" />
         <Text className="text-white font-bold">Arena</Text>
       </TouchableOpacity>
