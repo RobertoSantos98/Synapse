@@ -25,14 +25,6 @@ export default function Perfil() {
 
   const widthCardsPerfil = ((Dimensions.get('window').width - 64) / 2);
 
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoint = useMemo(() => ["50%"], []);
-  const abrirBottomSheet = () => {
-    bottomSheetRef.current?.snapToIndex(1);
-  };
-  const fecharBottomSheet = () => {
-    bottomSheetRef.current?.close();
-  };
 
   const acessoMenu: acessoMenuProps[] = [
     { id: 1, title: "Lista de Amigos", icon: "account-multiple-outline", onPressButton: () => router.push("/(telas)/ListaAmigos/listaAmigos") },
@@ -42,28 +34,8 @@ export default function Perfil() {
     { id: 5, title: "Nos Avalie", icon: "star-outline", onPressButton: () => { } },
   ];
 
-  const { logout, atualizarUser, user } = useAuth();
+  const { logout, user } = useAuth();
 
-  const handleChangeAvatar = async (avatar: string) => {
-
-    try {
-
-      if (user) {
-        console.log(user.id, avatar)
-        var result = await UserService.ChangeAvatar(user.id, avatar);
-        const novoUser = result;
-        user.avatarUrl = novoUser.avatarUrl;
-        atualizarUser(novoUser);
-        Alert.alert("Avatar Atualizado!")
-      }
-
-
-    } catch (error: any) {
-      Alert.alert("Erro", error.message);
-    }
-
-
-  }
 
   // if(!user) return <PerfilLoading/>
 
@@ -114,9 +86,9 @@ export default function Perfil() {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={abrirBottomSheet}
+                onPress={() => router.push('/(telas)/ConfiguracaoPerfil/index')}
                 className='bg-white border border-slate-200 shadow-sm flex-1 py-3.5 rounded-xl justify-center items-center'>
-                <Text className='text-slate-600 font-bold text-sm'>Alterar Avatar</Text>
+                <Text className='text-slate-600 font-bold text-sm'>Editar</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -183,42 +155,6 @@ export default function Perfil() {
 
       </ScrollView>
 
-      <BottomSheet ref={bottomSheetRef} snapPoints={snapPoint} index={-1} enablePanDownToClose>
-        <BottomSheetView>
-
-          <View className='p-4 flex-1'>
-
-            <Text className='text-center text-lg font-poppinsBold mb-4'>Escolha o seu Avatar</Text>
-              
-                <BottomSheetFlatList
-                  data={AVATAR_SEEDS}
-                  keyExtractor={(item) => item}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity
-                      className='bg-primary-50 rounded-full border border-primary-500'
-                      onPress={() => handleChangeAvatar(item)}
-                    >
-                      <Image
-                        source={{ uri: AvatarService.getAvatarUrl(item) }}
-                        style={{ width: 80, height: 80, borderRadius: 35 }}
-                      />
-                    </TouchableOpacity>
-                  )}
-                  numColumns={4}
-                  columnWrapperStyle={{
-                    justifyContent: 'space-between',
-                    marginBottom: 16
-                  }}
-                  contentContainerStyle={{
-                    paddingBottom: 40
-                  }}
-                />
-             
-          </View>
-
-          <View style={{ height: 100 }} />
-        </BottomSheetView>
-      </BottomSheet>
     </View >
   );
 }

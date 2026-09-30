@@ -9,6 +9,7 @@ import { useAuth } from '@/src/context/AuthContext';
 import UserService from '@/src/Services/UserService';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,6 +17,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 export default function Home() {
 
     const insets = useSafeAreaInsets();
+
+    const { user } = useAuth()
 
     const ofensivaDiaria = 5;
     const cardsParaRevisarHoje = 24;
@@ -54,7 +57,7 @@ export default function Home() {
                         <Text className="text-4xl text-slate-900 tracking-wide">
                             Olá,{" "}
                             <Text className="text-primary-500 font-jaro">
-                                Raphael!
+                                {user?.nome}!
                             </Text>
                         </Text>
 
@@ -65,6 +68,7 @@ export default function Home() {
 
 
                     <TouchableOpacity
+                        onPress={() => router.push('/(telas)/ConfiguracaoPerfil')}
                         activeOpacity={0.8}
                         className="rounded-full bg-white shadow-md p-3 border border-slate-200"
                     >
@@ -257,7 +261,10 @@ function HandleHomeLoading({setMetaDiaria} : HandleHomeLoadingProps) {
                 </TouchableOpacity>
             </View>
             {!statusOnline && !tentandoConectar &&(
-                <Text className='text-xs text-slate-400'>Clique para tentar novamente</Text>
+                <>
+                    <Text className='text-xs text-slate-400'>Clique para tentar novamente</Text>
+                    <Text className='text-xs text-slate-400'>Ultima Atualização: </Text>
+                </>
             )}
         </View>
     )
